@@ -127,3 +127,52 @@ def test_deleted_end_line_changes_nothing(names, tmp_path):
     for n in range(start - 1, start - 1 + cut.index("") - cut.index("my")):
         expected[n] = expected[n].replace("<Replace>", "VAL")
     assert run_vim(tmp_path, lines, fill_at(start)) == expected
+
+
+# what a person types for each placeholder, so a value with a character the replacement treats
+# specially would show up here; a new placeholder needs a value added
+REAL = {
+    "TargetIP": "10.10.10.17",
+    "Domain": "corp.local",
+    "DCIP": "10.10.10.5",
+    "BaseDN": "DC=corp,DC=local",
+    "Username": "svc_sql",
+    "Password": "Summer2026!",
+    "Hash": "2892D26CDF84D7A70E2EB3B9F05C425E",
+    "LHOST": "10.10.14.5",
+    "LPORT": "443",
+    "Scheme": "https",
+    "WebHost": "site.htb:8443",
+    "Share": "Backups",
+    "Service": "regsvc",
+    "File": "winPEASx64.exe",
+}
+
+
+def test_every_placeholder_has_a_real_value(names):
+    assert sorted(REAL) == sorted(names)
+
+
+REPO_CASES = [case for case in cases() if not case[0].startswith("sample/")]
+
+
+@pytest.mark.parametrize("rel, text", REPO_CASES, ids=[rel for rel, _ in REPO_CASES])
+def test_fill_with_real_values(rel, text, names, tmp_path):
+    playbook = built_text(rel, text, names).split("\n")[:-1]
+    if playbook[2] != "my":
+        return
+    used = build.placeholders_used(playbook, names)
+    # typed over each <Replace>, as in the note
+    filled = []
+    for line in playbook:
+        for name in used:
+            if line == f":'y,'zs/<{name}>/<Replace>/ge":
+                line = f":'y,'zs/<{name}>/{REAL[name]}/ge"
+        filled.append(line)
+    lines = [BEFORE, *filled, AFTER]
+    got = run_vim(tmp_path, lines, "call cursor(search('^my$'), 1)\nexecute \"normal! V}\\\"qy\"\nnormal @q\n")
+    expected = list(filled)
+    for name in used:
+        expected = [line.replace(f"<{name}>", REAL[name]) for line in expected]
+    assert got == [BEFORE, *expected, AFTER]
+    assert f"Fill in:  {'  '.join(REAL[n] for n in used)}" in got
