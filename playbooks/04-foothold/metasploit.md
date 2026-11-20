@@ -82,14 +82,15 @@ Routes to the networks the session's host can reach, then a SOCKS proxy over the
 use post/multi/manage/autoroute
 set SESSION 1
 run
+- [ ] The route add line only when autoroute missed that network
 route add <Subnet>/<CIDR> 1
 route print
 use auxiliary/server/socks_proxy
 set SRVPORT 1080
 set VERSION 5
 run -j
-- [ ] socks5 127.0.0.1 1080 as the last line of /etc/proxychains4.conf
+Kali's proxychains points at Tor's port; this makes it use the proxy instead:
+sudo sed -i 's/^socks4.*9050$/socks5 127.0.0.1 1080/' /etc/proxychains4.conf
 proxychains -q nxc smb <InternalIP>
 One port on one host instead, from Meterpreter:
 portfwd add -l <LPORT> -p <Port> -r <InternalIP>
-- [ ] The route add line only when autoroute missed that network

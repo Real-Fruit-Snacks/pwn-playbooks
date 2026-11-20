@@ -6,7 +6,7 @@ curl -sk <Scheme>://<WebHost>/feed/ | grep -i generator
 - [ ] Links point at a host name: host add, at the pwn-broker prompt, or the site loads half-broken
 
 ## Users by hand
-curl -sk <Scheme>://<WebHost>/wp-json/wp/v2/users | jq -r '.[].slug'
+curl -sk <Scheme>://<WebHost>/wp-json/wp/v2/users | jq -r '.[].slug' | tee users.txt
 curl -sk <Scheme>://<WebHost>/wp-sitemap-users-1.xml
 curl -skI '<Scheme>://<WebHost>/?author=1' | grep -i location
 

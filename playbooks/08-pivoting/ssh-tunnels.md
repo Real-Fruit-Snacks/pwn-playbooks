@@ -20,7 +20,8 @@ xfreerdp3 /v:127.0.0.1:<LPORT> /u:'<Username>' /p:'<Password>' /cert:ignore
 
 ## A SOCKS proxy: -D
 ssh -N -D 1080 '<Username>'@<PivotIP>
-- [ ] socks5 127.0.0.1 1080 as the last line of /etc/proxychains4.conf, as in :Pb chisel
+Kali's proxychains points at Tor's port; this makes it use the proxy instead:
+sudo sed -i 's/^socks4.*9050$/socks5 127.0.0.1 1080/' /etc/proxychains4.conf
 proxychains -q nmap -sT -Pn --top-ports 100 <InternalIP>
 proxychains -q nxc smb <Subnet>/<CIDR>
 - [ ] -sT and -Pn every time: SYN scans, UDP and ping do not cross a SOCKS proxy

