@@ -26,7 +26,7 @@ searchsploit THE-CVE
 - [ ] MS16-032, Secondary Logon: Windows 7 to 10 and Server 2008 to 2012 R2, with 2 or more CPUs
 - [ ] MS15-051, win32k: Windows 7, Server 2008 R2 and older
 - [ ] MS10-015, KiTrap0D: 32-bit Windows XP to 7
-- [ ] MS16-075, Hot Potato: an NTLM reflection, needs SeImpersonate, :Pb potatoes
+- [ ] MS16-075, Hot Potato: NTLM reflection from a normal user, Windows 7 to 10 and Server 2008 to 2012
 - [ ] XP and Server 2003: weak service permissions first, :Pb services
 
 ## HiveNightmare

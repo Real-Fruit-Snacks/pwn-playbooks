@@ -3,7 +3,7 @@
 ## Who I am
 whoami /all
 - [ ] SeImpersonatePrivilege or SeAssignPrimaryTokenPrivilege: :Pb potatoes
-- [ ] SeBackup, SeRestore, SeTakeOwnership, SeDebug, SeManageVolume or SeLoadDriver: :Pb privileged-groups
+- [ ] SeBackup, SeRestore, SeTakeOwnership, SeDebug or SeManageVolume: :Pb privileged-groups
 - [ ] Backup Operators, Server Operators, DnsAdmins, Event Log Readers or a LAPS reader group: :Pb privileged-groups
 - [ ] In Administrators at Medium Mandatory Level: UAC is filtering me, :Pb uac-bypass
 

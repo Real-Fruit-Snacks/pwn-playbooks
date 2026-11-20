@@ -46,9 +46,10 @@ ssh -N -R 8080:<LHOST>:80 '<Username>'@<PivotIP>
 - [ ] The forward binds the pivot's 127.0.0.1 only, unless its sshd has GatewayPorts yes: for other internal hosts, relay it with :Pb socat
 
 ## Through the pivot to an internal host
-ssh -J '<Username>'@<PivotIP> '<Username>'@<InternalIP>
+<Username> logs in to the pivot, <TargetUser> to the internal host.
+ssh -J '<Username>'@<PivotIP> '<TargetUser>'@<InternalIP>
 A SOCKS proxy on the second host, for the network beyond it:
-ssh -N -J '<Username>'@<PivotIP> -D 1081 '<Username>'@<InternalIP>
+ssh -N -J '<Username>'@<PivotIP> -D 1081 '<TargetUser>'@<InternalIP>
 - [ ] Proxychains pointed at 1081 for that network: a copy of the file, used with -f
 cp /etc/proxychains4.conf pivot2.conf
 - [ ] The last line of pivot2.conf is socks5 127.0.0.1 1081

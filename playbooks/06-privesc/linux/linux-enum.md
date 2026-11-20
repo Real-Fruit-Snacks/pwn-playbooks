@@ -48,7 +48,7 @@ dpkg -l
 - [ ] An unusual SUID program or a capability: :Pb suid
 - [ ] /etc/passwd, /etc/shadow or sudoers writable: :Pb writable-files
 - [ ] A program called by bare name, or a library or Python module I can replace: :Pb path-hijack
-- [ ] no_root_squash in /etc/exports: the share mounted from Kali as root, and a SUID shell put in it
+- [ ] no_root_squash in /etc/exports: the share mounted from Kali as root, and a SUID shell put in it: :Pb nfs
 - [ ] Odd software in /opt or dpkg -l, checked with searchsploit and its version
 
 ## Passwords before anything clever

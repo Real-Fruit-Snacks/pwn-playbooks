@@ -145,14 +145,14 @@ pwn-broker's `search` skips a playbook's run block, and any line of a playbook t
 | `06-privesc/windows/windows-kernel` | Windows privesc: kernel exploits | `<TargetIP>` `<Hash>` |
 | `07-ad/acl-abuse` | AD ACL abuse | `<TargetUser>` `<Group>` `<Computer>` `<Hash>` `<DCIP>` `<Domain>` `<Username>` `<Password>` `<TargetIP>` |
 | `07-ad/asrep` | AS-REP roasting | `<DCIP>` `<Domain>` `<TargetUser>` `<Username>` `<Password>` `<Hash>` |
-| `07-ad/domain-enum` | AD enumeration | `<DCIP>` `<DCHost>` `<Domain>` `<Username>` `<Password>` `<Hash>` `<LHOST>` |
+| `07-ad/domain-enum` | AD enumeration | `<DCIP>` `<DCHost>` `<Domain>` `<Username>` `<Password>` `<Hash>` |
 | `07-ad/kerberoasting` | Kerberoasting | `<DCIP>` `<Domain>` `<Username>` `<Password>` `<Hash>` `<TargetUser>` |
 | `07-ad/responder` | Responder and NTLM relay | `<LHOST>` `<Param>` `<TargetIP>` `<Username>` `<Password>` `<Subnet>` `<CIDR>` `<Domain>` `<TargetUser>` `<DCIP>` |
 | `08-pivoting/chisel` | Pivoting with chisel | `<LHOST>` `<InternalIP>` `<Subnet>` `<CIDR>` `<Username>` `<Password>` `<LPORT>` `<Port>` `<PivotInternalIP>` |
 | `08-pivoting/ligolo` | Pivoting with ligolo-ng | `<LHOST>` `<Subnet>` `<CIDR>` `<PivotInternalIP>` `<InternalIP>` `<Username>` `<Password>` `<LPORT>` |
 | `08-pivoting/port-forwarding` | Port forwarding on Windows | `<LHOST>` `<LPORT>` `<InternalIP>` `<Port>` `<Username>` `<Password>` `<PivotIP>` `<Subnet>` `<CIDR>` `<PivotInternalIP>` |
 | `08-pivoting/socat` | socat relays | `<LPORT>` `<InternalIP>` `<Port>` `<PivotIP>` `<LHOST>` `<Subnet>` `<CIDR>` `<PivotInternalIP>` |
-| `08-pivoting/ssh-tunnels` | SSH tunnels | `<LPORT>` `<InternalIP>` `<Port>` `<Username>` `<PivotIP>` `<Password>` `<Subnet>` `<CIDR>` `<LHOST>` |
+| `08-pivoting/ssh-tunnels` | SSH tunnels | `<LPORT>` `<InternalIP>` `<Port>` `<Username>` `<PivotIP>` `<Password>` `<Subnet>` `<CIDR>` `<LHOST>` `<TargetUser>` |
 | `09-bof/bof` | Buffer overflow | `<TargetIP>` `<Port>` `<Offset>` `<LHOST>` `<LPORT>` `<JmpAddress>` |
 
 The folders go by phase, with OS folders where they help. `:Pb` finds a playbook by its file name wherever it sits, so each name is used once in the whole tree. Every placeholder, and what it stands for, is in [`placeholders.toml`](placeholders.toml).

