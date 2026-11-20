@@ -1,0 +1,29 @@
+<!-- pwn-playbooks cover panel (layout v2): a playbook in the note, filled in. 528x448, origin = panel top-left.
+     Rendered by Real-Fruit-Snacks/rfs-brand tools/make-cover.py; colours are {tokens}.
+     The lines are the ones build.py renders for playbooks/02-enum/smb.md, cut short, after @q has run
+     with two values typed; the Fill in line is cut where its unfilled placeholders begin. -->
+<rect width="528" height="448" fill="{code-bg}"/>
+<rect width="528" height="48" fill="{surface}"/><rect y="48" width="528" height="1" fill="{line}"/>
+<circle cx="26" cy="24" r="6" fill="{line}"/>
+<circle cx="46" cy="24" r="6" fill="{line}"/>
+<circle cx="66" cy="24" r="6" fill="{line}"/>
+<rfs-text font="mono" size="17" x="264" y="30" anchor="middle" fill="{mute}">vim notes.md</rfs-text>
+<rfs-text font="mono" size="22" x="26.0" y="95.9" fill="{mute}">##########@@@@@@@@@@</rfs-text>
+<rfs-text font="mono" size="22" x="26.0" y="131.9" fill="{text}">Playbook: SMB enumeration</rfs-text>
+<rfs-text font="mono" size="22" x="26.0" y="167.9" fill="{text}">:'y,'zs/</rfs-text>
+<rfs-text font="mono" size="22" x="131.6" y="167.9" fill="{ember}"><TargetIP></rfs-text>
+<rfs-text font="mono" size="22" x="263.6" y="167.9" fill="{text}">/</rfs-text>
+<rfs-text font="mono" size="22" x="276.8" y="167.9" fill="{amber}">10.10.10.17</rfs-text>
+<rfs-text font="mono" size="22" x="422.0" y="167.9" fill="{text}">/ge</rfs-text>
+<rfs-text font="mono" size="22" x="26.0" y="203.9" fill="{text}">:'y,'zs/</rfs-text>
+<rfs-text font="mono" size="22" x="131.6" y="203.9" fill="{ember}"><Domain></rfs-text>
+<rfs-text font="mono" size="22" x="237.2" y="203.9" fill="{text}">/corp.local/ge</rfs-text>
+<rfs-text font="mono" size="22" x="26.0" y="275.9" fill="{text}">Fill in:  </rfs-text>
+<rfs-text font="mono" size="22" x="158.0" y="275.9" fill="{amber}">10.10.10.17</rfs-text>
+<rfs-text font="mono" size="22" x="303.2" y="275.9" fill="{text}">  corp.local  </rfs-text>
+<rfs-text font="mono" size="22" x="488.0" y="275.9" fill="{mute}">…</rfs-text>
+<rfs-text font="mono-semibold" size="22" x="26.0" y="347.9" fill="{text}">## Shares without a credential</rfs-text>
+<rfs-text font="mono" size="22" x="26.0" y="383.9" fill="{text}">nxc smb </rfs-text>
+<rfs-text font="mono" size="22" x="131.6" y="383.9" fill="{amber}">10.10.10.17</rfs-text>
+<rfs-text font="mono" size="22" x="276.8" y="383.9" fill="{text}"> -u '' -p ''</rfs-text>
+<rfs-text font="mono" size="22" x="26.0" y="419.9" fill="{text}">END OF smb PLAYBOOK</rfs-text>
