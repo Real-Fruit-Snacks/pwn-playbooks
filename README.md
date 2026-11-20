@@ -17,7 +17,7 @@ My notes are a large reference, written for reading. Mid-box I want something sm
 
 Each release is one zip, `playbooks-<version>.zip`, with a `SHA256SUMS.txt` beside it, on the [releases page](https://github.com/Real-Fruit-Snacks/pwn-playbooks/releases). The zip holds `LICENSE` and `playbooks/`, the playbooks built in the folders listed below.
 
-In pwn-broker 0.1.7 or later they install like any tool, from [pwn-shop](https://github.com/Real-Fruit-Snacks/pwn-shop)'s package `playbooks`:
+In pwn-broker 0.1.7 or later, they are meant to install like any tool, from [pwn-shop](https://github.com/Real-Fruit-Snacks/pwn-shop)'s package `playbooks`:
 
 ```text
 forest/dc01 > tool install playbooks
@@ -26,7 +26,7 @@ forest/dc01 > tool install playbooks
   read  :Pb <name>   in the note window
 ```
 
-pwn-shop packages each release after it is published here. Its first `playbooks` package, for `v2026.11.20`, is not in pwn-shop's index yet; until it is, the zip on the releases page is the way to get them.
+pwn-shop packages each release after it is published here, and its first `playbooks` package, for `v2026.11.20`, is not in pwn-shop's index yet. Until it is, unzip the release and read a playbook into any vim with `:r`, such as `:r playbooks/02-enum/smb.md`. Its run block works the same way, though `:Pb` and pwn-broker's `search` only know the playbooks the package installs.
 
 ## Reading one in
 

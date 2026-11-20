@@ -31,8 +31,9 @@ RESERVED = "Replace"
 _NAME = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
 _PLACEHOLDER_NAME = re.compile(r"[A-Z][A-Za-z0-9]*")
 _ANGLE = re.compile(r"<([A-Za-z][A-Za-z0-9]*)>")
-# an Obsidian link has no space after [[, where a bash test such as [[ -f x ]] does
-_LINK = re.compile(r"\[\[[^\s\]][^\]]*\]\]")
+# an Obsidian link is [[ and a name starting with a letter, so a bash test such as [[ -f x ]], a
+# POSIX class such as [[:space:]] and a nested list such as [[1,2]] are not taken for one
+_LINK = re.compile(r"\[\[[A-Za-z][^\[\]]*\]\]")
 # the run block finds its playbook's end by a search for a whole line of this form
 _END_LINE = re.compile(r"END OF .+ PLAYBOOK")
 # v<YYYY.MM.DD> is the tag; a second release on the same day adds .1, .2

