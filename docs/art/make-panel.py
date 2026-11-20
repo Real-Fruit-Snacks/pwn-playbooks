@@ -119,16 +119,20 @@ L_SIZE, L_PAD, L_FIRST, L_PITCH = 15, 20, 106, 22
 R_SIZE, R_PAD, R_FIRST, R_PITCH, R_INDENT = 13, 16, 106, 20, 14
 COLS = 66
 
-TREE = []                                    # (depth, name, is the playbook read in)
-_seen = set()
-for path in sorted(pb.Path(ROOT, "playbooks").rglob("*.md")):
-    parts = path.relative_to(pb.Path(ROOT)).parts
-    for depth in range(1, len(parts)):
-        folder = parts[:depth]
-        if folder not in _seen:
-            _seen.add(folder)
-            TREE.append((depth - 1, parts[depth - 1] + "/", False))
-    TREE.append((len(parts) - 1, parts[-1], path.stem == NAME))
+# The tree: each folder of playbooks/ with how many playbooks it holds, and in the playbook's own
+# folder the playbook between its neighbours. (depth, name, count, is the playbook read in)
+_root = pb.Path(ROOT, "playbooks")
+_all = sorted(p.relative_to(_root).as_posix() for p in _root.rglob("*.md"))
+_home = REL + ".md"
+_folder = _home.rsplit("/", 1)[0]
+TREE = [(0, "playbooks/", "", False)]
+for _top in sorted({r.split("/")[0] for r in _all}):
+    TREE.append((1, _top + "/", str(sum(1 for r in _all if r.split("/")[0] == _top)), False))
+    if _top == _folder:
+        _near = [r for r in _all if r.rsplit("/", 1)[0] == _folder]
+        _at = _near.index(_home)
+        TREE += [(2, r.rsplit("/", 1)[1], "", r == _home) for r in _near[max(_at - 1, 0) : _at + 2]]
+COUNT_COL = 17                               # where the counts end, in characters from the folders
 
 _fonts = {}
 _glyphs = {}   # (font, glyph name) -> (id, path in font units); drawn once in <defs>, reused by <use>
@@ -282,8 +286,11 @@ def check_layout():
         sys.exit(f"{COLS} columns run past the right edge of the note")
     if L_FIRST + CMD_ROW * L_PITCH + L_SIZE * 0.25 > BOTTOM:
         sys.exit("the note is taller than its window")
-    for i, (depth, name, _) in enumerate(TREE):
-        if RX + R_PAD + depth * R_INDENT + len(name) * rcw > W - 40 - R_PAD:
+    for i, (depth, name, count, _) in enumerate(TREE):
+        width = max(len(name), COUNT_COL if count else 0) + (len(NAME) + 6 if depth == 2 else 0)
+        if count and len(name) + len(count) + 1 > COUNT_COL:
+            sys.exit(f"{name!r} runs into its count")
+        if RX + R_PAD + depth * R_INDENT + width * rcw > W - 40 - R_PAD:
             sys.exit(f"{name!r} runs past the right edge of the tree")
         if R_FIRST + i * R_PITCH + R_SIZE * 0.25 > BOTTOM:
             sys.exit(f"{name!r} is below the tree's window")
@@ -340,9 +347,11 @@ def draw(theme):
 
     # the tree, the playbook lighting up once it is read
     rcw = char_w(R_SIZE)
-    for i, (depth, name, lit) in enumerate(TREE):
+    for i, (depth, name, count, lit) in enumerate(TREE):
         x, y = RX + R_PAD + depth * R_INDENT, R_FIRST + i * R_PITCH
         face = "mute" if name.endswith("/") else "ink"
+        if count:
+            run.append(text(count, x + (COUNT_COL - len(count)) * rcw, y, R_SIZE, MONO, c["mute"]))
         if lit:
             a.fade("lit", T_READ, 1)
             a.fade("unlit", T_READ, 0)

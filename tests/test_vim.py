@@ -164,6 +164,11 @@ REAL = {
     "Param": "page",
     "Offset": "1978",
     "JmpAddress": "625011af",
+    "PivotInternalIP": "172.16.5.15",
+    "Table": "users",
+    "UserField": "username",
+    "PassField": "password",
+    "EdbID": "50808",
 }
 
 
