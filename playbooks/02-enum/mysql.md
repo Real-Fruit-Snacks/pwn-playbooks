@@ -25,6 +25,7 @@ SHOW TABLES;
 SELECT * FROM <Table> LIMIT 20;
 - [ ] Users and passwords in the application's tables, each tried on SSH, the web login and every other service
 - [ ] FILE or ALL PRIVILEGES in SHOW GRANTS: files can be read and written below
+- [ ] MySQL running as root on the target, with a login: :Pb mysql-udf
 
 ## Password hashes
 SELECT user, host, authentication_string, plugin FROM mysql.user;

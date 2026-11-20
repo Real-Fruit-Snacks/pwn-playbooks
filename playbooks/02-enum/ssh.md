@@ -6,7 +6,7 @@ sudo nmap -Pn -p 22 -sV --script ssh2-enum-algos,ssh-auth-methods <TargetIP>
 - [ ] The version names the OS release: OpenSSH 8.9p1 Ubuntu-3 is Ubuntu 22.04, for instance
 - [ ] Only publickey in the auth methods: no password will work, I need a key
 - [ ] Very old algorithms, such as diffie-hellman-group1-sha1: a very old server
-- [ ] OpenSSH older than 7.7 lets me check usernames, CVE-2018-15473: searchsploit openssh
+- [ ] OpenSSH 7.7 or older lets me check usernames, CVE-2018-15473: searchsploit openssh
 - [ ] SSH alone is rarely the way in: I come back here with every credential and key I find
 
 ## A key I found

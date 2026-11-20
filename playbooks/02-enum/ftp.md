@@ -30,7 +30,7 @@ echo proof > proof.txt
 Inside the client:
 put proof.txt
 Then look for it on the web server:
-curl -s http://<TargetIP>/proof.txt
+curl -s '<Scheme>://<WebHost>/proof.txt'
 - [ ] It comes back: a web shell in the site's language, .php or .aspx, then :Pb shells
 - [ ] It does not: the same file under every web folder I know of
 

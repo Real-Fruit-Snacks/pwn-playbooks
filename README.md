@@ -79,7 +79,7 @@ pwn-broker's `search` skips a playbook's run block, and any line of a playbook t
 | `01-checklists/standalone` | Standalone checklist | nothing |
 | `01-checklists/web` | Web checklist | `<Scheme>` `<WebHost>` `<Domain>` |
 | `02-enum/dns` | DNS enumeration | `<Domain>` `<TargetIP>` |
-| `02-enum/ftp` | FTP enumeration | `<TargetIP>` `<Username>` `<Password>` |
+| `02-enum/ftp` | FTP enumeration | `<TargetIP>` `<Username>` `<Password>` `<Scheme>` `<WebHost>` |
 | `02-enum/ldap` | LDAP enumeration | `<DCIP>` `<BaseDN>` `<Username>` `<Domain>` `<Password>` |
 | `02-enum/mongodb` | MongoDB enumeration | `<TargetIP>` `<Username>` `<Password>` `<Database>` |
 | `02-enum/mssql` | MSSQL enumeration | `<TargetIP>` `<Username>` `<Password>` `<Domain>` `<Hash>` `<Database>` `<Table>` `<TargetUser>` `<LHOST>` |
@@ -120,7 +120,7 @@ pwn-broker's `search` skips a playbook's run block, and any line of a playbook t
 | `04-foothold/shells` | Reverse shells and upgrades | `<LPORT>` `<LHOST>` |
 | `05-passwords/brute-force` | Brute force | `<TargetIP>` `<Username>` `<Port>` `<Password>` |
 | `05-passwords/hash-cracking` | Hash cracking | `<File>` |
-| `05-passwords/spraying` | Password spraying | `<DCIP>` `<Domain>` `<Username>` `<Password>` `<TargetUser>` `<Hash>` |
+| `05-passwords/spraying` | Password spraying | `<DCIP>` `<Domain>` `<Username>` `<Password>` `<Hash>` |
 | `05-passwords/wordlists` | Wordlists | `<Scheme>` `<WebHost>` `<Domain>` `<DCIP>` |
 | `06-privesc/linux/cron` | Linux privesc: cron and timers | `<LPORT>` `<LHOST>` |
 | `06-privesc/linux/docker-lxd` | Linux privesc: docker and lxd | `<TargetIP>` |

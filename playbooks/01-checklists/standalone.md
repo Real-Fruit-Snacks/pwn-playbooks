@@ -31,6 +31,7 @@ hostname; id; ip a; cat local.txt
 hostname; whoami; ipconfig; type local.txt
 
 ## Linux privilege escalation
+- [ ] A restricted shell such as rbash: :Pb restricted-shell first
 - [ ] The overview first, and linPEAS saved and read section by section: :Pb linux-enum
 id; sudo -l
 - [ ] sudo -l: :Pb sudo
@@ -40,6 +41,7 @@ id; sudo -l
 - [ ] Cron jobs and timers, with pspy watching for a minute or two: :Pb cron
 - [ ] Credentials in configs, history, web roots and databases, tried on root and every user: :Pb linux-creds
 - [ ] Files run by root that I can write: :Pb writable-files
+- [ ] MySQL running as root, with a login: :Pb mysql-udf
 - [ ] Programs called by bare name, and libraries: :Pb path-hijack
 - [ ] Ports listening on localhost only, forwarded to Kali and enumerated: :Pb ssh-tunnels or :Pb chisel
 ss -tulpn
@@ -50,17 +52,18 @@ ss -tulpn
 whoami /all
 - [ ] SeImpersonatePrivilege or SeAssignPrimaryTokenPrivilege: :Pb potatoes
 - [ ] Backup Operators, Server Operators, DnsAdmins and the other privileged groups: :Pb privileged-groups
-- [ ] Credentials: PowerShell history, unattend files, AutoLogon, saved credentials
+- [ ] An administrator in a medium-integrity shell: :Pb uac-bypass
+- [ ] Credentials: PowerShell history, unattend files, AutoLogon, saved credentials: :Pb windows-creds, and :Pb runas for a saved one
 type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
 cmdkey /list
 - [ ] Services: writable programs, unquoted paths, weak permissions: :Pb services
-- [ ] Scheduled tasks and autoruns that run as someone else, with programs I can write
-- [ ] AlwaysInstallElevated set to 1 in both:
+- [ ] Scheduled tasks and autoruns that run as someone else, with programs I can write: :Pb scheduled-tasks
+- [ ] AlwaysInstallElevated set to 1 in both: :Pb always-install-elevated
 reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
 reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
 - [ ] Ports listening on localhost only, forwarded to Kali: :Pb port-forwarding or :Pb chisel
 netstat -ano | findstr LISTENING
-- [ ] Missing patches, last
+- [ ] Missing patches, last: :Pb windows-kernel
 
 ## Done
 - [ ] The root or SYSTEM proof, with the IP, from an interactive shell

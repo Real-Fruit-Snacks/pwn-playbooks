@@ -35,3 +35,4 @@ grep -rail 'pass' mongo-dump
 - [ ] Logged in as the application's account, its users collection may take a change: an admin user of my own, or my password hash on an existing one
 db.getCollection('THE-COLLECTION').find({}, {username: 1, password: 1})
 - [ ] The hash format matched to the application's, from an existing row, before writing one
+db.getCollection('THE-COLLECTION').updateOne({username: 'THE-ACCOUNT'}, {$set: {password: 'THE-NEW-HASH'}})
