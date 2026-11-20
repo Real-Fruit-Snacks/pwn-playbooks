@@ -1,0 +1,181 @@
+name: release
+
+# A v<YYYY.MM.DD> tag push (or v<YYYY.MM.DD>.1, .2 for a second release that day): build
+# playbooks-<version>.zip with build.py, record its SHA-256, run the check and the tests, and
+# publish the release with notes from CHANGELOG.md and exactly two files:
+#   playbooks-<version>.zip   the playbooks, built
+#   SHA256SUMS.txt            its checksum
+#
+# The build job has read access only. build.py needs nothing but Python, so the zip is built and
+# its SHA-256 recorded, as a job output, before anything unpinned is installed (vim, pytest); the
+# notes are set aside with it, with their SHA-256 recorded too. The publish job has write access,
+# runs none of the repository's code, and refuses any file that does not have its recorded
+# SHA-256. A tag that already has a release fails: a published release is never changed.
+#
+# Run by hand (workflow_dispatch) with a version, from any ref, it is a dry run: both jobs run
+# every step, and only the step that publishes is skipped. The same tree builds the same bytes, so
+# the dry run's SHA-256 is the one the tag will publish.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The version to build, such as 2026.11.20'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      sha256: ${{ steps.sha256.outputs.sha256 }}
+      notes_sha256: ${{ steps.notes.outputs.sha256 }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Version
+        id: version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = push ] && [ "$GITHUB_REF_TYPE" = tag ]; then
+            version="${GITHUB_REF_NAME#v}"
+            if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+              echo "::error::tag $GITHUB_REF_NAME does not start with v"
+              exit 1
+            fi
+          else
+            version="$INPUT_VERSION"
+          fi
+          if ! python -I -c 'import sys; sys.path.insert(0, "."); import build; sys.exit(not build.valid_version(sys.argv[1]))' "$version"; then
+            echo "::error::$version is not a release's date, YYYY.MM.DD, then .1, .2 for a second release that day"
+            exit 1
+          fi
+          echo "VERSION=$version" >>"$GITHUB_ENV"
+          echo "version=$version" >>"$GITHUB_OUTPUT"
+          echo "ok    version $version"
+      - name: Build
+        run: python build.py build --version "$VERSION" --out "$RUNNER_TEMP/release-out"
+      - name: Record the zip's SHA-256
+        id: sha256
+        run: |
+          file="$RUNNER_TEMP/release-out/playbooks-$VERSION.zip"
+          test -f "$file"
+          sha256="$(sha256sum "$file" | cut -d ' ' -f 1)"
+          echo "sha256=$sha256" >>"$GITHUB_OUTPUT"
+          echo "ok    playbooks-$VERSION.zip has SHA-256 $sha256"
+      - name: Check the zip and its checksum
+        working-directory: ${{ runner.temp }}/release-out
+        run: |
+          ls -l
+          file="playbooks-$VERSION.zip"
+          if [ "$(ls | wc -l)" != 2 ]; then
+            echo "fail  the build wrote something other than the zip and SHA256SUMS.txt"
+            exit 1
+          fi
+          cat SHA256SUMS.txt
+          named="$(awk '{ print $2 }' SHA256SUMS.txt)"
+          if [ "$(wc -l <SHA256SUMS.txt)" != 1 ] || [ "$named" != "$file" ]; then
+            echo "fail  SHA256SUMS.txt does not name exactly $file"
+            exit 1
+          fi
+          sha256sum -c SHA256SUMS.txt
+      - name: Notes from CHANGELOG.md
+        id: notes
+        run: |
+          upload="$RUNNER_TEMP/release-upload"
+          mkdir -p "$upload"
+          awk -v h="## v$VERSION" '
+            on && /^## / { exit }
+            $0 == h { on = 1; next }
+            on { print }
+          ' CHANGELOG.md > "$upload/notes.md"
+          if ! grep -q '[^[:space:]]' "$upload/notes.md"; then
+            echo "::error::CHANGELOG.md has no notes under '## v$VERSION'"
+            exit 1
+          fi
+          cat "$upload/notes.md"
+          cp "$RUNNER_TEMP/release-out/playbooks-$VERSION.zip" "$RUNNER_TEMP/release-out/SHA256SUMS.txt" "$upload/"
+          sha256="$(sha256sum "$upload/notes.md" | cut -d ' ' -f 1)"
+          echo "sha256=$sha256" >>"$GITHUB_OUTPUT"
+          echo "ok    notes.md has SHA-256 $sha256"
+      - name: vim
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq vim
+          vim --version | head -1
+      - name: Check and tests
+        run: |
+          python build.py check
+          python -m pip install pytest
+          python -m pytest -q -W error
+      - name: Release files
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-files
+          path: ${{ runner.temp }}/release-upload/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-files
+          path: ${{ runner.temp }}/release-files
+      - name: Check the files against the build
+        env:
+          VERSION: ${{ needs.build.outputs.version }}
+          RECORDED: ${{ needs.build.outputs.sha256 }}
+          RECORDED_NOTES: ${{ needs.build.outputs.notes_sha256 }}
+        run: |
+          cd "$RUNNER_TEMP/release-files"
+          ls -l
+          test -n "$VERSION"
+          file="playbooks-$VERSION.zip"
+          for name in "$file" SHA256SUMS.txt notes.md; do
+            if [ ! -f "$name" ]; then
+              echo "fail  the artifact has no $name"
+              exit 1
+            fi
+          done
+          test "$(awk '{ print $2 }' SHA256SUMS.txt)" = "$file"
+          sha256sum -c SHA256SUMS.txt
+          same() {
+            found="$(sha256sum "$1" | cut -d ' ' -f 1)"
+            if [ "$found" != "$2" ]; then
+              echo "fail  $1 has SHA-256 $found, not the $2 the build job recorded"
+              exit 1
+            fi
+            echo "ok    $1 has the SHA-256 the build job recorded, $found"
+          }
+          same "$file" "$RECORDED"
+          same notes.md "$RECORDED_NOTES"
+      - name: Publish
+        if: github.event_name == 'push' && github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          cd "$RUNNER_TEMP/release-files"
+          gh release create "$GITHUB_REF_NAME" "playbooks-$VERSION.zip" SHA256SUMS.txt \
+            --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" --notes-file notes.md --verify-tag --draft
+          gh release edit "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft=false --latest
+      - name: Dry run
+        if: github.event_name != 'push' || github.ref_type != 'tag'
+        env:
+          RECORDED: ${{ needs.build.outputs.sha256 }}
+        run: |
+          echo "ok    dry run: nothing was published"
+          echo "ok    zip SHA-256 $RECORDED"

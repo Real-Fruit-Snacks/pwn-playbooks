@@ -1,0 +1,23 @@
+# Every placeholder a playbook may use, each with one line on what it means. Only a name listed
+# here is a placeholder: anything else in angle brackets, such as <Directory> or List<String>,
+# is literal text. One name per meaning, so <Username>, never <User>.
+#
+# A value is typed into a vim :s replacement, where / ends it and \ starts a special
+# character, so no placeholder may stand for a URL or a path: split it, as <Scheme>://<WebHost>,
+# or leave the path as text to edit, as THE-PROGRAM.
+
+[placeholders]
+TargetIP = "the target's IP address"
+Domain = "the Active Directory domain, such as corp.local"
+DCIP = "a domain controller's IP address"
+BaseDN = "the domain's base DN, such as DC=corp,DC=local"
+Username = "a username"
+Password = "that user's password"
+Hash = "that user's NT hash"
+LHOST = "my IP address on the VPN, tun0"
+LPORT = "a port on my machine for a shell or a file to come back to"
+Scheme = "http or https"
+WebHost = "a web service's host name or IP, with :port when it is not 80 or 443"
+Share = "an SMB share's name"
+Service = "a Windows service's name"
+File = "a file's name, with no folder"
