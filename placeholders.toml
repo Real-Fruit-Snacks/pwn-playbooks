@@ -1,0 +1,21 @@
+# Every placeholder a playbook may use, each with one line on what it means. Only a name listed
+# here is a placeholder: anything else in angle brackets, such as <Directory> or List<String>,
+# is literal text. One name per meaning, so <Username>, never <User>.
+
+[placeholders]
+TargetIP = "the target's IP address"
+Hostname = "the target's host name"
+Domain = "the Active Directory domain, such as corp.local"
+DCIP = "a domain controller's IP address"
+Username = "a username"
+Password = "that user's password"
+Hash = "that user's NT hash"
+LHOST = "my IP address on the VPN, tun0"
+LPORT = "a port on my machine for a shell to call back to"
+Port = "a port on the target"
+URL = "a URL on the target, with its scheme"
+Share = "an SMB share's name"
+Service = "a Windows service's name"
+File = "a file name"
+Wordlist = "a wordlist's path"
+UserList = "a file of usernames, one per line"
