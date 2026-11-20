@@ -10,10 +10,14 @@ vim fold, the run block that fills in its placeholders, a Fill in line, the body
 """
 
 import argparse
+import hashlib
+import os
 import re
 import sys
 import tomllib
+import zipfile
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 from typing import Iterable
 
@@ -31,6 +35,13 @@ _ANGLE = re.compile(r"<([A-Za-z][A-Za-z0-9]*)>")
 _LINK = re.compile(r"\[\[[^\s\]][^\]]*\]\]")
 # the run block finds its playbook's end by a search for a whole line of this form
 _END_LINE = re.compile(r"END OF .+ PLAYBOOK")
+# v<YYYY.MM.DD> is the tag; a second release on the same day adds .1, .2
+_VERSION = re.compile(r"([0-9]{4})\.([0-9]{2})\.([0-9]{2})(?:\.[1-9][0-9]*)?")
+VERSION_RULE = "a release's date, YYYY.MM.DD, then .1, .2 for a second release that day"
+# every entry in the zip gets the same time and mode, whatever the checkout's, so two builds of
+# one tree are the same bytes
+_ZIP_TIME = (1980, 1, 1, 0, 0, 0)
+_ZIP_MODE = 0o100644 << 16
 
 
 @dataclass(frozen=True, order=True)
@@ -202,6 +213,82 @@ def check_tree(repo: Path) -> list[Problem]:
     return sorted(found)
 
 
+def valid_version(version: str) -> bool:
+    match = _VERSION.fullmatch(version)
+    if not match:
+        return False
+    try:
+        date(int(match[1]), int(match[2]), int(match[3]))
+    except ValueError:
+        return False
+    return True
+
+
+def render(name: str, rel: str, title: str, version: str, used: list[str], body: list[str]) -> str:
+    """A playbook as it is read into the note. With no placeholders there is nothing to fill in,
+    so it has no run block and no Fill in line."""
+    lines = [FOLD_START, f"Playbook: {title}   {rel}   {version}"]
+    if used:
+        lines += [
+            "my",
+            # \%>'y: only below the y mark, so a search that wraps never finds an earlier copy's end
+            f"/^\\%>'yEND OF {name} PLAYBOOK$",
+            "mz",
+            *[f":'y,'zs/<{p}>/<Replace>/ge" for p in used],
+            "'y",
+            "",
+            "Fill in:  " + "  ".join(f"<{p}>" for p in used),
+        ]
+    lines += ["", *body, "", f"END OF {name} PLAYBOOK", FOLD_END]
+    return "\n".join(lines) + "\n"
+
+
+def _plural(n: int) -> str:
+    return f"{n} playbook{'' if n == 1 else 's'}"
+
+
+def _entries(repo: Path, version: str) -> list[tuple[str, bytes]]:
+    names, _ = load_placeholders(repo / "placeholders.toml")
+    files, _ = playbook_files(repo)
+    entries = [("LICENSE", (repo / "LICENSE").read_bytes())]
+    for file in files:
+        rel = file.relative_to(repo / "playbooks").with_suffix("").as_posix()
+        source, _ = parse_source(file.read_text(encoding="utf-8"), rel)
+        used = placeholders_used(source.body, names)
+        text = render(file.stem, rel, source.title, version, used, source.body)
+        entries.append((f"playbooks/{rel}.md", text.encode("utf-8")))
+    return sorted(entries)
+
+
+def build(repo: Path, version: str, out: Path) -> Path:
+    """Write out/playbooks-<version>.zip and out/SHA256SUMS.txt, and return the zip's path. With
+    any problem, print them all and stop, writing nothing."""
+    found = []
+    if not valid_version(version):
+        found.append(Problem("version", 0, f"{version!r} is not {VERSION_RULE}"))
+    if not (repo / "LICENSE").is_file():
+        found.append(Problem("LICENSE", 0, "missing"))
+    found += check_tree(repo)
+    if found:
+        for problem in found:
+            print(problem)
+        raise SystemExit(1)
+    name = f"playbooks-{version}.zip"
+    out.mkdir(parents=True, exist_ok=True)
+    part = out / f".{name}.part"
+    with zipfile.ZipFile(part, "w") as archive:
+        for entry, data in _entries(repo, version):
+            info = zipfile.ZipInfo(entry, date_time=_ZIP_TIME)
+            info.create_system = 3  # Unix, so the mode below is read as one on every system
+            info.external_attr = _ZIP_MODE
+            archive.writestr(info, data, compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
+    path = out / name
+    os.replace(part, path)
+    sha = hashlib.sha256(path.read_bytes()).hexdigest()
+    (out / "SHA256SUMS.txt").write_bytes(f"{sha}  {name}\n".encode())
+    return path
+
+
 def _check(repo: Path) -> int:
     found = check_tree(repo)
     for problem in found:
@@ -209,7 +296,15 @@ def _check(repo: Path) -> int:
     if found:
         return 1
     files, _ = playbook_files(repo)
-    print(f"ok    {len(files)} playbook{'' if len(files) == 1 else 's'} checked")
+    print(f"ok    {_plural(len(files))} checked")
+    return 0
+
+
+def _build(repo: Path, version: str, out: Path | None) -> int:
+    path = build(repo, version, out or repo / "dist")
+    files, _ = playbook_files(repo)
+    sha = hashlib.sha256(path.read_bytes()).hexdigest()
+    print(f"ok    {path.name}  {_plural(len(files))}  sha256 {sha}")
     return 0
 
 
@@ -222,10 +317,13 @@ def main(argv: list[str] | None = None) -> int:
     )
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("check", help="check playbooks/ and placeholders.toml")
+    building = commands.add_parser("build", help="check, then build the release zip")
+    building.add_argument("--version", required=True, help=VERSION_RULE)
+    building.add_argument("--out", type=Path, help="where to write it (default: dist/)")
     args = parser.parse_args(argv)
     if args.command == "check":
         return _check(args.repo)
-    return 2
+    return _build(args.repo, args.version, args.out)
 
 
 if __name__ == "__main__":
