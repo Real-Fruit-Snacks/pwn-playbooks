@@ -169,4 +169,6 @@ The folders go by phase, with OS folders where they help. `:Pb` finds a playbook
 
 ## Licence
 
-The playbooks and the documentation are licensed [CC BY 4.0](LICENSE). `build.py`, the tests and `docs/art/` are [MIT](LICENSE-CODE).
+The playbooks and the documentation are licensed [CC BY 4.0](LICENSE). `build.py`, the tests, `docs/art/` and the project page's `styles.css` and `script.js` are [MIT](LICENSE-CODE).
+
+[Project page](https://real-fruit-snacks.github.io/pwn-playbooks/) · [Releases](https://github.com/Real-Fruit-Snacks/pwn-playbooks/releases) · [Changelog](CHANGELOG.md) · [Contributing](CONTRIBUTING.md)

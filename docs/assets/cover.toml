@@ -1,0 +1,11 @@
+# Cover + social preview. Regenerate with Real-Fruit-Snacks/rfs-brand, from the folder holding both clones:
+#   python3 rfs-brand/tools/make-cover.py pwn-playbooks/docs/assets/cover.toml
+# Layout v2 (BRAND.md section 7): name, rule, the README one-liner, and one panel.
+name        = "pwn-playbooks"
+description = "Playbooks for pwn-broker, read into a box's note and filled in"   # README line 1
+
+# The note in vim with a playbook read in and filled: what a playbook is for. Drawn as art,
+# since a terminal panel types shell commands and this moment is in vim.
+[panel]
+kind = "art"
+file = "cover-art.svg"

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pwn-playbooks: playbooks for pwn-broker, read into a box's note and filled in</title>
+<meta name="description" content="Playbooks for pwn-broker, read into a box's note and filled in">
+<link rel="canonical" href="https://real-fruit-snacks.github.io/pwn-playbooks/">
+<meta property="og:title" content="pwn-playbooks">
+<meta property="og:description" content="Playbooks for pwn-broker, read into a box's note and filled in">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://real-fruit-snacks.github.io/pwn-playbooks/">
+<meta property="og:image" content="https://real-fruit-snacks.github.io/pwn-playbooks/assets/cover-dark.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="560">
+<meta property="og:image:alt" content="pwn-playbooks: tool install playbooks at a pwn-broker prompt, then :Pb in the note window.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0C0D10">
+<script>
+    // A saved theme wins over the system setting; the key is shared with the other RFS pages.
+    // js-run lets script.js play the fill-in from its first frame (a CSS failsafe shows the last after 6 s).
+    (function (d) {
+        try { var t = localStorage.getItem('rfs-theme'); if (t === 'nightshift' || t === 'dayshift') d.dataset.theme = t; } catch (e) {}
+        if (window.matchMedia && matchMedia('(prefers-reduced-motion: no-preference)').matches) d.classList.add('js-run');
+    })(document.documentElement);
+</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#get">Skip to how to get them</a>
+
+<header class="top">
+    <div class="wrap">
+        <a class="name" href="./" aria-label="pwn-playbooks, top of the page">pwn-playbooks</a>
+        <nav aria-label="Page">
+            <a href="#get">Get them</a>
+            <a href="#fill">Filling one in</a>
+            <a href="#playbooks">The playbooks</a>
+            <a href="#placeholders">Placeholders</a>
+            <a href="#releases">Releases</a>
+            <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks">GitHub</a>
+        </nav>
+        <button class="theme" type="button" id="theme"><span class="sr-only">Theme: </span><span class="t-night">Night</span><span class="t-day">Day</span></button>
+    </div>
+</header>
+
+<main>
+<div class="hero">
+    <div class="wrap hero-grid">
+        <div class="hero-text">
+            <h1 class="wordmark">pwn-playbooks</h1>
+            <p class="lead">Playbooks for pwn-broker, read into a box's note and filled in</p>
+            <p class="sub">A playbook is one job, such as enumerating SMB or escalating through a Windows service, written as the checks and commands I work through on a box. In <a href="https://real-fruit-snacks.github.io/pwn-broker/">pwn-broker</a>'s note window, <code>:Pb smb</code> reads one in below the cursor. Every value I have to supply is a placeholder such as <code>&lt;TargetIP&gt;</code>, and the playbook carries the few lines of vim that fill each one in, throughout that playbook and nowhere else in the note.</p>
+
+            <div class="install" id="get">
+                <p class="install-label">Get them</p>
+                <div class="cmd"><code>tool install playbooks</code><button class="copy" type="button" data-copy="tool install playbooks">Copy</button></div>
+                <p class="install-note">At a pwn-broker 0.1.7 or later prompt. They come from <a href="https://real-fruit-snacks.github.io/pwn-shop/">pwn-shop</a>'s package <code>playbooks</code>, checked and pinned like any tool: release <span data-gen="version">2026.11.20.1</span>, <span data-gen="count">79</span> playbooks. <code>finish</code> takes them off again, and a box I reopen later gets the release it was worked with.</p>
+                <div class="caveat">
+                    <p><b>Without pwn-broker:</b> download <code>playbooks-&lt;version&gt;.zip</code> from the <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/releases/latest">latest release</a>, check it against <code>SHA256SUMS.txt</code>, unzip it, and read a playbook into any vim. Its run block works the same way.</p>
+                    <div class="cmd cmd-block"><pre><code>:r playbooks/02-enum/smb.md</code></pre><button class="copy" type="button" data-copy=":r playbooks/02-enum/smb.md">Copy</button></div>
+                </div>
+            </div>
+        </div>
+
+        <figure class="vim" aria-labelledby="vim-cap">
+            <div class="vim-win">
+                <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>vim notes.md</span></div>
+<pre class="vim-buf" id="buf" tabindex="0" aria-labelledby="vim-cap"><code><span class="m">##########@@@@@@@@@@</span>
+Playbook: SMB enumeration   02-enum/smb   <span data-gen="version">2026.11.20.1</span>
+<span class="run">my</span>
+<span class="run">/^\%&gt;'yEND OF smb PLAYBOOK$</span>
+<span class="run">mz</span>
+<span class="run">:'y,'zs/<span class="ph">&lt;TargetIP&gt;</span>/<span class="rep ip" data-ip>10.10.10.17</span>/ge</span>
+<span class="run">:'y,'zs/<span class="ph">&lt;Domain&gt;</span>/<span class="rep">corp.local</span>/ge</span>
+<span class="run">:'y,'zs/<span class="ph">&lt;Username&gt;</span>/<span class="rep">svc_sql</span>/ge</span>
+<span class="run gone">:'y,'zs/<span class="ph">&lt;Password&gt;</span>/<span class="ph">&lt;Replace&gt;</span>/ge
+</span><span class="run gone">:'y,'zs/<span class="ph">&lt;Hash&gt;</span>/<span class="ph">&lt;Replace&gt;</span>/ge
+</span><span class="run gone">:'y,'zs/<span class="ph">&lt;Share&gt;</span>/<span class="ph">&lt;Replace&gt;</span>/ge
+</span><span class="run">'y</span>
+
+Fill in:  <span class="fill ip" data-from="&lt;TargetIP&gt;">10.10.10.17</span>  <span class="fill" data-from="&lt;Domain&gt;">corp.local</span>  <span class="fill" data-from="&lt;Username&gt;">svc_sql</span>  <span class="ph">&lt;Password&gt;</span>  <span class="ph">&lt;Hash&gt;</span>  <span class="ph">&lt;Share&gt;</span>
+
+<span class="h">## Shares without a credential</span>
+Null session first, then guest with an empty password.
+nxc smb <span class="fill ip" data-from="&lt;TargetIP&gt;">10.10.10.17</span> -u '' -p '' --shares
+nxc smb <span class="fill ip" data-from="&lt;TargetIP&gt;">10.10.10.17</span> -u 'guest' -p '' --shares
+- [ ] Refused both ways: try every credential I find later, here first
+
+<span class="h">## Shares with a credential</span>
+nxc smb <span class="fill ip" data-from="&lt;TargetIP&gt;">10.10.10.17</span> -d <span class="fill" data-from="&lt;Domain&gt;">corp.local</span> -u '<span class="fill" data-from="&lt;Username&gt;">svc_sql</span>' -p '<span class="ph">&lt;Password&gt;</span>' --shares
+nxc smb <span class="fill ip" data-from="&lt;TargetIP&gt;">10.10.10.17</span> -d <span class="fill" data-from="&lt;Domain&gt;">corp.local</span> -u '<span class="fill" data-from="&lt;Username&gt;">svc_sql</span>' -H <span class="ph">&lt;Hash&gt;</span> --shares
+<span class="eob">...</span>
+
+END OF smb PLAYBOOK
+<span class="m">@@@@@@@@@@##########</span></code></pre>
+                <p class="vim-status" aria-hidden="true"><span>notes.md</span><span id="cmd"></span></p>
+            </div>
+            <figcaption id="vim-cap">
+                <span class="cap-note">The SMB playbook, read into a note with <code>:Pb smb</code> and filled in: three values typed over <code>&lt;Replace&gt;</code>, the lines for the rest deleted with <code>dd</code>, then <code>V}</code>, <code>"qy</code> and <code>@q</code>. The lines are the ones <code>build.py</code> renders for <code>playbooks/02-enum/smb.md</code>, with most of its body left out; <code>&lt;Password&gt;</code>, <code>&lt;Hash&gt;</code> and <code>&lt;Share&gt;</code> wait to be filled in by hand.</span>
+                <button class="replay" type="button" data-replay="buf" hidden>Replay</button>
+            </figcaption>
+        </figure>
+    </div>
+</div>
+
+<section id="fill" class="fill-sec" aria-labelledby="fill-h">
+    <div class="wrap">
+        <h2 id="fill-h">Reading one in, and filling it in</h2>
+        <div class="steps-grid">
+            <div class="read">
+                <h3>Reading one in</h3>
+                <ul class="plain">
+                    <li><code>:Pb &lt;name&gt;</code> reads the playbook with that file name into the note, below the cursor. Tab completes the name from any part of it, so <code>:Pb kerbero</code> finds <code>07-ad/kerberoasting</code>.</li>
+                    <li><code>:Pb</code> on its own lists every playbook, by folder, to pick one by number.</li>
+                    <li>It never lands inside the box header: on the header it reads below it, and on a closed fold below the fold. It arrives as one open fold, with the cursor on its first line to fill in.</li>
+                    <li>Closed, the fold shows its <code>Playbook:</code> line: the title, the path and the release it came from.</li>
+                </ul>
+            </div>
+            <div class="steps">
+                <h3>Filling one in</h3>
+                <p>The lines from <code>my</code> to <code>'y</code> are the run block.</p>
+                <ol>
+                    <li>Over each <code>&lt;Replace&gt;</code>, type the value: <code>ca&gt;</code> on it removes the word and its angle brackets and starts insert mode. Delete with <code>dd</code> each line I am not filling yet.</li>
+                    <li>On the <code>my</code> line, <code>V}</code> selects the block down to its blank line, and <code>"qy</code> copies it into register <code>q</code>.</li>
+                    <li><code>@q</code> runs it. It marks the block's first line <code>y</code>, finds this playbook's <code>END OF</code> line and marks it <code>z</code>, replaces each placeholder between the two, and goes back to <code>y</code>.</li>
+                </ol>
+            </div>
+        </div>
+        <div class="blocks">
+            <div class="block">
+                <h3>The <code>Fill in:</code> line keeps count</h3>
+                <p>It is inside the range, so afterwards it shows the values used, and any placeholder still on it is one not yet filled. A placeholder I left out stays as it is in the body, to fill in by hand once I know it.</p>
+            </div>
+            <div class="block">
+                <h3>One playbook, two targets</h3>
+                <p>The same playbook read in twice fills only the copy whose block ran: the search for its end looks only below the block. A copy whose <code>END OF</code> line I deleted changes nothing, unless another copy follows it.</p>
+            </div>
+            <div class="block">
+                <h3>Through a register, on purpose</h3>
+                <p>Pasting the block from the terminal would only insert it as text. A value is typed into a vim replacement, so a <code>/</code>, <code>&amp;</code>, <code>\</code> or <code>~</code> in it needs a backslash in front, which matters mostly for passwords.</p>
+            </div>
+            <div class="block">
+                <h3>Search stays useful</h3>
+                <p>pwn-broker's <code>search</code> skips a playbook's run block, and any line that still holds a placeholder, so unfilled template text never floods the results. A line I have filled in is searched like any other.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="playbooks" class="pb-sec" aria-labelledby="playbooks-h">
+    <div class="wrap">
+        <div class="pb-head">
+            <h2 id="playbooks-h">The playbooks</h2>
+            <p class="pb-count"><span data-gen="count">79</span> playbooks in <span data-gen="folders">10</span> folders, release <span data-gen="version">2026.11.20.1</span></p>
+        </div>
+        <p class="pb-intro">The folders go by phase, with OS folders where they help. <code>:Pb</code> finds a playbook by its file name wherever it sits, so each name is used once in the whole tree.</p>
+        <div class="find" hidden>
+            <label for="find">Find a playbook</label>
+            <input id="find" type="search" autocomplete="off" spellcheck="false" placeholder="kerberoast, smb, potato…">
+            <p class="find-n" id="find-n" aria-live="polite"></p>
+        </div>
+        <div class="folders" id="folders">
+<!-- gen:playbooks -->
+            <div class="folder" data-folder="01-checklists">
+                <h3>Checklists <span class="path">01-checklists/</span> <span class="n">3</span></h3>
+                <ul>
+                    <li><code>ad</code> <span>AD checklist</span></li>
+                    <li><code>standalone</code> <span>Standalone checklist</span></li>
+                    <li><code>web</code> <span>Web checklist</span></li>
+                </ul>
+            </div>
+            <div class="folder" data-folder="02-enum">
+                <h3>Enumeration <span class="path">02-enum/</span> <span class="n">17</span></h3>
+                <ul>
+                    <li><code>dns</code> <span>DNS enumeration</span></li>
+                    <li><code>ftp</code> <span>FTP enumeration</span></li>
+                    <li><code>ldap</code> <span>LDAP enumeration</span></li>
+                    <li><code>mongodb</code> <span>MongoDB enumeration</span></li>
+                    <li><code>mssql</code> <span>MSSQL enumeration</span></li>
+                    <li><code>mysql</code> <span>MySQL enumeration</span></li>
+                    <li><code>nfs</code> <span>NFS enumeration</span></li>
+                    <li><code>oracle</code> <span>Oracle enumeration</span></li>
+                    <li><code>ports</code> <span>Port scanning</span></li>
+                    <li><code>redis</code> <span>Redis enumeration</span></li>
+                    <li><code>remote-access</code> <span>Remote access: WinRM, RDP and VNC</span></li>
+                    <li><code>smb</code> <span>SMB enumeration</span></li>
+                    <li><code>smtp</code> <span>SMTP enumeration</span></li>
+                    <li><code>snmp</code> <span>SNMP enumeration</span></li>
+                    <li><code>ssh</code> <span>SSH enumeration</span></li>
+                    <li><code>tftp</code> <span>TFTP enumeration</span></li>
+                    <li><code>vuln-scan</code> <span>Vulnerability scanning</span></li>
+                </ul>
+            </div>
+            <div class="folder" data-folder="03-web">
+                <h3>Web <span class="path">03-web/</span> <span class="n">18</span></h3>
+                <ul>
+                    <li><code>api</code> <span>APIs and JWTs</span></li>
+                    <li><code>cmdi</code> <span>Command injection</span></li>
+                    <li><code>deserialization</code> <span>Deserialization</span></li>
+                    <li><code>discovery</code> <span>Web discovery</span></li>
+                    <li><code>jenkins</code> <span>Jenkins</span></li>
+                    <li><code>joomla-drupal</code> <span>Joomla and Drupal</span></li>
+                    <li><code>lfi</code> <span>File inclusion</span></li>
+                    <li><code>login-forms</code> <span>Login forms</span></li>
+                    <li><code>sqli</code> <span>SQL injection</span></li>
+                    <li><code>sqlmap</code> <span>sqlmap</span></li>
+                    <li><code>ssrf</code> <span>SSRF</span></li>
+                    <li><code>ssti</code> <span>SSTI</span></li>
+                    <li><code>tomcat</code> <span>Tomcat</span></li>
+                    <li><code>upload</code> <span>File upload</span></li>
+                    <li><code>web-cves</code> <span>Web CVEs: Log4Shell, Shellshock and others</span></li>
+                    <li><code>wordpress</code> <span>WordPress</span></li>
+                    <li><code>xss</code> <span>XSS</span></li>
+                    <li><code>xxe</code> <span>XXE</span></li>
+                </ul>
+            </div>
+            <div class="folder" data-folder="04-foothold">
+                <h3>Foothold <span class="path">04-foothold/</span> <span class="n">5</span></h3>
+                <ul>
+                    <li><code>file-transfer</code> <span>File transfer</span></li>
+                    <li><code>metasploit</code> <span>Metasploit</span></li>
+                    <li><code>msfvenom</code> <span>msfvenom payloads</span></li>
+                    <li><code>public-exploits</code> <span>Public exploits</span></li>
+                    <li><code>shells</code> <span>Reverse shells and upgrades</span></li>
+                </ul>
+            </div>
+            <div class="folder" data-folder="05-passwords">
+                <h3>Passwords <span class="path">05-passwords/</span> <span class="n">4</span></h3>
+                <ul>
+                    <li><code>brute-force</code> <span>Brute force</span></li>
+                    <li><code>hash-cracking</code> <span>Hash cracking</span></li>
+                    <li><code>spraying</code> <span>Password spraying</span></li>
+                    <li><code>wordlists</code> <span>Wordlists</span></li>
+                </ul>
+            </div>
+            <div class="folder" data-folder="06-privesc/linux">
+                <h3>Linux privesc <span class="path">06-privesc/linux/</span> <span class="n">11</span></h3>
+                <ul>
+                    <li><code>cron</code> <span>Cron and timers</span></li>
+                    <li><code>docker-lxd</code> <span>Docker and lxd</span></li>
+                    <li><code>linux-creds</code> <span>Credential hunting</span></li>
+                    <li><code>linux-enum</code> <span>Enumeration</span></li>
+                    <li><code>linux-kernel</code> <span>Kernel exploits</span></li>
+                    <li><code>mysql-udf</code> <span>MySQL UDF</span></li>
+                    <li><code>path-hijack</code> <span>PATH and library hijacking</span></li>
+                    <li><code>restricted-shell</code> <span>Restricted shell escape</span></li>
+                    <li><code>sudo</code> <span>Sudo</span></li>
+                    <li><code>suid</code> <span>SUID and capabilities</span></li>
+                    <li><code>writable-files</code> <span>Writable system files</span></li>
+                </ul>
+            </div>
+            <div class="folder" data-folder="06-privesc/windows">
+                <h3>Windows privesc <span class="path">06-privesc/windows/</span> <span class="n">10</span></h3>
+                <ul>
+                    <li><code>always-install-elevated</code> <span>AlwaysInstallElevated</span></li>
+                    <li><code>potatoes</code> <span>SeImpersonate and potatoes</span></li>
+                    <li><code>privileged-groups</code> <span>Privileged groups and rights</span></li>
+                    <li><code>runas</code> <span>Running as another user</span></li>
+                    <li><code>scheduled-tasks</code> <span>Scheduled tasks and autoruns</span></li>
+                    <li><code>services</code> <span>Services</span></li>
+                    <li><code>uac-bypass</code> <span>UAC bypass</span></li>
+                    <li><code>windows-creds</code> <span>Credential hunting</span></li>
+                    <li><code>windows-enum</code> <span>Enumeration</span></li>
+                    <li><code>windows-kernel</code> <span>Kernel exploits</span></li>
+                </ul>
+            </div>
+            <div class="folder" data-folder="07-ad">
+                <h3>Active Directory <span class="path">07-ad/</span> <span class="n">5</span></h3>
+                <ul>
+                    <li><code>acl-abuse</code> <span>AD ACL abuse</span></li>
+                    <li><code>asrep</code> <span>AS-REP roasting</span></li>
+                    <li><code>domain-enum</code> <span>AD enumeration</span></li>
+                    <li><code>kerberoasting</code> <span>Kerberoasting</span></li>
+                    <li><code>responder</code> <span>Responder and NTLM relay</span></li>
+                </ul>
+            </div>
+            <div class="folder" data-folder="08-pivoting">
+                <h3>Pivoting <span class="path">08-pivoting/</span> <span class="n">5</span></h3>
+                <ul>
+                    <li><code>chisel</code> <span>Pivoting with chisel</span></li>
+                    <li><code>ligolo</code> <span>Pivoting with ligolo-ng</span></li>
+                    <li><code>port-forwarding</code> <span>Port forwarding on Windows</span></li>
+                    <li><code>socat</code> <span>socat relays</span></li>
+                    <li><code>ssh-tunnels</code> <span>SSH tunnels</span></li>
+                </ul>
+            </div>
+            <div class="folder" data-folder="09-bof">
+                <h3>Buffer overflow <span class="path">09-bof/</span> <span class="n">1</span></h3>
+                <ul>
+                    <li><code>bof</code> <span>Buffer overflow</span></li>
+                </ul>
+            </div>
+<!-- /gen:playbooks -->
+        </div>
+    </div>
+</section>
+
+<section id="placeholders" class="ph-sec" aria-labelledby="placeholders-h">
+    <div class="wrap">
+        <h2 id="placeholders-h">Placeholders</h2>
+        <p class="ph-intro">Every value a playbook asks for is one of these, written <code>&lt;Name&gt;</code>, one name per meaning. A value is typed into a vim replacement, so none stands for a URL or a path: a URL is split, as <code>&lt;Scheme&gt;://&lt;WebHost&gt;</code>, and a value to edit by hand is written in capitals, such as <code>THE-PAGE</code>. The list is <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/blob/main/placeholders.toml">placeholders.toml</a>.</p>
+        <dl class="ph-list">
+<!-- gen:placeholders -->
+                <div><dt><code>&lt;TargetIP&gt;</code></dt><dd>the target&#x27;s IP address</dd></div>
+                <div><dt><code>&lt;Domain&gt;</code></dt><dd>the Active Directory domain, such as corp.local</dd></div>
+                <div><dt><code>&lt;DCIP&gt;</code></dt><dd>a domain controller&#x27;s IP address</dd></div>
+                <div><dt><code>&lt;BaseDN&gt;</code></dt><dd>the domain&#x27;s base DN, such as DC=corp,DC=local</dd></div>
+                <div><dt><code>&lt;Username&gt;</code></dt><dd>a username</dd></div>
+                <div><dt><code>&lt;Password&gt;</code></dt><dd>that user&#x27;s password</dd></div>
+                <div><dt><code>&lt;Hash&gt;</code></dt><dd>that user&#x27;s NT hash</dd></div>
+                <div><dt><code>&lt;LHOST&gt;</code></dt><dd>my IP address on the VPN, tun0</dd></div>
+                <div><dt><code>&lt;LPORT&gt;</code></dt><dd>a port on my machine: a listener, or the near end of a forward</dd></div>
+                <div><dt><code>&lt;Scheme&gt;</code></dt><dd>http or https</dd></div>
+                <div><dt><code>&lt;WebHost&gt;</code></dt><dd>a web service&#x27;s host name or IP, with :port when it is not 80 or 443</dd></div>
+                <div><dt><code>&lt;Share&gt;</code></dt><dd>an SMB share&#x27;s name</dd></div>
+                <div><dt><code>&lt;Service&gt;</code></dt><dd>a Windows service&#x27;s name</dd></div>
+                <div><dt><code>&lt;File&gt;</code></dt><dd>a file&#x27;s name, with no folder</dd></div>
+                <div><dt><code>&lt;Port&gt;</code></dt><dd>a port on the target</dd></div>
+                <div><dt><code>&lt;Hostname&gt;</code></dt><dd>the target&#x27;s host name, such as dc01</dd></div>
+                <div><dt><code>&lt;DCHost&gt;</code></dt><dd>a domain controller&#x27;s full host name, such as dc01.corp.local</dd></div>
+                <div><dt><code>&lt;Community&gt;</code></dt><dd>an SNMP community string</dd></div>
+                <div><dt><code>&lt;Database&gt;</code></dt><dd>a database&#x27;s name</dd></div>
+                <div><dt><code>&lt;PivotIP&gt;</code></dt><dd>the IP address of the machine I pivot through</dd></div>
+                <div><dt><code>&lt;InternalIP&gt;</code></dt><dd>a host&#x27;s IP address on the network beyond the pivot</dd></div>
+                <div><dt><code>&lt;Subnet&gt;</code></dt><dd>a network beyond the pivot, as its address with no prefix, such as 172.16.5.0</dd></div>
+                <div><dt><code>&lt;CIDR&gt;</code></dt><dd>that network&#x27;s prefix length, such as 24</dd></div>
+                <div><dt><code>&lt;TargetUser&gt;</code></dt><dd>an account I attack or take over, other than my own</dd></div>
+                <div><dt><code>&lt;Group&gt;</code></dt><dd>a group&#x27;s name</dd></div>
+                <div><dt><code>&lt;Computer&gt;</code></dt><dd>a computer account&#x27;s name, with its $</dd></div>
+                <div><dt><code>&lt;DomainSID&gt;</code></dt><dd>the domain&#x27;s SID</dd></div>
+                <div><dt><code>&lt;CA&gt;</code></dt><dd>an ADCS certificate authority&#x27;s name</dd></div>
+                <div><dt><code>&lt;Template&gt;</code></dt><dd>an ADCS certificate template&#x27;s name</dd></div>
+                <div><dt><code>&lt;Param&gt;</code></dt><dd>a web parameter&#x27;s name</dd></div>
+                <div><dt><code>&lt;Offset&gt;</code></dt><dd>the offset to the saved return address, in bytes</dd></div>
+                <div><dt><code>&lt;JmpAddress&gt;</code></dt><dd>the address of a JMP ESP, as eight hex digits with no 0x</dd></div>
+                <div><dt><code>&lt;PivotInternalIP&gt;</code></dt><dd>the pivot&#x27;s own IP address on the network beyond it</dd></div>
+                <div><dt><code>&lt;Table&gt;</code></dt><dd>a database table&#x27;s name</dd></div>
+                <div><dt><code>&lt;UserField&gt;</code></dt><dd>the name of a login form&#x27;s username field</dd></div>
+                <div><dt><code>&lt;PassField&gt;</code></dt><dd>the name of a login form&#x27;s password field</dd></div>
+                <div><dt><code>&lt;EdbID&gt;</code></dt><dd>an Exploit-DB exploit&#x27;s number</dd></div>
+<!-- /gen:placeholders -->
+        </dl>
+    </div>
+</section>
+
+<section id="releases" class="releases" aria-labelledby="releases-h">
+    <div class="wrap">
+        <h2 id="releases-h">How a release is made</h2>
+        <ul>
+            <li>Each playbook is a markdown file in <code>playbooks/</code>: a <code># title</code> line, then the body, with every value as a placeholder from the list.</li>
+            <li><code>python build.py check</code> refuses anything that would break the note: a file name used twice, a name that is not lowercase letters, digits and hyphens, a fold marker, a line the run block would stop at, a placeholder whose case is wrong, the reserved word <code>&lt;Replace&gt;</code>, and Obsidian's callouts, links and front matter. It names the file and line.</li>
+            <li><code>python build.py build --version &lt;version&gt;</code> wraps each playbook in its fold and run block and zips the tree. The same tree always gives the same bytes.</li>
+            <li>CI runs the check and the tests on every change. They include a real vim filling in every playbook, with a realistic value for every placeholder.</li>
+            <li>A tag <code>v&lt;YYYY.MM.DD&gt;</code> publishes the release, with <code>.1</code>, <code>.2</code> for a second one on the same day. pwn-shop then packages it, and installs it in the official Kali image with the network off before publishing it.</li>
+            <li>A published release is never changed: a fix is a new release. <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> has how to write a playbook and how a release is cut.</li>
+        </ul>
+    </div>
+</section>
+</main>
+
+<footer>
+    <div class="wrap">
+        <p>Playbooks and documentation CC BY 4.0; code MIT. Not affiliated with Hack The Box.</p>
+        <p><a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks">Source</a> · <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/releases">Releases</a> · <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/blob/main/CHANGELOG.md">Changelog</a> · <a href="https://real-fruit-snacks.github.io/pwn-broker/">pwn-broker</a> · <a href="https://real-fruit-snacks.github.io/pwn-shop/">pwn-shop</a> · <a href="https://real-fruit-snacks.github.io/">RFS</a></p>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
