@@ -1,0 +1,85 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    # build.py needs nothing but Python 3.11 or later. The vim tests fill in every playbook in a
+    # real vim, so vim must be there: a missing vim fails the job instead of skipping them.
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.12', '3.13', '3.14']
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: vim
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq vim
+          vim --version | head -1
+      - name: Install
+        # pytest is not pinned: this job holds no token that can write
+        run: python -m pip install pytest
+      - name: Check
+        run: python build.py check
+      - name: Tests
+        run: python -m pytest -q -W error
+
+  build:
+    # the release zip, built as a tag would build it, with today's date as the version
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Build
+        run: |
+          python build.py build --version "$(date -u +%Y.%m.%d)" --out "$RUNNER_TEMP/dist"
+          cd "$RUNNER_TEMP/dist"
+          ls -l
+          sha256sum -c SHA256SUMS.txt
+
+  art:
+    # The README panel is generated; fail if docs/assets/panel-*.svg no longer match
+    # docs/art/make-panel.py. The panel's test runs here too: the test jobs do not install
+    # fonttools, so there it skips.
+    name: README panel
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Redraw the panel
+        run: |
+          python -m pip install --quiet -r docs/art/requirements.txt
+          python docs/art/make-panel.py
+          git diff --exit-code -- docs/assets/panel-dark.svg docs/assets/panel-light.svg
+      - name: The panel's test
+        run: |
+          python -m pip install --quiet pytest
+          python -m pytest -q -W error tests/test_panel.py
