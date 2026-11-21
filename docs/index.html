@@ -13,13 +13,14 @@
 <meta property="og:image" content="https://real-fruit-snacks.github.io/pwn-playbooks/assets/cover-dark.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="560">
-<meta property="og:image:alt" content="pwn-playbooks: tool install playbooks at a pwn-broker prompt, then :Pb in the note window.">
+<meta property="og:image:alt" content="pwn-playbooks: the SMB playbook in a vim note, filled in with a target's IP and domain.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#0C0D10">
+<meta name="theme-color" content="#0E1012">
+<link rel="preload" href="fonts/overpass-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script>
     // A saved theme wins over the system setting; the key is shared with the other RFS pages.
     // js-run lets script.js play the fill-in from its first frame (a CSS failsafe shows the last after 6 s).
@@ -30,46 +31,48 @@
 </script>
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="is-books">
 <a class="skip" href="#get">Skip to how to get them</a>
 
-<header class="top">
-    <div class="wrap">
-        <a class="name" href="./" aria-label="pwn-playbooks, top of the page">pwn-playbooks</a>
-        <nav aria-label="Page">
-            <a href="#get">Get them</a>
-            <a href="#fill">Filling one in</a>
-            <a href="#playbooks">The playbooks</a>
-            <a href="#placeholders">Placeholders</a>
-            <a href="#releases">Releases</a>
-            <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks">GitHub</a>
-        </nav>
+<header class="wrap">
+    <div class="spine">
+        <a class="set" href="https://real-fruit-snacks.github.io/"><img src="icon.svg" alt="" width="26" height="26">Real-Fruit-Snacks</a>
+        <a class="gh" href="https://github.com/Real-Fruit-Snacks/pwn-playbooks">GitHub</a>
         <button class="theme" type="button" id="theme"><span class="sr-only">Theme: </span><span class="t-night">Night</span><span class="t-day">Day</span></button>
     </div>
+    <nav aria-label="The pwn set">
+        <ul class="tabs">
+            <li><a class="t-broker" href="https://real-fruit-snacks.github.io/pwn-broker/">Broker<small>the box</small></a></li>
+            <li><a class="t-shop" href="https://real-fruit-snacks.github.io/pwn-shop/">Shop<small>its tools</small></a></li>
+            <li><a class="t-books" href="./" aria-current="page">Playbooks<small>its notes</small></a></li>
+        </ul>
+    </nav>
 </header>
 
-<main>
-<div class="hero">
-    <div class="wrap hero-grid">
-        <div class="hero-text">
-            <h1 class="wordmark">pwn-playbooks</h1>
+<main class="wrap stack">
+<section class="card first" aria-labelledby="top-h">
+    <p class="runhead"><b>pwn-playbooks <span data-gen="version">2026.11.20.1</span></b><span><span data-gen="count">79</span> playbooks · pwn-broker 0.1.7</span><span>CC BY 4.0</span></p>
+    <div class="hero">
+        <div>
+            <h1 class="title" id="top-h">pwn-playbooks</h1>
             <p class="lead">Playbooks for pwn-broker, read into a box's note and filled in</p>
-            <p class="sub">A playbook is one job, such as enumerating SMB or escalating through a Windows service, written as the checks and commands I work through on a box. In <a href="https://real-fruit-snacks.github.io/pwn-broker/">pwn-broker</a>'s note window, <code>:Pb smb</code> reads one in below the cursor. Every value I have to supply is a placeholder such as <code>&lt;TargetIP&gt;</code>, and the playbook carries the few lines of vim that fill each one in, throughout that playbook and nowhere else in the note.</p>
-
-            <div class="install" id="get">
-                <p class="install-label">Get them</p>
-                <div class="cmd"><code>tool install playbooks</code><button class="copy" type="button" data-copy="tool install playbooks">Copy</button></div>
-                <p class="install-note">At a pwn-broker 0.1.7 or later prompt. They come from <a href="https://real-fruit-snacks.github.io/pwn-shop/">pwn-shop</a>'s package <code>playbooks</code>, checked and pinned like any tool: release <span data-gen="version">2026.11.20.1</span>, <span data-gen="count">79</span> playbooks. <code>finish</code> takes them off again, and a box I reopen later gets the release it was worked with.</p>
-                <div class="caveat">
-                    <p><b>Without pwn-broker:</b> download <code>playbooks-&lt;version&gt;.zip</code> from the <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/releases/latest">latest release</a>, check it against <code>SHA256SUMS.txt</code>, unzip it, and read a playbook into any vim. Its run block works the same way.</p>
-                    <div class="cmd cmd-block"><pre><code>:r playbooks/02-enum/smb.md</code></pre><button class="copy" type="button" data-copy=":r playbooks/02-enum/smb.md">Copy</button></div>
-                </div>
-            </div>
+            <p class="sub">A playbook is one job, such as enumerating SMB or escalating through a Windows service, written as the checks and commands I work through on a box. Every value I have to supply is a placeholder such as <code>&lt;TargetIP&gt;</code>, and the playbook carries the few lines of vim that fill each one in, throughout that playbook and nowhere else in the note.</p>
+            <ol class="ck steps" id="fill-ck" aria-label="Reading one in and filling it in">
+                <li id="get" data-state="todo"><span class="box" aria-hidden="true"></span><span class="ch">Get them</span><span class="ld" aria-hidden="true"></span><span class="rs">At the prompt</span>
+                    <div class="act"><div class="cmd"><code>tool install playbooks</code><button class="copy" type="button" data-copy="tool install playbooks">Copy</button></div></div>
+                    <p class="why">In pwn-broker 0.1.7 or later, from <a href="https://real-fruit-snacks.github.io/pwn-shop/">pwn-shop</a>'s package, checked and pinned like any tool. <code>finish</code> takes them off again, and a box reopened later gets the release it was worked with.</p></li>
+                <li data-step="2" data-state="done"><span class="box" aria-hidden="true"></span><span class="ch">Read one in</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>:Pb smb</code></span></li>
+                <li data-step="3" data-state="done"><span class="box" aria-hidden="true"></span><span class="ch">Type the values</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>ca&gt;</code></span></li>
+                <li data-step="4" data-state="done"><span class="box" aria-hidden="true"></span><span class="ch">Delete the rest</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>dd</code></span></li>
+                <li data-step="5" data-state="done"><span class="box" aria-hidden="true"></span><span class="ch">Copy the block</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>V} "qy</code></span></li>
+                <li data-step="6" data-state="done"><span class="box" aria-hidden="true"></span><span class="ch">Run it</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>@q</code></span></li>
+            </ol>
+            <p class="closeout">Playbook filled</p>
         </div>
 
-        <figure class="vim" aria-labelledby="vim-cap">
-            <div class="vim-win">
-                <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>vim notes.md</span></div>
+        <figure class="display" aria-labelledby="vim-cap">
+            <div class="screenbox">
+                <p class="bar" aria-hidden="true"><b>Note window</b><span>vim notes.md</span></p>
 <pre class="vim-buf" id="buf" tabindex="0" aria-labelledby="vim-cap"><code><span class="m">##########@@@@@@@@@@</span>
 Playbook: SMB enumeration   02-enum/smb   <span data-gen="version">2026.11.20.1</span>
 <span class="run">my</span>
@@ -100,71 +103,55 @@ END OF smb PLAYBOOK
 <span class="m">@@@@@@@@@@##########</span></code></pre>
                 <p class="vim-status" aria-hidden="true"><span>notes.md</span><span id="cmd"></span></p>
             </div>
-            <figcaption id="vim-cap">
-                <span class="cap-note">The SMB playbook, read into a note with <code>:Pb smb</code> and filled in: three values typed over <code>&lt;Replace&gt;</code>, the lines for the rest deleted with <code>dd</code>, then <code>V}</code>, <code>"qy</code> and <code>@q</code>. The lines are the ones <code>build.py</code> renders for <code>playbooks/02-enum/smb.md</code>, with most of its body left out; <code>&lt;Password&gt;</code>, <code>&lt;Hash&gt;</code> and <code>&lt;Share&gt;</code> wait to be filled in by hand.</span>
+            <figcaption>
+                <p class="cap" id="vim-cap">The SMB playbook, read into a note with <code>:Pb smb</code> and filled in: three values typed over <code>&lt;Replace&gt;</code>, the lines for the rest deleted with <code>dd</code>, then <code>V}</code>, <code>"qy</code> and <code>@q</code>. The lines are the ones <code>build.py</code> renders for <code>playbooks/02-enum/smb.md</code>, with most of its body left out; <code>&lt;Password&gt;</code>, <code>&lt;Hash&gt;</code> and <code>&lt;Share&gt;</code> wait to be filled in by hand.</p>
                 <button class="replay" type="button" data-replay="buf" hidden>Replay</button>
             </figcaption>
         </figure>
     </div>
-</div>
+</section>
 
-<section id="fill" class="fill-sec" aria-labelledby="fill-h">
-    <div class="wrap">
-        <h2 id="fill-h">Reading one in, and filling it in</h2>
-        <div class="steps-grid">
-            <div class="read">
-                <h3>Reading one in</h3>
-                <ul class="plain">
-                    <li><code>:Pb &lt;name&gt;</code> reads the playbook with that file name into the note, below the cursor. Tab completes the name from any part of it, so <code>:Pb kerbero</code> finds <code>07-ad/kerberoasting</code>.</li>
-                    <li><code>:Pb</code> on its own lists every playbook, by folder, to pick one by number.</li>
-                    <li>It never lands inside the box header: on the header it reads below it, and on a closed fold below the fold. It arrives as one open fold, with the cursor on its first line to fill in.</li>
-                    <li>Closed, the fold shows its <code>Playbook:</code> line: the title, the path and the release it came from.</li>
-                </ul>
-            </div>
-            <div class="steps">
-                <h3>Filling one in</h3>
-                <p>The lines from <code>my</code> to <code>'y</code> are the run block.</p>
-                <ol>
-                    <li>Over each <code>&lt;Replace&gt;</code>, type the value: <code>ca&gt;</code> on it removes the word and its angle brackets and starts insert mode. Delete with <code>dd</code> each line I am not filling yet.</li>
-                    <li>On the <code>my</code> line, <code>V}</code> selects the block down to its blank line, and <code>"qy</code> copies it into register <code>q</code>.</li>
-                    <li><code>@q</code> runs it. It marks the block's first line <code>y</code>, finds this playbook's <code>END OF</code> line and marks it <code>z</code>, replaces each placeholder between the two, and goes back to <code>y</code>.</li>
-                </ol>
-            </div>
-        </div>
-        <div class="blocks">
-            <div class="block">
-                <h3>The <code>Fill in:</code> line keeps count</h3>
-                <p>It is inside the range, so afterwards it shows the values used, and any placeholder still on it is one not yet filled. A placeholder I left out stays as it is in the body, to fill in by hand once I know it.</p>
-            </div>
-            <div class="block">
-                <h3>One playbook, two targets</h3>
-                <p>The same playbook read in twice fills only the copy whose block ran: the search for its end looks only below the block. A copy whose <code>END OF</code> line I deleted changes nothing, unless another copy follows it.</p>
-            </div>
-            <div class="block">
-                <h3>Through a register, on purpose</h3>
-                <p>Pasting the block from the terminal would only insert it as text. A value is typed into a vim replacement, so a <code>/</code>, <code>&amp;</code>, <code>\</code> or <code>~</code> in it needs a backslash in front, which matters mostly for passwords.</p>
-            </div>
-            <div class="block">
-                <h3>Search stays useful</h3>
-                <p>pwn-broker's <code>search</code> skips a playbook's run block, and any line that still holds a placeholder, so unfilled template text never floods the results. A line I have filled in is searched like any other.</p>
-            </div>
-        </div>
+<section class="card ref" id="without" aria-labelledby="without-h">
+    <h2 id="without-h">Without pwn-broker</h2>
+    <p class="intro">Download <code>playbooks-&lt;version&gt;.zip</code> from the <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/releases/latest">latest release</a>, check it against <code>SHA256SUMS.txt</code>, unzip it, and read a playbook into any vim. Its run block works the same way.</p>
+    <div class="cmd cmd-block"><pre><code>:r playbooks/02-enum/smb.md</code></pre><button class="copy" type="button" data-copy=":r playbooks/02-enum/smb.md">Copy</button></div>
+</section>
+
+<section class="card ref" id="fill" aria-labelledby="fill-h">
+    <h2 id="fill-h">Reading one in, and filling it in</h2>
+    <div class="cols">
+        <ul class="ck spec" aria-label="Reading one in">
+            <li><span class="ch">By name</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>:Pb &lt;name&gt;</code></span>
+                <p class="why">Reads the playbook with that file name into the note, below the cursor. Tab completes the name from any part of it, so <code>:Pb kerbero</code> finds <code>07-ad/kerberoasting</code>.</p></li>
+            <li><span class="ch">From the list</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>:Pb</code></span>
+                <p class="why">On its own, lists every playbook by folder, to pick one by number.</p></li>
+            <li><span class="ch">Where it lands</span><span class="ld" aria-hidden="true"></span><span class="rs">Below the cursor</span>
+                <p class="why">Never inside the box header: on the header it reads below it, and on a closed fold below the fold. It arrives as one open fold, with the cursor on its first line to fill in. Closed, the fold shows its <code>Playbook:</code> line: the title, the path and the release it came from.</p></li>
+            <li><span class="ch">The run block</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>my</code> to <code>'y</code></span>
+                <p class="why"><code>@q</code> marks the block's first line <code>y</code>, finds this playbook's <code>END OF</code> line and marks it <code>z</code>, replaces each placeholder between the two, and goes back to <code>y</code>.</p></li>
+        </ul>
+        <ul class="ck spec" aria-label="Filling one in">
+            <li><span class="ch">The Fill in line</span><span class="ld" aria-hidden="true"></span><span class="rs">Keeps count</span>
+                <p class="why">It is inside the range, so afterwards it shows the values used, and any placeholder still on it is one not yet filled. A placeholder left out stays as it is in the body, to fill in by hand once I know it.</p></li>
+            <li><span class="ch">Two targets</span><span class="ld" aria-hidden="true"></span><span class="rs">Own copy only</span>
+                <p class="why">The same playbook read in twice fills only the copy whose block ran: the search for its end looks only below the block. A copy whose <code>END OF</code> line I deleted changes nothing, unless another copy follows it.</p></li>
+            <li><span class="ch">Through a register</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>"q</code></span>
+                <p class="why">Pasting the block from the terminal would only insert it as text. A value is typed into a vim replacement, so a <code>/</code>, <code>&amp;</code>, <code>\</code> or <code>~</code> in it needs a backslash in front, which matters mostly for passwords.</p></li>
+            <li><span class="ch">Search stays useful</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>search</code></span>
+                <p class="why">pwn-broker's <code>search</code> skips a playbook's run block, and any line that still holds a placeholder, so unfilled template text never floods the results. A line I have filled in is searched like any other.</p></li>
+        </ul>
     </div>
 </section>
 
-<section id="playbooks" class="pb-sec" aria-labelledby="playbooks-h">
-    <div class="wrap">
-        <div class="pb-head">
-            <h2 id="playbooks-h">The playbooks</h2>
-            <p class="pb-count"><span data-gen="count">79</span> playbooks in <span data-gen="folders">10</span> folders, release <span data-gen="version">2026.11.20.1</span></p>
-        </div>
-        <p class="pb-intro">The folders go by phase, with OS folders where they help. <code>:Pb</code> finds a playbook by its file name wherever it sits, so each name is used once in the whole tree.</p>
-        <div class="find" hidden>
-            <label for="find">Find a playbook</label>
-            <input id="find" type="search" autocomplete="off" spellcheck="false" placeholder="kerberoast, smb, potato…">
-            <p class="find-n" id="find-n" aria-live="polite"></p>
-        </div>
-        <div class="folders" id="folders">
+<section class="card ref" id="playbooks" aria-labelledby="playbooks-h">
+    <h2 id="playbooks-h">The playbooks</h2>
+    <p class="intro"><span data-gen="count">79</span> playbooks in <span data-gen="folders">10</span> folders, release <span data-gen="version">2026.11.20.1</span>. The folders go by phase, with OS folders where they help. <code>:Pb</code> finds a playbook by its file name wherever it sits, so each name is used once in the whole tree.</p>
+    <div class="find" hidden>
+        <label for="find">Find a playbook</label>
+        <input id="find" type="search" autocomplete="off" spellcheck="false" placeholder="kerberoast, smb, potato…">
+        <p class="find-n" id="find-n" aria-live="polite"></p>
+    </div>
+    <div class="folders" id="folders">
 <!-- gen:playbooks -->
             <div class="folder" data-folder="01-checklists">
                 <h3>Checklists <span class="path">01-checklists/</span> <span class="n">3</span></h3>
@@ -296,15 +283,13 @@ END OF smb PLAYBOOK
                 </ul>
             </div>
 <!-- /gen:playbooks -->
-        </div>
     </div>
 </section>
 
-<section id="placeholders" class="ph-sec" aria-labelledby="placeholders-h">
-    <div class="wrap">
-        <h2 id="placeholders-h">Placeholders</h2>
-        <p class="ph-intro">Every value a playbook asks for is one of these, written <code>&lt;Name&gt;</code>, one name per meaning. A value is typed into a vim replacement, so none stands for a URL or a path: a URL is split, as <code>&lt;Scheme&gt;://&lt;WebHost&gt;</code>, and a value to edit by hand is written in capitals, such as <code>THE-PAGE</code>. The list is <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/blob/main/placeholders.toml">placeholders.toml</a>.</p>
-        <dl class="ph-list">
+<section class="card ref" id="placeholders" aria-labelledby="placeholders-h">
+    <h2 id="placeholders-h">Placeholders</h2>
+    <p class="intro">Every value a playbook asks for is one of these, written <code>&lt;Name&gt;</code>, one name per meaning. A value is typed into a vim replacement, so none stands for a URL or a path: a URL is split, as <code>&lt;Scheme&gt;://&lt;WebHost&gt;</code>, and a value to edit by hand is written in capitals, such as <code>THE-PAGE</code>. The list is <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/blob/main/placeholders.toml">placeholders.toml</a>.</p>
+    <dl class="ph-list">
 <!-- gen:placeholders -->
                 <div><dt><code>&lt;TargetIP&gt;</code></dt><dd>the target&#x27;s IP address</dd></div>
                 <div><dt><code>&lt;Domain&gt;</code></dt><dd>the Active Directory domain, such as corp.local</dd></div>
@@ -344,30 +329,25 @@ END OF smb PLAYBOOK
                 <div><dt><code>&lt;PassField&gt;</code></dt><dd>the name of a login form&#x27;s password field</dd></div>
                 <div><dt><code>&lt;EdbID&gt;</code></dt><dd>an Exploit-DB exploit&#x27;s number</dd></div>
 <!-- /gen:placeholders -->
-        </dl>
-    </div>
+    </dl>
 </section>
 
-<section id="releases" class="releases" aria-labelledby="releases-h">
-    <div class="wrap">
-        <h2 id="releases-h">How a release is made</h2>
-        <ul>
-            <li>Each playbook is a markdown file in <code>playbooks/</code>: a <code># title</code> line, then the body, with every value as a placeholder from the list.</li>
-            <li><code>python build.py check</code> refuses anything that would break the note: a file name used twice, a name that is not lowercase letters, digits and hyphens, a fold marker, a line the run block would stop at, a placeholder whose case is wrong, the reserved word <code>&lt;Replace&gt;</code>, and Obsidian's callouts, links and front matter. It names the file and line.</li>
-            <li><code>python build.py build --version &lt;version&gt;</code> wraps each playbook in its fold and run block and zips the tree. The same tree always gives the same bytes.</li>
-            <li>CI runs the check and the tests on every change. They include a real vim filling in every playbook, with a realistic value for every placeholder.</li>
-            <li>A tag <code>v&lt;YYYY.MM.DD&gt;</code> publishes the release, with <code>.1</code>, <code>.2</code> for a second one on the same day. pwn-shop then packages it, and installs it in the official Kali image with the network off before publishing it.</li>
-            <li>A published release is never changed: a fix is a new release. <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> has how to write a playbook and how a release is cut.</li>
-        </ul>
-    </div>
+<section class="card ref" id="releases" aria-labelledby="releases-h">
+    <h2 id="releases-h">How a release is made</h2>
+    <ul class="plain">
+        <li>Each playbook is a markdown file in <code>playbooks/</code>: a <code># title</code> line, then the body, with every value as a placeholder from the list.</li>
+        <li><code>python build.py check</code> refuses anything that would break the note: a file name used twice, a name that is not lowercase letters, digits and hyphens, a fold marker, a line the run block would stop at, a placeholder whose case is wrong, the reserved word <code>&lt;Replace&gt;</code>, and Obsidian's callouts, links and front matter. It names the file and line.</li>
+        <li><code>python build.py build --version &lt;version&gt;</code> wraps each playbook in its fold and run block and zips the tree. The same tree always gives the same bytes.</li>
+        <li>CI runs the check and the tests on every change. They include a real vim filling in every playbook, with a realistic value for every placeholder.</li>
+        <li>A tag <code>v&lt;YYYY.MM.DD&gt;</code> publishes the release, with <code>.1</code>, <code>.2</code> for a second one on the same day. pwn-shop then packages it, and installs it in the official Kali image with the network off before publishing it.</li>
+        <li>A published release is never changed: a fix is a new release. <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> has how to write a playbook and how a release is cut.</li>
+    </ul>
 </section>
 </main>
 
-<footer>
-    <div class="wrap">
-        <p>Playbooks and documentation CC BY 4.0; code MIT. Not affiliated with Hack The Box.</p>
-        <p><a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks">Source</a> · <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/releases">Releases</a> · <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/blob/main/CHANGELOG.md">Changelog</a> · <a href="https://real-fruit-snacks.github.io/pwn-broker/">pwn-broker</a> · <a href="https://real-fruit-snacks.github.io/pwn-shop/">pwn-shop</a> · <a href="https://real-fruit-snacks.github.io/">RFS</a></p>
-    </div>
+<footer class="wrap foot">
+    <p>Playbooks and documentation CC BY 4.0; code MIT. Not affiliated with Hack The Box.</p>
+    <p><a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks">Source</a> · <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/releases">Releases</a> · <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/blob/main/CHANGELOG.md">Changelog</a> · <a href="https://real-fruit-snacks.github.io/">RFS</a></p>
 </footer>
 
 <script src="script.js"></script>
