@@ -5,7 +5,7 @@
 - [ ] ForceChangePassword on a user: reset its password
 - [ ] AddMember or AddSelf on a group: add myself
 - [ ] GenericWrite on a user: shadow credentials, or a targeted roast
-- [ ] GenericWrite or GenericAll on a computer: resource-based constrained delegation
+- [ ] GenericWrite or GenericAll on a computer: resource-based constrained delegation, :Pb delegation
 - [ ] GenericAll: any of the above
 - [ ] WriteOwner: take ownership, then WriteDacl
 - [ ] WriteDacl: grant myself GenericAll, or DCSync on the domain itself

@@ -37,11 +37,11 @@ nxc ldap <DCIP> -d <Domain> -u '<Username>' -p '<Password>' --bloodhound --colle
 nxc ldap <DCIP> -d <Domain> -u '<Username>' -p '<Password>' -M laps
 nxc ldap <DCIP> -d <Domain> -u '<Username>' -p '<Password>' --gmsa
 nxc ldap <DCIP> -d <Domain> -u '<Username>' -p '<Password>' -M maq
-- [ ] Unconstrained, constrained and resource-based delegation
+- [ ] Unconstrained, constrained and resource-based delegation: :Pb delegation
 impacket-findDelegation '<Domain>/<Username>:<Password>' -dc-ip <DCIP>
-- [ ] Certificate services and their templates
+- [ ] Certificate services and their templates: :Pb adcs
 certipy find -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -vulnerable -stdout
-- [ ] A GPO I can edit, from BloodHound
+- [ ] A GPO I can edit, from BloodHound: :Pb gpo-abuse
 - [ ] A share people browse that I can write: a lure file there, and Responder for the hash: :Pb responder
 
 ## On every host I own

