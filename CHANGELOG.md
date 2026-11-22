@@ -1,5 +1,9 @@
 # Changelog
 
+## v2026.11.22.1
+
+- The potatoes playbook adds RoguePotato, LocalPotato and CoercedPotato, each installed from pwn-shop with `tool install`. RoguePotato's OXID lookup goes through socat on Kali to the resolver it runs on the target, so the playbook now uses `<TargetIP>`.
+
 ## v2026.11.22
 
 - The potatoes playbook says that JuicyPotato is now in pwn-shop, with `tool install juicypotato`; the other tools in it still go in the target's upload/ folder first.

@@ -22,7 +22,7 @@ In pwn-broker 0.1.7 or later, they install like any tool, from [pwn-shop](https:
 ```text
 forest/dc01 > tool install playbooks
 
-  ok    playbooks 2026.11.22 installed (84 playbooks)
+  ok    playbooks 2026.11.22.1 installed (84 playbooks)
   read  :Pb <name>   in the note window
 ```
 
@@ -40,7 +40,7 @@ A playbook in the note, here the SMB one cut short, reads:
 
 ```text
 ##########@@@@@@@@@@
-Playbook: SMB enumeration   02-enum/smb   2026.11.22
+Playbook: SMB enumeration   02-enum/smb   2026.11.22.1
 my
 /^\%>'yEND OF smb PLAYBOOK$
 mz
