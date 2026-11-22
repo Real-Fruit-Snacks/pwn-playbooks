@@ -30,7 +30,7 @@ Or an administrator instead of a shell, when I know <Username>'s password:
 .\GodPotato-NET4.exe -cmd "cmd /c net localgroup administrators <Username> /add"
 
 ## The others
-None of these is in pwn-shop: each goes in the target's upload/ folder first, and is fetched to C:\Users\Public.
+JuicyPotato is in pwn-shop: tool install juicypotato, at the pwn-broker prompt. The rest are not: each goes in the target's upload/ folder first. All of them are fetched to C:\Users\Public.
 - [ ] Use the 64-bit build on 64-bit Windows
 
 ## PrintSpoofer
