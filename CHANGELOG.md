@@ -1,5 +1,10 @@
 # Changelog
 
+## v2026.11.22.2
+
+- Every tool in pwn-shop now has a `tool install` line in the playbooks that use it. jwt_tool, Rubeus and PowerView come from pwn-shop rather than a clone or a copy of my own. Impacket, NetExec, bloodyAD, BloodHound CE, AutoRecon, pypykatz and sshuttle are installed before their first use, and a command run with sudo takes its full path.
+- The remote-access playbook adds evil-winrm-py, domain enumeration adds SharpHound for a domain-joined Windows host, and the shells playbook adds Penelope as a listener.
+
 ## v2026.11.22.1
 
 - The potatoes playbook adds RoguePotato, LocalPotato and CoercedPotato, each installed from pwn-shop with `tool install`. RoguePotato's OXID lookup goes through socat on Kali to the resolver it runs on the target, so the playbook now uses `<TargetIP>`.
