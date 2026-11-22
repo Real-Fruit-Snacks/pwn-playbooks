@@ -134,7 +134,7 @@ pwn-broker's `search` skips a playbook's run block, and any line of a playbook t
 | `06-privesc/linux/suid` | Linux privesc: SUID and capabilities | `<LHOST>` `<LPORT>` |
 | `06-privesc/linux/writable-files` | Linux privesc: writable system files | `<Username>` |
 | `06-privesc/windows/always-install-elevated` | Windows privesc: AlwaysInstallElevated | `<LHOST>` `<LPORT>` `<Username>` |
-| `06-privesc/windows/potatoes` | Windows privesc: SeImpersonate and potatoes | `<LHOST>` `<LPORT>` `<Username>` |
+| `06-privesc/windows/potatoes` | Windows privesc: SeImpersonate and potatoes | `<LHOST>` `<LPORT>` `<Username>` `<TargetIP>` |
 | `06-privesc/windows/privileged-groups` | Windows privesc: privileged groups and rights | `<TargetIP>` `<Hash>` `<DCIP>` `<Username>` `<LHOST>` `<LPORT>` `<Hostname>` `<Domain>` `<Password>` |
 | `06-privesc/windows/runas` | Windows privesc: running as another user | `<Username>` `<TargetIP>` `<Password>` `<Domain>` `<LPORT>` `<LHOST>` `<TargetUser>` |
 | `06-privesc/windows/scheduled-tasks` | Windows privesc: scheduled tasks and autoruns | `<LHOST>` `<LPORT>` |
