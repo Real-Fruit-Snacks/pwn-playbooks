@@ -1,6 +1,7 @@
 # Password spraying
 
 ## The lockout policy first
+At the pwn-broker prompt: tool install netexec and tool install impacket.
 nxc smb <DCIP> -u '' -p '' --pass-pol
 nxc smb <DCIP> -d <Domain> -u '<Username>' -p '<Password>' --pass-pol
 From a shell on a domain-joined Windows host:

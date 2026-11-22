@@ -59,11 +59,7 @@ admin)(cn=*))%00
 ## A JWT: read it
 The payload, the middle part:
 echo 'THE-JWT' | cut -d. -f2 | tr '_-' '/+' | base64 -d 2>/dev/null; echo
-jwt_tool from GitHub, once:
-git clone https://github.com/ticarpi/jwt_tool ~/jwt_tool
-python3 -m venv ~/jwt_tool/.venv
-~/jwt_tool/.venv/bin/pip install -r ~/jwt_tool/requirements.txt
-alias jwt_tool='~/jwt_tool/.venv/bin/python ~/jwt_tool/jwt_tool.py'
+At the pwn-broker prompt: tool install jwt-tool. It installs the jwt_tool command.
 jwt_tool 'THE-JWT'
 
 ## A JWT: break it

@@ -89,7 +89,7 @@ use auxiliary/server/socks_proxy
 set SRVPORT 1080
 set VERSION 5
 run -j
-Kali's proxychains points at Tor's port; this makes it use the proxy instead:
+Kali's proxychains points at Tor's port; this makes it use the proxy instead. At the pwn-broker prompt: tool install netexec.
 sudo sed -i 's/^socks4.*9050$/socks5 127.0.0.1 1080/' /etc/proxychains4.conf
 proxychains -q nxc smb <InternalIP>
 One port on one host instead, from Meterpreter:

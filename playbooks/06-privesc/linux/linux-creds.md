@@ -55,7 +55,7 @@ john --wordlist=/usr/share/wordlists/rockyou.txt unshadowed.txt
 su - root
 su - '<TargetUser>'
 sudo -l
-On Kali, against every user with a shell, in users.txt:
+On Kali, against every user with a shell, in users.txt. At the pwn-broker prompt: tool install netexec.
 nxc ssh <TargetIP> -u users.txt -p '<Password>' --continue-on-success
 - [ ] A database password is often a user's as well, or root's
 - [ ] The password worked for su: :Pb sudo for that user, and :Pb linux-enum again

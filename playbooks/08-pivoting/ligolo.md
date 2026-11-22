@@ -38,6 +38,7 @@ ip route | grep ligolo
 - [ ] The route does not overlap my VPN's network, or the VPN drops
 
 ## Work through it
+At the pwn-broker prompt: tool install netexec.
 No proxychains: tools reach the hosts by IP. The agent sends no raw packets, so connect scans only.
 nmap -sT -Pn --top-ports 100 <InternalIP>
 nxc smb <Subnet>/<CIDR>

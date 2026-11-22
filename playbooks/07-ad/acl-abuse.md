@@ -11,6 +11,7 @@
 - [ ] WriteDacl: grant myself GenericAll, or DCSync on the domain itself
 - [ ] ReadLAPSPassword or ReadGMSAPassword: read the password
 - [ ] What I change, noted for the clean up at the end
+At the pwn-broker prompt: tool install bloodyad, tool install netexec and tool install impacket.
 bloodyAD takes an NT hash as -p ':<Hash>'.
 bloodyAD --host <DCIP> -d <Domain> -u '<Username>' -p '<Password>' get writable --detail
 

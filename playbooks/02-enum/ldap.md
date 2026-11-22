@@ -5,6 +5,7 @@ ldapsearch -x -H ldap://<DCIP> -s base namingcontexts
 - [ ] The base DN, such as DC=corp,DC=local, filled in as <BaseDN> below
 
 ## Without a credential
+At the pwn-broker prompt: tool install netexec.
 ldapsearch -x -H ldap://<DCIP> -b '<BaseDN>' | tee ldap-anon.txt
 nxc ldap <DCIP> -u '' -p '' --users
 - [ ] Anything back at all means anonymous binds work: read all of it
