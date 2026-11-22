@@ -1,5 +1,9 @@
 # Changelog
 
+## v2026.11.22
+
+- The potatoes playbook says that JuicyPotato is now in pwn-shop, with `tool install juicypotato`; the other tools in it still go in the target's upload/ folder first.
+
 ## v2026.11.21.2
 
 - The ticket-forging playbook adds diamond and sapphire tickets, the stealthier forgeries once I hold the krbtgt key, and is retitled "Forging Kerberos tickets".
