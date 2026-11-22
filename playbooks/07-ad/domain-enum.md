@@ -61,7 +61,7 @@ gpp-decrypt 'THE-CPASSWORD'
 ## BloodHound collection
 bloodhound-ce-python -u '<Username>' -p '<Password>' -d <Domain> -ns <DCIP> -c All --zip
 bloodhound-ce-python -u '<Username>' --hashes ':<Hash>' -d <Domain> -ns <DCIP> -c All --zip
-On a domain-joined Windows host, SharpHound is the official collector. At the pwn-broker prompt:
+From a domain-joined Windows host, SharpHound instead. At the pwn-broker prompt:
 tool install sharphound
 serve
 serve files sharphound

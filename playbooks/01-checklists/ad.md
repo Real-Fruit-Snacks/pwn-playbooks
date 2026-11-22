@@ -1,6 +1,7 @@
 # AD checklist
 
 ## Before I start
+At the pwn-broker prompt: tool install netexec and tool install impacket.
 - [ ] All TCP ports on every host, then the top UDP ports: :Pb ports
 - [ ] The domain name and the DC's host name, from the scan or from nxc
 nxc smb <DCIP>

