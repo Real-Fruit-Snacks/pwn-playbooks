@@ -23,6 +23,7 @@ ssh -N -D 1080 '<Username>'@<PivotIP>
 Kali's proxychains points at Tor's port; this makes it use the proxy instead:
 sudo sed -i 's/^socks4.*9050$/socks5 127.0.0.1 1080/' /etc/proxychains4.conf
 proxychains -q nmap -sT -Pn --top-ports 100 <InternalIP>
+At the pwn-broker prompt: tool install netexec.
 proxychains -q nxc smb <Subnet>/<CIDR>
 - [ ] -sT and -Pn every time: SYN scans, UDP and ping do not cross a SOCKS proxy
 
@@ -56,6 +57,7 @@ cp /etc/proxychains4.conf pivot2.conf
 proxychains -q -f pivot2.conf nxc smb THE-SECOND-NETWORK
 
 ## sshuttle
+At the pwn-broker prompt: tool install sshuttle.
 Routes the network like a VPN, with no proxychains. It asks for sudo on Kali and needs Python 3 on the pivot.
 sshuttle -r '<Username>'@<PivotIP> <Subnet>/<CIDR>
 sshuttle -r '<Username>'@<PivotIP> <Subnet>/<CIDR> -e 'ssh -i id_rsa'

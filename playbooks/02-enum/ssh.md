@@ -13,6 +13,7 @@ sudo nmap -Pn -p 22 -sV --script ssh2-enum-algos,ssh-auth-methods <TargetIP>
 chmod 600 id_rsa
 ssh -i id_rsa '<Username>'@<TargetIP>
 - [ ] The owner from the comment at the end of its .pub file, such as user@host
+At the pwn-broker prompt: tool install netexec.
 The key against every user I know, root included:
 nxc ssh <TargetIP> -u users.txt -p '' --key-file id_rsa
 - [ ] Asked for a passphrase: crack it, below

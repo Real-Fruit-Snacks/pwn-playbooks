@@ -43,7 +43,10 @@ openssl s_client -connect <TargetIP>:<Port> < /dev/null 2>/dev/null | openssl x5
 - [ ] The port number and the banner searched on the web
 
 ## A safety net in the background
-sudo $(which autorecon) <TargetIP>
+At the pwn-broker prompt: tool install autorecon.
+sudo /opt/pwn-broker/bin/autorecon <TargetIP>
+- [ ] The full path with sudo: a bare sudo autorecon does not use pwn-broker's bin folder
+- [ ] nmap, SecLists and the other scanners it calls installed separately; the package brings only AutoRecon and its Python dependencies
 - [ ] results/<TargetIP>/scans/_manual_commands.txt: the checks it left for me to run
 - [ ] My own enumeration still done: AutoRecon only catches what I forget
 

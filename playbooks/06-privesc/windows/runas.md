@@ -2,6 +2,7 @@
 
 ## What I hold
 - [ ] A password for <Username>, from :Pb windows-creds, while my shell runs as someone else
+At the pwn-broker prompt: tool install netexec.
 Whether a remote login works first, from Kali:
 nxc winrm <TargetIP> -u '<Username>' -p '<Password>' --local-auth
 nxc winrm <TargetIP> -d <Domain> -u '<Username>' -p '<Password>'

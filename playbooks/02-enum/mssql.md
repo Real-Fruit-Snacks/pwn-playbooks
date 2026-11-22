@@ -1,6 +1,7 @@
 # MSSQL enumeration
 
 ## Which login works
+At the pwn-broker prompt: tool install netexec and tool install impacket.
 A SQL login such as sa needs --local-auth, a Windows or domain account goes without it.
 nxc mssql <TargetIP> -u '<Username>' -p '<Password>' --local-auth
 nxc mssql <TargetIP> -d <Domain> -u '<Username>' -p '<Password>'

@@ -33,6 +33,7 @@ tail -3 /etc/proxychains4.conf
 - [ ] R:1081:socks for a second proxy on another port
 
 ## Work through the proxy
+At the pwn-broker prompt: tool install netexec.
 Connect scans only, with no ping, on a short list of ports:
 proxychains -q nmap -sT -Pn -p 21,22,80,135,139,443,445,1433,3306,3389,5985 <InternalIP>
 Windows hosts on the network, from a TCP connection to 445:

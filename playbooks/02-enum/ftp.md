@@ -39,6 +39,7 @@ Default logins from a list of user:password pairs:
 hydra -C /usr/share/seclists/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt -f <TargetIP> ftp
 A known user, with blank, same-as-user and reversed passwords tried first:
 hydra -l '<Username>' -P /usr/share/wordlists/rockyou.txt -e nsr -f <TargetIP> ftp
+At the pwn-broker prompt: tool install netexec.
 Found passwords across found users:
 nxc ftp <TargetIP> -u users.txt -p passwords.txt --continue-on-success
 - [ ] Longer guessing, with wordlists built for the target: :Pb brute-force

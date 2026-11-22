@@ -3,6 +3,7 @@
 ## Find a GPO I can edit
 - [ ] From BloodHound: an edge from an account I own to a GPO: GenericWrite, WriteDacl, WriteOwner or GenericAll
 - [ ] The OUs the GPO is linked to, and the computers and users under them: that is who I hit
+At the pwn-broker prompt: tool install bloodyad.
 bloodyAD --host <DCIP> -d <Domain> -u '<Username>' -p '<Password>' get writable --detail
 - [ ] The GPO's displayName and its {GUID} noted: THE-GPO-NAME and THE-GPO-ID below
 - [ ] WriteOwner or WriteDacl only, not write yet: take the rights first, as in :Pb acl-abuse

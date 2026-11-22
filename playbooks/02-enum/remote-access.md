@@ -1,6 +1,7 @@
 # Remote access: WinRM, RDP and VNC
 
 ## Where this credential logs in
+At the pwn-broker prompt: tool install netexec.
 nxc winrm <TargetIP> -d <Domain> -u '<Username>' -p '<Password>'
 nxc rdp <TargetIP> -d <Domain> -u '<Username>' -p '<Password>'
 nxc winrm <TargetIP> -d <Domain> -u '<Username>' -H <Hash>
@@ -22,6 +23,19 @@ menu
 Scripts and programs from folders on Kali, loaded by typing a script's name, then menu:
 evil-winrm -i <TargetIP> -u '<Username>' -p '<Password>' -s THE-PS1-FOLDER -e THE-EXE-FOLDER
 - [ ] Or tools fetched with the line serve files gives: :Pb file-transfer
+
+## WinRM with evil-winrm-py, from pwn-shop
+At the pwn-broker prompt: tool install evil-winrm-py.
+evil-winrm-py -i <TargetIP> -u '<Username>' -p '<Password>'
+evil-winrm-py -i <TargetIP> -u '<Username>' -H <Hash>
+HTTPS, on 5986:
+evil-winrm-py -i <TargetIP> -u '<Username>' -p '<Password>' --ssl
+- [ ] A different tool from Kali's Ruby evil-winrm: --ssl rather than -S, and no -s or -e directory options
+- [ ] This package has no Kerberos extra; Kali's Ruby evil-winrm above remains separate
+Inside the session, with absolute local and remote paths:
+upload THE-LOCAL-PATH THE-REMOTE-PATH
+download THE-REMOTE-PATH THE-LOCAL-PATH
+menu
 
 ## RDP with xfreerdp3
 xfreerdp3 /u:'<Username>' /p:'<Password>' /d:<Domain> /v:<TargetIP> /cert:ignore +clipboard /dynamic-resolution
