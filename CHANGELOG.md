@@ -1,5 +1,9 @@
 # Changelog
 
+## v2026.11.21.2
+
+- The ticket-forging playbook adds diamond and sapphire tickets, the stealthier forgeries once I hold the krbtgt key, and is retitled "Forging Kerberos tickets".
+
 ## v2026.11.21.1
 
 - 1 more playbook, 84 in all: golden and silver Kerberos tickets, forged with impacket-ticketer or Rubeus.
