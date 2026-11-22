@@ -52,3 +52,4 @@ hashcat -m 13100 kerberoast.txt --show
 nxc smb <DCIP> -u '<TargetUser>' -p 'THE-CRACKED-PASSWORD'
 - [ ] The cracked password tried everywhere, and against other accounts: :Pb smb, where this credential works
 - [ ] The service account marked Owned in BloodHound, and its paths read again
+- [ ] A silver ticket to the service it runs, forged from its hash with no DC: :Pb golden-silver

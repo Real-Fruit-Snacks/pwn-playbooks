@@ -1,5 +1,10 @@
 # Changelog
 
+## v2026.11.21.1
+
+- 1 more playbook, 84 in all: golden and silver Kerberos tickets, forged with impacket-ticketer or Rubeus.
+- The AD checklist, Kerberoasting (the silver-ticket path) and ACL abuse (golden for persistence) point to it.
+
 ## v2026.11.21
 
 - 4 more playbooks, 83 in all, for Active Directory: certificate services, delegation, GPO abuse and lateral movement.

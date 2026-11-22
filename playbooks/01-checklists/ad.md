@@ -28,6 +28,7 @@ nxc smb <DCIP> -d <Domain> -u '<Username>' -p '<Password>'
 - [ ] Tried on every host and protocol: SMB, WinRM, RDP, MSSQL and LDAP, in :Pb smb
 - [ ] Users, groups, the password policy and every description: :Pb domain-enum and :Pb ldap
 - [ ] Kerberoasting: :Pb kerberoasting
+- [ ] A cracked service account forged into a silver ticket to its service, with no DC: :Pb golden-silver
 - [ ] Every share again as this user, SYSVOL included, for GPP passwords
 nxc smb <DCIP> -d <Domain> -u '<Username>' -p '<Password>' -M gpp_password
 - [ ] BloodHound collected, and read from every principal I own

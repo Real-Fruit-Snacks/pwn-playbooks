@@ -22,7 +22,7 @@ In pwn-broker 0.1.7 or later, they install like any tool, from [pwn-shop](https:
 ```text
 forest/dc01 > tool install playbooks
 
-  ok    playbooks 2026.11.21 installed (83 playbooks)
+  ok    playbooks 2026.11.21.1 installed (84 playbooks)
   read  :Pb <name>   in the note window
 ```
 
@@ -40,7 +40,7 @@ A playbook in the note, here the SMB one cut short, reads:
 
 ```text
 ##########@@@@@@@@@@
-Playbook: SMB enumeration   02-enum/smb   2026.11.21
+Playbook: SMB enumeration   02-enum/smb   2026.11.21.1
 my
 /^\%>'yEND OF smb PLAYBOOK$
 mz
@@ -148,6 +148,7 @@ pwn-broker's `search` skips a playbook's run block, and any line of a playbook t
 | `07-ad/asrep` | AS-REP roasting | `<DCIP>` `<Domain>` `<TargetUser>` `<Username>` `<Password>` `<Hash>` |
 | `07-ad/delegation` | AD delegation | `<DCIP>` `<DCHost>` `<Domain>` `<Username>` `<Password>` `<Hash>` `<Computer>` `<Hostname>` |
 | `07-ad/domain-enum` | AD enumeration | `<DCIP>` `<DCHost>` `<Domain>` `<Username>` `<Password>` `<Hash>` |
+| `07-ad/golden-silver` | Golden and silver tickets | `<DCIP>` `<Domain>` `<Username>` `<Password>` `<DomainSID>` `<Hostname>` `<DCHost>` |
 | `07-ad/gpo-abuse` | GPO abuse | `<DCIP>` `<Domain>` `<Username>` `<Password>` `<Hash>` |
 | `07-ad/kerberoasting` | Kerberoasting | `<DCIP>` `<Domain>` `<Username>` `<Password>` `<Hash>` `<TargetUser>` |
 | `07-ad/lateral-movement` | AD lateral movement | `<DCIP>` `<DCHost>` `<Subnet>` `<CIDR>` `<Username>` `<Password>` `<Hash>` `<TargetIP>` `<Domain>` `<LHOST>` `<LPORT>` `<Hostname>` |
