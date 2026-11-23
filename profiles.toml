@@ -1,0 +1,562 @@
+[sources.exam-guide]
+title = "OSCP+ Exam Guide"
+url = "https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide"
+read_on = "2026-11-22"
+
+[sources.exam-faq]
+title = "OSCP+ Exam FAQ"
+url = "https://help.offsec.com/hc/en-us/articles/4412170923924-OSCP-Exam-FAQ"
+read_on = "2026-11-22"
+
+[sources.scaled-scoring]
+title = "OSCP+ Equated Scaled Scoring FAQ"
+url = "https://help.offsec.com/hc/en-us/articles/54589877508884-OSCP-Equated-Scaled-Scoring-FAQ"
+read_on = "2026-11-22"
+
+[playbooks."01-checklists/ad"]
+exam = "mixed"
+requires_tools = ["netexec", "impacket", "kerbrute", "certipy", "hashcat", "snaffler", "peass-ng", "evil-winrm", "responder", "ligolo-ng"]
+
+[[playbooks."01-checklists/ad".restricted]]
+section = "No credentials yet"
+label = "Not on the OSCP exam: OffSec bans spoofing, including NBNS, and Responder poisoning"
+reason = "The Exam Guide bans spoofing including NBNS, and the Exam FAQ bars Responder poisoning and spoofing."
+basis = "offsec"
+sources = ["exam-guide", "exam-faq"]
+
+[[playbooks."01-checklists/ad".restricted]]
+section = "No credentials yet"
+label = "Not on the OSCP exam: relay and coercion are kept out as a safe reading; OffSec's pages do not name them"
+reason = "The official pages do not name relay or coercion; this checklist keeps both out as its own safe reading."
+basis = "safe-reading"
+sources = ["exam-guide", "exam-faq"]
+
+[playbooks."01-checklists/standalone"]
+exam = "reviewed"
+requires_tools = ["searchsploit", "pspy", "peass-ng", "chisel", "ligolo-ng"]
+
+[playbooks."01-checklists/web"]
+exam = "mixed"
+requires_tools = ["burp-suite", "whatweb", "curl", "wpscan", "nuclei", "feroxbuster", "ffuf", "searchsploit"]
+
+[[playbooks."01-checklists/web".restricted]]
+section = "Mass vulnerability scanning"
+label = "Not on the OSCP exam: OffSec bans mass vulnerability scanners; skip Nuclei on the OSCP path"
+reason = "The Exam Guide bans mass vulnerability scanners and tools with similar functions; Nuclei is not part of the OSCP path."
+basis = "offsec"
+sources = ["exam-guide"]
+
+[playbooks."02-enum/dns"]
+exam = "reviewed"
+requires_tools = ["nmap", "dig", "dnsrecon", "dnsenum", "searchsploit"]
+
+[playbooks."02-enum/ftp"]
+exam = "reviewed"
+requires_tools = ["nmap", "ftp", "curl", "wget", "netexec", "hydra", "searchsploit"]
+
+[playbooks."02-enum/ike"]
+exam = "reviewed"
+requires_tools = ["nmap", "ike-scan", "hashcat", "ssh"]
+
+[playbooks."02-enum/ldap"]
+exam = "reviewed"
+requires_tools = ["ldapsearch", "netexec", "bloodhound-ce"]
+
+[playbooks."02-enum/mail"]
+exam = "reviewed"
+requires_tools = ["swaks", "curl", "python3"]
+
+[playbooks."02-enum/message-queues"]
+exam = "reviewed"
+requires_tools = ["nmap", "mosquitto_sub", "curl", "searchsploit"]
+
+[playbooks."02-enum/mongodb"]
+exam = "reviewed"
+requires_tools = ["nmap", "mongosh", "curl", "searchsploit"]
+
+[playbooks."02-enum/mssql"]
+exam = "mixed"
+requires_tools = ["netexec", "impacket", "hashcat", "godpotato"]
+
+[[playbooks."02-enum/mssql".restricted]]
+section = "The service account's hash"
+label = "Not on the OSCP exam: relaying a captured response is kept out as a safe reading; OffSec's pages do not name relay"
+reason = "The official pages do not name relay; the non-poisoning capture remains, while relay is kept off the exam as a safe reading."
+basis = "safe-reading"
+sources = ["exam-guide", "exam-faq"]
+
+[playbooks."02-enum/mysql"]
+exam = "reviewed"
+requires_tools = ["nmap", "mysql", "hydra", "hashcat", "curl"]
+
+[playbooks."02-enum/nfs"]
+exam = "reviewed"
+requires_tools = ["nmap", "showmount"]
+
+[playbooks."02-enum/oracle"]
+exam = "reviewed"
+requires_tools = ["nmap", "odat", "sqlplus", "hashcat", "metasploit-framework", "netcat"]
+
+[playbooks."02-enum/ports"]
+exam = "mixed"
+requires_tools = ["nmap", "rustscan", "masscan", "autorecon", "curl", "openssl", "searchsploit"]
+
+[[playbooks."02-enum/ports".restricted]]
+section = "Scripts for one service"
+label = "Not on the OSCP exam: the Nuclei section in :Pb vuln-scan is mass vulnerability scanning"
+reason = "The Exam Guide bans mass vulnerability scanners; this routes only the targeted Nmap checks into the OSCP path."
+basis = "offsec"
+sources = ["exam-guide"]
+
+[playbooks."02-enum/postgresql"]
+exam = "reviewed"
+requires_tools = ["nmap", "psql", "searchsploit"]
+
+[playbooks."02-enum/redis"]
+exam = "reviewed"
+requires_tools = ["nmap", "redis-cli", "hydra", "curl", "impacket", "hashcat"]
+
+[playbooks."02-enum/remote-access"]
+exam = "reviewed"
+requires_tools = ["nmap", "netexec", "evil-winrm", "freerdp", "vncviewer", "hydra", "searchsploit"]
+
+[playbooks."02-enum/smb"]
+exam = "reviewed"
+requires_tools = ["netexec", "smbclient", "smbmap", "rpcclient", "enum4linux-ng"]
+
+[playbooks."02-enum/smtp"]
+exam = "reviewed"
+requires_tools = ["nmap", "netcat", "smtp-user-enum", "searchsploit"]
+
+[playbooks."02-enum/snmp"]
+exam = "reviewed"
+requires_tools = ["nmap", "snmpwalk", "snmpbulkwalk", "onesixtyone", "snmp-check", "searchsploit"]
+
+[playbooks."02-enum/ssh"]
+exam = "reviewed"
+requires_tools = ["nmap", "ssh", "hydra", "netexec", "john", "searchsploit"]
+
+[playbooks."02-enum/tftp"]
+exam = "reviewed"
+requires_tools = ["nmap", "tftp", "hashcat"]
+
+[playbooks."02-enum/vuln-scan"]
+exam = "mixed"
+requires_tools = ["nmap", "curl", "nuclei", "searchsploit"]
+
+[[playbooks."02-enum/vuln-scan".restricted]]
+section = "Nuclei on each web service"
+label = "Not on the OSCP exam: OffSec bans mass vulnerability scanners; Nuclei stays for other authorized work"
+reason = "The Exam Guide bans mass vulnerability scanners and tools with similar functions."
+basis = "offsec"
+sources = ["exam-guide"]
+
+[playbooks."03-web/api"]
+exam = "reviewed"
+requires_tools = ["curl", "ffuf", "jwt-tool", "hashcat"]
+
+[playbooks."03-web/cmdi"]
+exam = "reviewed"
+requires_tools = ["curl", "ffuf", "netcat", "tcpdump"]
+
+[playbooks."03-web/deserialization"]
+exam = "reviewed"
+requires_tools = ["phpggc", "ysoserial", "netcat", "tcpdump", "python3"]
+
+[playbooks."03-web/discovery"]
+exam = "reviewed"
+requires_tools = ["curl", "whatweb", "feroxbuster", "ffuf", "gobuster", "katana", "arjun", "git-dumper", "davtest", "cadaver", "searchsploit"]
+
+[playbooks."03-web/jenkins"]
+exam = "mixed"
+requires_tools = ["curl", "wget", "java", "netcat", "hashcat", "searchsploit", "metasploit-framework"]
+
+[[playbooks."03-web/jenkins".restricted]]
+section = "A shell from the console"
+label = "OSCP one-target limit: that Metasploit module spends my one target, even if it fails"
+reason = "Metasploit modules are limited to one target, and a failed attempt does not release that choice."
+basis = "offsec"
+sources = ["exam-guide"]
+
+[playbooks."03-web/joomla-drupal"]
+exam = "mixed"
+requires_tools = ["curl", "joomscan", "droopescan", "searchsploit", "metasploit-framework", "sqlmap", "hashcat", "netcat"]
+
+[[playbooks."03-web/joomla-drupal".restricted]]
+section = "Drupal: the known holes"
+label = "OSCP one-target limit: this Metasploit exploit spends my one target, even if it fails"
+reason = "Metasploit exploit modules are limited to one target, including when the attack fails."
+basis = "offsec"
+sources = ["exam-guide"]
+
+[[playbooks."03-web/joomla-drupal".restricted]]
+section = "Joomla: the known holes"
+label = "Not on the OSCP exam: OffSec bans SQLmap; use the manual injection workflow in :Pb sqli"
+reason = "The Exam Guide names SQLmap as a prohibited automatic exploitation tool."
+basis = "offsec"
+sources = ["exam-guide"]
+
+[playbooks."03-web/lfi"]
+exam = "reviewed"
+requires_tools = ["curl", "ffuf", "wget", "python3", "paramiko", "impacket", "hashcat", "tcpdump"]
+
+[playbooks."03-web/login-forms"]
+exam = "reviewed"
+requires_tools = ["hydra", "ffuf", "proxychains"]
+
+[playbooks."03-web/sqli"]
+exam = "mixed"
+requires_tools = ["curl", "tcpdump", "impacket", "hashcat", "sqlmap"]
+
+[[playbooks."03-web/sqli".restricted]]
+section = "Blind"
+label = "Not on the OSCP exam: OffSec bans SQLmap; keep extracting characters by hand here"
+reason = "The Exam Guide names SQLmap as a prohibited automatic exploitation tool."
+basis = "offsec"
+sources = ["exam-guide"]
+
+[playbooks."03-web/sqlmap"]
+exam = "prohibited"
+requires_tools = ["sqlmap"]
+
+[[playbooks."03-web/sqlmap".restricted]]
+section = "*"
+label = "Not on the OSCP exam: OffSec bans SQLmap as an automatic exploitation tool; use :Pb sqli by hand instead"
+reason = "The Exam Guide explicitly names SQLmap as a prohibited automatic exploitation tool."
+basis = "offsec"
+sources = ["exam-guide"]
+
+[playbooks."03-web/ssrf"]
+exam = "reviewed"
+requires_tools = ["curl", "ffuf", "nmap", "awscli"]
+
+[playbooks."03-web/ssti"]
+exam = "mixed"
+requires_tools = ["curl", "sstimap", "netcat", "tcpdump"]
+
+[[playbooks."03-web/ssti".restricted]]
+section = "Let sstimap do it"
+label = "Not on the OSCP exam: SSTImap is kept out as a safe reading because it automates exploitation; OffSec does not name it"
+reason = "The Exam Guide bans automatic exploitation but does not name SSTImap; this playbook keeps it off the exam as a safe reading."
+basis = "safe-reading"
+sources = ["exam-guide"]
+
+[playbooks."03-web/tomcat"]
+exam = "mixed"
+requires_tools = ["curl", "hydra", "metasploit-framework", "netcat", "searchsploit"]
+
+[[playbooks."03-web/tomcat".restricted]]
+section = "Manager credentials"
+label = "OSCP one-target limit: this Metasploit auxiliary module spends my one target, even if it fails"
+reason = "Metasploit auxiliary modules are limited to one target, including when the attempt fails."
+basis = "offsec"
+sources = ["exam-guide"]
+
+[[playbooks."03-web/tomcat".restricted]]
+section = "Ghostcat, AJP on 8009"
+label = "OSCP one-target limit: this Metasploit auxiliary module spends my one target, even if it fails"
+reason = "Metasploit auxiliary modules are limited to one target, including when the attempt fails."
+basis = "offsec"
+sources = ["exam-guide"]
+
+[playbooks."03-web/upload"]
+exam = "reviewed"
+requires_tools = ["curl", "ffuf", "netcat"]
+
+[playbooks."03-web/web-cves"]
+exam = "mixed"
+requires_tools = ["searchsploit", "curl", "netcat", "nmap", "feroxbuster", "java", "maven", "git", "metasploit-framework"]
+
+[[playbooks."03-web/web-cves".restricted]]
+section = "Webmin, on 10000"
+label = "OSCP one-target limit: that Metasploit module spends my one target, even if it fails"
+reason = "Metasploit modules are limited to one target, and a failed attempt does not release that choice."
+basis = "offsec"
+sources = ["exam-guide"]
+
+[playbooks."03-web/wordpress"]
+exam = "reviewed"
+requires_tools = ["curl", "wpscan", "hashcat", "mysql", "netcat", "searchsploit"]
+
+[playbooks."03-web/xss"]
+exam = "reviewed"
+requires_tools = ["curl", "katana", "dalfox", "netcat"]
+
+[playbooks."03-web/xxe"]
+exam = "reviewed"
+requires_tools = ["curl", "python3", "pipx"]
+
+[playbooks."04-foothold/file-transfer"]
+exam = "reviewed"
+requires_tools = ["curl", "wget", "python3", "impacket", "netcat", "ssh"]
+
+[playbooks."04-foothold/metasploit"]
+exam = "mixed"
+requires_tools = ["metasploit-framework", "netexec", "proxychains"]
+
+[[playbooks."04-foothold/metasploit".restricted]]
+section = "*"
+label = "OSCP one-target limit: Metasploit modules and Meterpreter are allowed on one machine only, and a failed attempt still spends it"
+reason = "The Exam Guide limits Metasploit modules and Meterpreter to one target and locks in the choice even after failure."
+basis = "offsec"
+sources = ["exam-guide"]
+
+[[playbooks."04-foothold/metasploit".restricted]]
+section = "*"
+label = "OSCP one-target limit: running a module's check counts too; never use it to test machines before choosing"
+reason = "The Exam Guide explicitly includes check in the prohibition on testing multiple machines with Metasploit."
+basis = "offsec"
+sources = ["exam-guide"]
+
+[[playbooks."04-foothold/metasploit".restricted]]
+section = "*"
+label = "OSCP one-target limit: msfvenom and multi/handler may be used on all targets, but a Meterpreter payload still spends my one target"
+reason = "The Exam Guide exempts multi handler and msfvenom from the general target limit but retains the Meterpreter limit."
+basis = "offsec"
+sources = ["exam-guide"]
+
+[[playbooks."04-foothold/metasploit".restricted]]
+section = "Pivot through a session"
+label = "Not on the OSCP exam: Metasploit pivoting, including autoroute, its SOCKS proxy and Meterpreter port forwarding"
+reason = "The Exam Guide prohibits Metasploit pivoting because it would use Metasploit on more than one target."
+basis = "offsec"
+sources = ["exam-guide", "exam-faq"]
+
+[playbooks."04-foothold/msfvenom"]
+exam = "mixed"
+requires_tools = ["metasploit-framework", "netcat", "runascs"]
+
+[[playbooks."04-foothold/msfvenom".restricted]]
+section = "*"
+label = "OSCP one-target limit: a Meterpreter payload below spends my one Metasploit target, even if the attack fails; msfvenom and multi/handler by themselves are allowed on all targets"
+reason = "The Exam Guide allows msfvenom and multi handler on all targets but limits Meterpreter to one, including failed attacks."
+basis = "offsec"
+sources = ["exam-guide"]
+
+[playbooks."04-foothold/public-exploits"]
+exam = "reviewed"
+requires_tools = ["searchsploit", "nmap", "curl", "wget", "metasploit-framework", "gcc", "mingw-w64", "docker", "netcat"]
+
+[playbooks."04-foothold/shells"]
+exam = "mixed"
+requires_tools = ["penelope", "netcat", "socat", "evil-winrm"]
+
+[[playbooks."04-foothold/shells".restricted]]
+section = "Listener"
+label = "Not on the OSCP exam: Penelope is kept out as a safe reading because this release still opens its local MCP socket with --oscp-safe; use nc, ncat or socat"
+reason = "OffSec does not name Penelope or MCP; the existing caution is retained as a safe reading while this release opens the socket."
+basis = "safe-reading"
+sources = ["exam-guide"]
+
+[playbooks."05-passwords/brute-force"]
+exam = "reviewed"
+requires_tools = ["hydra", "netexec"]
+
+[playbooks."05-passwords/hash-cracking"]
+exam = "reviewed"
+requires_tools = ["hashcat", "john", "keepass", "office2john", "zip2john", "7zip"]
+
+[playbooks."05-passwords/spraying"]
+exam = "reviewed"
+requires_tools = ["netexec", "impacket", "kerbrute", "evil-winrm"]
+
+[playbooks."05-passwords/wordlists"]
+exam = "reviewed"
+requires_tools = ["hashcat", "john", "netexec", "kerbrute", "git"]
+
+[playbooks."06-privesc/linux/cron"]
+exam = "reviewed"
+requires_tools = ["pspy", "netcat", "searchsploit"]
+
+[playbooks."06-privesc/linux/docker-lxd"]
+exam = "reviewed"
+requires_tools = ["docker", "lxd", "kubectl", "git", "curl"]
+
+[playbooks."06-privesc/linux/linux-creds"]
+exam = "reviewed"
+requires_tools = ["curl", "john", "netexec", "mysql", "tcpdump", "wireshark", "zip2john"]
+
+[playbooks."06-privesc/linux/linux-enum"]
+exam = "reviewed"
+requires_tools = ["peass-ng", "pspy", "curl", "searchsploit"]
+
+[playbooks."06-privesc/linux/linux-kernel"]
+exam = "reviewed"
+requires_tools = ["searchsploit", "wget", "gcc", "peass-ng"]
+
+[playbooks."06-privesc/linux/mysql-udf"]
+exam = "reviewed"
+requires_tools = ["mysql", "gcc", "searchsploit", "netcat"]
+
+[playbooks."06-privesc/linux/path-hijack"]
+exam = "reviewed"
+requires_tools = ["gcc", "python3"]
+
+[playbooks."06-privesc/linux/restricted-shell"]
+exam = "reviewed"
+requires_tools = ["ssh", "nmap", "git", "python3", "perl"]
+
+[playbooks."06-privesc/linux/sudo"]
+exam = "reviewed"
+requires_tools = ["sudo", "searchsploit", "wget", "gcc", "git", "netcat"]
+
+[playbooks."06-privesc/linux/suid"]
+exam = "reviewed"
+requires_tools = ["python3", "perl", "openssl"]
+
+[playbooks."06-privesc/linux/writable-files"]
+exam = "reviewed"
+requires_tools = ["openssl", "ssh"]
+
+[playbooks."06-privesc/windows/always-install-elevated"]
+exam = "reviewed"
+requires_tools = ["metasploit-framework", "peass-ng", "runascs", "netcat", "evil-winrm"]
+
+[playbooks."06-privesc/windows/potatoes"]
+exam = "reviewed"
+requires_tools = ["metasploit-framework", "godpotato", "juicypotato", "roguepotato", "localpotato", "coercedpotato", "printspoofer", "sharpefspotato", "sweetpotato", "netcat", "socat"]
+
+[playbooks."06-privesc/windows/privileged-groups"]
+exam = "reviewed"
+requires_tools = ["metasploit-framework", "netexec", "impacket", "evil-winrm", "pypykatz", "procdump", "accesschk"]
+
+[playbooks."06-privesc/windows/runas"]
+exam = "reviewed"
+requires_tools = ["runascs", "netexec", "evil-winrm", "metasploit-framework", "netcat"]
+
+[playbooks."06-privesc/windows/scheduled-tasks"]
+exam = "reviewed"
+requires_tools = ["metasploit-framework", "netcat"]
+
+[playbooks."06-privesc/windows/services"]
+exam = "reviewed"
+requires_tools = ["metasploit-framework", "peass-ng", "accesschk", "netcat"]
+
+[playbooks."06-privesc/windows/uac-bypass"]
+exam = "reviewed"
+requires_tools = ["metasploit-framework", "runascs", "evil-winrm", "netcat"]
+
+[playbooks."06-privesc/windows/windows-creds"]
+exam = "reviewed"
+requires_tools = ["peass-ng", "snaffler", "netexec", "impacket", "evil-winrm", "runascs", "john"]
+
+[playbooks."06-privesc/windows/windows-enum"]
+exam = "reviewed"
+requires_tools = ["peass-ng", "searchsploit", "chisel"]
+
+[playbooks."06-privesc/windows/windows-kernel"]
+exam = "reviewed"
+requires_tools = ["searchsploit", "netexec", "impacket", "evil-winrm"]
+
+[playbooks."07-ad/acl-abuse"]
+exam = "reviewed"
+requires_tools = ["netexec", "impacket", "bloodyad", "certipy", "powerview"]
+
+[playbooks."07-ad/adcs"]
+exam = "mixed"
+requires_tools = ["certipy", "ntpdate"]
+
+[[playbooks."07-ad/adcs".restricted]]
+section = "ESC8 and ESC11: relay to enrolment"
+label = "Not on the OSCP exam: relay and coercion are kept out as a safe reading; OffSec's pages do not name them"
+reason = "The official pages do not name relay or coercion; this section is kept off the exam as a safe reading."
+basis = "safe-reading"
+sources = ["exam-guide", "exam-faq"]
+
+[playbooks."07-ad/asrep"]
+exam = "reviewed"
+requires_tools = ["netexec", "impacket", "kerbrute", "bloodyad", "rubeus", "hashcat", "john"]
+
+[playbooks."07-ad/delegation"]
+exam = "mixed"
+requires_tools = ["netexec", "impacket", "bloodyad", "rubeus"]
+
+[[playbooks."07-ad/delegation".restricted]]
+section = "Unconstrained: a host that keeps every TGT sent to it"
+label = "Not on the OSCP exam: the coercion steps here are kept out as a safe reading; OffSec's pages do not name coercion"
+reason = "The official pages do not name coercion; these steps are kept off the exam as a safe reading."
+basis = "safe-reading"
+sources = ["exam-guide", "exam-faq"]
+
+[playbooks."07-ad/domain-enum"]
+exam = "reviewed"
+requires_tools = ["netexec", "impacket", "kerbrute", "certipy", "ldapdomaindump", "bloodhound-ce", "rusthound-ce", "sharphound", "snaffler"]
+
+[playbooks."07-ad/golden-silver"]
+exam = "reviewed"
+requires_tools = ["impacket", "mimikatz", "rubeus"]
+
+[playbooks."07-ad/gpo-abuse"]
+exam = "reviewed"
+requires_tools = ["bloodyad", "powerview"]
+
+[playbooks."07-ad/kerberoasting"]
+exam = "reviewed"
+requires_tools = ["netexec", "impacket", "rubeus", "hashcat", "john"]
+
+[playbooks."07-ad/lateral-movement"]
+exam = "reviewed"
+requires_tools = ["netexec", "impacket", "evil-winrm", "freerdp", "runascs", "rubeus", "ligolo-ng"]
+
+[playbooks."07-ad/responder"]
+exam = "mixed"
+requires_tools = ["responder", "netexec", "impacket", "hashcat", "john", "proxychains"]
+
+[[playbooks."07-ad/responder".restricted]]
+section = "Poison the network"
+label = "Not on the OSCP exam: OffSec bans spoofing, including NBNS, and Responder poisoning"
+reason = "The Exam Guide bans spoofing including NBNS, and the Exam FAQ bars Responder poisoning and spoofing."
+basis = "offsec"
+sources = ["exam-guide", "exam-faq"]
+
+[[playbooks."07-ad/responder".restricted]]
+section = "Relay targets"
+label = "Not on the OSCP exam: relay is kept out as a safe reading; OffSec's pages do not name it"
+reason = "The official pages do not name relay; this playbook keeps it off the exam as its own safe reading."
+basis = "safe-reading"
+sources = ["exam-guide", "exam-faq"]
+
+[[playbooks."07-ad/responder".restricted]]
+section = "Relay to SMB"
+label = "Not on the OSCP exam: relay is kept out as a safe reading; OffSec's pages do not name it"
+reason = "The official pages do not name relay; this playbook keeps it off the exam as its own safe reading."
+basis = "safe-reading"
+sources = ["exam-guide", "exam-faq"]
+
+[[playbooks."07-ad/responder".restricted]]
+section = "Relay to LDAP"
+label = "Not on the OSCP exam: relay is kept out as a safe reading; OffSec's pages do not name it"
+reason = "The official pages do not name relay; this playbook keeps it off the exam as its own safe reading."
+basis = "safe-reading"
+sources = ["exam-guide", "exam-faq"]
+
+[[playbooks."07-ad/responder".restricted]]
+section = "Coerce a DC to authenticate"
+label = "Not on the OSCP exam: coercion is kept out as a safe reading; OffSec's pages do not name it"
+reason = "The official pages do not name coercion; this playbook keeps it off the exam as its own safe reading."
+basis = "safe-reading"
+sources = ["exam-guide", "exam-faq"]
+
+[playbooks."08-pivoting/chisel"]
+exam = "reviewed"
+requires_tools = ["chisel", "proxychains", "nmap", "netexec", "evil-winrm", "freerdp", "netcat"]
+
+[playbooks."08-pivoting/ligolo"]
+exam = "reviewed"
+requires_tools = ["ligolo-ng", "proxychains", "nmap", "netexec", "evil-winrm", "freerdp", "netcat"]
+
+[playbooks."08-pivoting/port-forwarding"]
+exam = "reviewed"
+requires_tools = ["ssh", "chisel", "ligolo-ng", "proxychains", "freerdp", "netcat"]
+
+[playbooks."08-pivoting/socat"]
+exam = "reviewed"
+requires_tools = ["socat", "nmap", "netcat", "ligolo-ng"]
+
+[playbooks."08-pivoting/ssh-tunnels"]
+exam = "reviewed"
+requires_tools = ["ssh", "sshuttle", "socat", "proxychains", "nmap", "netexec", "curl", "freerdp", "netcat"]
+
+[playbooks."09-bof/bof"]
+exam = "reviewed"
+requires_tools = ["immunity-debugger", "mona", "spike", "metasploit-framework", "netcat", "python3"]

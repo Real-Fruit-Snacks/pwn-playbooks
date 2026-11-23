@@ -9,6 +9,7 @@ impacket-findDelegation '<Domain>/<Username>:<Password>' -dc-ip <DCIP>
 nxc ldap <DCIP> -u '<Username>' -p '<Password>' --trusted-for-delegation
 
 ## Unconstrained: a host that keeps every TGT sent to it
+- [ ] Not on the OSCP exam: the coercion steps here are kept out as a safe reading; OffSec's pages do not name coercion
 - [ ] I own a host flagged TRUSTED_FOR_DELEGATION: coerce a DC to it and keep the DC's TGT
 At the pwn-broker prompt:
 tool install rubeus

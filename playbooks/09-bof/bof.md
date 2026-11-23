@@ -1,5 +1,7 @@
 # Buffer overflow
 
+- [ ] On the exam since 2022, a buffer overflow is not a machine of its own: it may be the low-privilege way into a standalone machine, and is not in every exam set
+
 ## Lab setup
 - [ ] The same program running in Immunity Debugger on my own Windows VM: File, Open or Attach, then F9
 - [ ] mona.py copied into Immunity's PyCommands folder

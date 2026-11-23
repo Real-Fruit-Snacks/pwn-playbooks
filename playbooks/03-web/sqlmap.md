@@ -1,7 +1,8 @@
 # sqlmap
 
+- [ ] Not on the OSCP exam: OffSec bans SQLmap as an automatic exploitation tool; use :Pb sqli by hand instead
+
 ## Before I start
-- [ ] Not allowed on the OSCP exam: there, by hand with :Pb sqli
 - [ ] The injectable parameter found, or at least the request it is in
 
 ## Point it at the request

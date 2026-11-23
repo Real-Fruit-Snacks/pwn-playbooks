@@ -6,7 +6,7 @@ Or Penelope, after tool install penelope at the pwn-broker prompt:
 penelope -p <LPORT>
 penelope -i <LHOST> -p <LPORT>
 - [ ] Penelope upgrades and manages shells; F12 detaches a PTY to its main menu
-- [ ] For labs and CTFs, not an OSCP-approved profile: --oscp-safe disables Meterpreter, Traitor and ngrok, but this release still starts its local MCP socket; use nc, ncat or socat for OSCP
+- [ ] Not on the OSCP exam: Penelope is kept out as a safe reading because this release still opens its local MCP socket with --oscp-safe; use nc, ncat or socat
 - [ ] What the target has, before picking a line: which bash sh python3 php perl nc socat
 
 ## Linux

