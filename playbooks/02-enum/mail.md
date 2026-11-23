@@ -32,22 +32,27 @@ curl -sS --ssl-reqd --user '<Username>:<Password>' 'pop3://<TargetIP>/1'
 - [ ] Password resets, usernames, internal hosts and reused credentials in messages saved as evidence; no DELE request sent
 
 ## IMAP
-List mailboxes, list INBOX messages, then fetch the first message by index:
+List the mailboxes, list the message numbers in INBOX, then fetch the first message by index:
 curl -skS --user '<Username>:<Password>' 'imaps://<TargetIP>/'
-curl -skS --user '<Username>:<Password>' 'imaps://<TargetIP>/INBOX'
+curl -skS --user '<Username>:<Password>' 'imaps://<TargetIP>/INBOX?ALL'
 curl -skS --user '<Username>:<Password>' 'imaps://<TargetIP>/INBOX/;MAILINDEX=1'
 On port 143, require STARTTLS instead of implicit TLS:
-curl -sS --ssl-reqd --user '<Username>:<Password>' 'imap://<TargetIP>/INBOX'
+curl -sS --ssl-reqd --user '<Username>:<Password>' 'imap://<TargetIP>/INBOX?ALL'
 curl -sS --ssl-reqd --user '<Username>:<Password>' 'imap://<TargetIP>/INBOX/;MAILINDEX=1'
-- [ ] imaps defaults to 993; MAILINDEX=1 is the first message, while ;UID=THE-UID fetches a known UID instead
+- [ ] imaps defaults to 993; ?ALL prints * SEARCH and the message numbers, while a mailbox with no query lists its subfolders, not its messages
+- [ ] MAILINDEX=1 is the first message, while ;UID=THE-UID fetches a known UID instead
+- [ ] A fetched message is marked read: curl fetches BODY[], which sets \Seen, so its owner can notice
 - [ ] Other mailboxes listed at the root read too, and no STORE, EXPUNGE or DELETE command sent
 
 ## hMailServer artifacts
-On the Windows mail server; the Directories section of the ini overrides these default paths:
-type "C:\Program Files\hMailServer\Bin\hMailServer.ini"
-dir "C:\Program Files\hMailServer\Logs"
-dir /s /b "C:\Program Files\hMailServer\Data"
-findstr /s /i /n /c:"password" /c:"reset" /c:"token" "C:\Program Files\hMailServer\Data\*.eml" "C:\Program Files\hMailServer\Data\*.hma"
+On the Windows mail server, find the ini; a 32-bit install on 64-bit Windows is under Program Files (x86):
+where /r "C:\Program Files (x86)" hMailServer.ini
+where /r "C:\Program Files" hMailServer.ini
+With HMS-HOME the folder that holds its Bin; the Directories section of the ini overrides the Logs and Data paths:
+type "HMS-HOME\Bin\hMailServer.ini"
+dir "HMS-HOME\Logs"
+dir /s /b "HMS-HOME\Data"
+findstr /s /i /n /c:"password" /c:"reset" /c:"token" "HMS-HOME\Data\*.eml" "HMS-HOME\Data\*.hma"
 - [ ] ProgramFolder, DataFolder, LogFolder and DatabaseFolder from the ini used first when the install is not in the default place
 - [ ] Database Type, Server, Database, Username, Password and Passwordencryption noted; recovered database credentials tried against that database
 - [ ] AdministratorPassword is a password hash, with its algorithm dependent on version and settings: identify it before :Pb hash-cracking
