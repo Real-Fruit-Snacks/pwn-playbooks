@@ -28,7 +28,8 @@ nmap --script-help 'smb-*'
 sudo nmap -Pn -p <Port> --script 'default and safe' <TargetIP>
 sudo nmap -Pn -p <Port> --script vuln <TargetIP>
 - [ ] vuln only on ports I found, never with -p-: it is slow and noisy, and silence proves nothing
-- [ ] Targeted checks and nuclei: :Pb vuln-scan
+- [ ] Targeted Nmap checks: :Pb vuln-scan
+- [ ] Not on the OSCP exam: the Nuclei section in :Pb vuln-scan is mass vulnerability scanning
 - [ ] brute, dos and exploit scripts can crash a service or lock accounts
 
 ## A port Nmap cannot name

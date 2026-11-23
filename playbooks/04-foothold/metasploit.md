@@ -1,7 +1,10 @@
 # Metasploit
 
+- [ ] OSCP one-target limit: Metasploit modules and Meterpreter are allowed on one machine only, and a failed attempt still spends it
+- [ ] OSCP one-target limit: running a module's check counts too; never use it to test machines before choosing
+- [ ] OSCP one-target limit: msfvenom and multi/handler may be used on all targets, but a Meterpreter payload still spends my one target
+
 ## Start
-- [ ] On the OSCP exam Metasploit is allowed on one machine only: decide before I use it
 The database, once on a fresh Kali:
 sudo msfdb init
 msfconsole -q
@@ -78,6 +81,7 @@ run
 - [ ] Each suggestion checked against the build and patches myself before I run it
 
 ## Pivot through a session
+- [ ] Not on the OSCP exam: Metasploit pivoting, including autoroute, its SOCKS proxy and Meterpreter port forwarding
 Routes to the networks the session's host can reach, then a SOCKS proxy over them:
 use post/multi/manage/autoroute
 set SESSION 1

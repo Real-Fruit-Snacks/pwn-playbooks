@@ -1,5 +1,7 @@
 # Buffer overflow
 
+- [ ] Not on the OSCP exam: buffer overflows are outside the current exam body of knowledge; keep this playbook for general learning
+
 ## Lab setup
 - [ ] The same program running in Immunity Debugger on my own Windows VM: File, Open or Attach, then F9
 - [ ] mona.py copied into Immunity's PyCommands folder

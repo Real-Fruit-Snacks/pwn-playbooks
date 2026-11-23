@@ -1,5 +1,7 @@
 # msfvenom payloads
 
+- [ ] OSCP one-target limit: a Meterpreter payload below spends my one Metasploit target, even if the attack fails; msfvenom and multi/handler by themselves are allowed on all targets
+
 ## Before I build one
 uname -m
 systeminfo | findstr /B /C:"System Type"

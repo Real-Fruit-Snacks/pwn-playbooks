@@ -26,6 +26,30 @@ A placeholder is `<Name>`, with the name a capital letter followed by letters an
 
 A value is typed into a vim `:s` replacement, where `/` ends it and `\` starts a special character. So no placeholder may stand for something that is usually a URL or a path: split it, as `<Scheme>://<WebHost>`, or leave the path as text to edit. Adding a placeholder means adding a realistic value for it to `REAL` in `tests/test_vim.py`, which fills in every playbook with them.
 
+## OSCP exam labels and profiles
+
+Every playbook has an entry in [`profiles.toml`](profiles.toml), keyed by its path below `playbooks/` without `.md`. The entry has:
+
+- `exam`: `reviewed` when no restricted section is identified, `mixed` when only part is restricted, `prohibited` when the whole playbook breaks an exam rule, or `outside-current-exam` for general-learning material outside the current exam body of knowledge. `reviewed` is a review result, not a guarantee that OffSec approves every tool or action.
+- `requires_tools`: the non-standard tool or package names the playbook needs, whether from Kali, pwn-shop or another documented source. Shell builtins and ordinary operating-system utilities are left out.
+- one or more `restricted` tables when needed. `section` is the exact `##` heading, or `*` for a label before the first heading that applies to the whole playbook. `label` is the label's full text after `- [ ] `; `reason` says what is restricted; `basis` is `offsec` for an explicit rule or category, or `safe-reading` for my own cautious interpretation; and `sources` names the entries in the top-level `sources` table.
+
+Each source has a title, URL and `read_on` date. Read the current official page before changing a rule. Never turn a safe reading into a claim that OffSec names a tool or technique when its pages do not. The scaled-scoring source is kept beside the rule sources; scoring changes do not themselves change these restrictions.
+
+Put a prohibited or out-of-scope label at the start of its section, before any commands it covers:
+
+```text
+- [ ] Not on the OSCP exam: OffSec bans spoofing and poisoning
+```
+
+For Metasploit's conditional restriction, use the same check format and make the limit explicit:
+
+```text
+- [ ] OSCP one-target limit: a failed module still spends my one target
+```
+
+Use those two prefixes rather than inventing a new warning style. Keep allowed and non-poisoning alternatives outside the restricted section. The tests check that every playbook has exactly one entry, every metadata label is present in its named section, each rule has a dated OffSec source, known restricted commands remain under a label, and the required exam-safety topics remain in the tree.
+
 ## What `check` refuses
 
 `python build.py check` reads the whole tree and prints each problem with its file and line:

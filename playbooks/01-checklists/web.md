@@ -8,11 +8,14 @@
 ## Identify
 whatweb -a 3 <Scheme>://<WebHost>
 curl -skI <Scheme>://<WebHost>
-nuclei -u <Scheme>://<WebHost>
 - [ ] Server, framework and versions, from the headers, cookies and error pages
 - [ ] Every version string through searchsploit
 - [ ] A CMS: its version, plugins and themes
 wpscan --url <Scheme>://<WebHost> -e vp,vt,u
+
+## Mass vulnerability scanning
+- [ ] Not on the OSCP exam: OffSec bans mass vulnerability scanners; skip Nuclei on the OSCP path
+nuclei -u <Scheme>://<WebHost>
 
 ## Map
 curl -sk <Scheme>://<WebHost>/robots.txt

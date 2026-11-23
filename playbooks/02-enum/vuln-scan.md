@@ -29,6 +29,7 @@ searchsploit -m <EdbID>
 - [ ] Each exploit read before I run it, with its target version checked
 
 ## Nuclei on each web service
+- [ ] Not on the OSCP exam: OffSec bans mass vulnerability scanners; Nuclei stays for other authorized work
 nuclei -update-templates
 nuclei -u <Scheme>://<WebHost> -as -o nuclei.txt
 By tag and severity:
@@ -38,5 +39,5 @@ nuclei -u <Scheme>://<WebHost> -as -H 'Cookie: THE-COOKIE' -o nuclei-auth.txt
 Many web services at once, one URL a line:
 nuclei -l urls.txt -as -o nuclei-all.txt
 - [ ] A fragile target: -rl 20 holds it to 20 requests a second
-- [ ] Not on the OSCP exam, and fuzz or intrusive templates only where they are in scope
+- [ ] Fuzz or intrusive templates only where they are in scope
 - [ ] Every finding confirmed by hand, then the web checklist: :Pb web

