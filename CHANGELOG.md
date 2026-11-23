@@ -1,5 +1,12 @@
 # Changelog
 
+## v2026.11.22.5
+
+- Four new playbooks: PostgreSQL, mail (SMTP authentication, POP3, IMAP and hMailServer), message queues (MQTT, AMQP, ActiveMQ and RabbitMQ) and IKE. The ports playbook and the standalone checklist point to them, and sending mail moves from the SMTP playbook to the mail one. The web discovery playbook covers Spring Boot Actuator.
+- A step that OffSec bars on the OSCP exam is labelled in the playbook, with `Not on the OSCP exam:` for spoofing, Responder poisoning, automatic exploitation such as SQLmap and mass scanners such as Nuclei, and `OSCP one-target limit:` for Metasploit. Where OffSec's pages do not name a step, as with relay and coercion, the label says it is kept out as a safe reading. For a hash without poisoning, the AD checklist points to the Responder playbook's `impacket-smbserver` listener.
+- `profiles.toml` gives each playbook its exam status, the tools it calls and the OffSec page behind each label, and the tests keep it in step with the playbooks.
+- The buffer overflow playbook says where a buffer overflow sits on the exam: a possible low-privilege way into a standalone machine, not a machine of its own.
+
 ## v2026.11.22.4
 
 - The golden and silver ticket playbook gets mimikatz from pwn-shop, with `tool install mimikatz`, instead of naming its release page.
