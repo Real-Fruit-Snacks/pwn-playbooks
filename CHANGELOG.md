@@ -1,5 +1,9 @@
 # Changelog
 
+## v2026.11.22.4
+
+- The golden and silver ticket playbook gets mimikatz from pwn-shop, with `tool install mimikatz`, instead of naming its release page.
+
 ## v2026.11.22.3
 
 - The README says what Kali needs: `kali-linux-default` and the extra packages some playbooks call, which a minimal Kali lacks. The MongoDB playbook installs mongosh, which Kali does not carry, from its pinned release.
