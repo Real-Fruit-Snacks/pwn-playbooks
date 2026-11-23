@@ -53,7 +53,7 @@ sudo /opt/pwn-broker/bin/autorecon <TargetIP>
 ## What each port leads to
 - [ ] 21 FTP: :Pb ftp
 - [ ] 22 SSH: :Pb ssh
-- [ ] 25, 465, 587 SMTP: :Pb smtp
+- [ ] 25, 110, 143, 465, 587, 993, 995 mail: :Pb mail
 - [ ] 53 DNS: :Pb dns
 - [ ] 69/udp TFTP: :Pb tftp
 - [ ] 80, 443 and every other web port: :Pb web
@@ -62,7 +62,9 @@ sudo /opt/pwn-broker/bin/autorecon <TargetIP>
 - [ ] 161/udp SNMP: :Pb snmp
 - [ ] 389, 636 LDAP: :Pb ldap
 - [ ] 111, 2049 NFS: :Pb nfs
-- [ ] 1433 MSSQL, 1521 Oracle, 3306 MySQL: :Pb mssql, :Pb oracle, :Pb mysql
+- [ ] 500/udp and 4500/udp IKE and IPsec NAT traversal: :Pb ike
+- [ ] 1433 MSSQL, 1521 Oracle, 3306 MySQL, 5432 PostgreSQL: :Pb mssql, :Pb oracle, :Pb mysql, :Pb postgresql
+- [ ] 1883 and 8883 MQTT, 5671 and 5672 AMQP, 61616 and 8161 ActiveMQ, 15672 RabbitMQ: :Pb message-queues
 - [ ] 6379 Redis, 27017 MongoDB: :Pb redis, :Pb mongodb
 - [ ] 3389 RDP, 5985 and 5986 WinRM, 5900 VNC: :Pb remote-access
 

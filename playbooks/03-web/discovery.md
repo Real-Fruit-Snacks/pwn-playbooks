@@ -19,6 +19,21 @@ gobuster dir -k -u <Scheme>://<WebHost>/THE-FOLDER/ -w /usr/share/seclists/Disco
 - [ ] The big list left running while I work: /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt
 - [ ] 429 or errors from a small app: --rate-limit 50 in feroxbuster, -rate 50 in ffuf
 
+## Spring Boot Actuator
+The current SecLists Spring list includes the default and alternate actuator base paths:
+ffuf -c -u <Scheme>://<WebHost>/FUZZ -w /usr/share/seclists/Discovery/Web-Content/Programming-Language-Specific/Java-Spring-Boot.txt -ac
+For each base path found, with the default /actuator shown here:
+curl -sk <Scheme>://<WebHost>/actuator -o actuator.json
+curl -sk <Scheme>://<WebHost>/actuator/sessions?username=<TargetUser> -o actuator-sessions.json
+curl -sk <Scheme>://<WebHost>/actuator/env -o actuator-env.json
+curl -sk <Scheme>://<WebHost>/actuator/mappings -o actuator-mappings.json
+curl -sk <Scheme>://<WebHost>/actuator/beans -o actuator-beans.json
+- [ ] Sessions need Spring Session and a username parameter: unexpired IDs and attribute names noted, then one read with /actuator/sessions/THE-SESSION-ID, never DELETE
+- [ ] env gives property values and origins: passwords, tokens, keys, URLs and profiles saved; sanitized values can still leave useful names and locations
+- [ ] mappings gives routes, methods, parameters and handler classes: every application route tried by hand with the methods and parameters shown
+- [ ] beans gives types, resources and dependencies: application controllers, data sources and other internal components matched to routes and versions
+- [ ] 401 or 403 retried with every login found; a separate management port scanned too, and an absent endpoint is not proof that another base path is closed
+
 ## Virtual hosts
 The size of the default answer, to filter it out:
 curl -sk <Scheme>://<WebHost> -H 'Host: nothing-8f3k.<Domain>' | wc -c

@@ -8,7 +8,7 @@
 ## Each service
 - [ ] FTP: anonymous login, everything downloaded, writable folders: :Pb ftp
 - [ ] SSH: the version noted, then every credential and key I find: :Pb ssh
-- [ ] SMTP: user enumeration: :Pb smtp
+- [ ] Mail (SMTP, POP3 and IMAP): user enumeration, authentication and messages: :Pb mail
 - [ ] DNS: records and a zone transfer: :Pb dns
 - [ ] TFTP: configs fetched by name: :Pb tftp
 - [ ] HTTP and HTTPS: the whole web checklist, on every web port: :Pb web
@@ -16,7 +16,9 @@
 - [ ] SNMP: community strings, then a walk: :Pb snmp
 - [ ] LDAP and Kerberos: a domain, so :Pb ad as well
 - [ ] NFS: exports and their permissions: :Pb nfs
-- [ ] Databases, default and found credentials: :Pb mysql, :Pb mssql, :Pb redis, :Pb mongodb, :Pb oracle
+- [ ] Databases, default and found credentials: :Pb mysql, :Pb mssql, :Pb postgresql, :Pb redis, :Pb mongodb, :Pb oracle
+- [ ] MQTT, AMQP, ActiveMQ and RabbitMQ management: :Pb message-queues
+- [ ] IKE on UDP 500 or 4500: main and aggressive mode, PSK capture and reuse: :Pb ike
 - [ ] RDP, WinRM and VNC, with every credential I find: :Pb remote-access
 - [ ] Logins worth guessing, with a reason to: :Pb brute-force
 - [ ] Anything unknown: a banner grab in :Pb ports, then the port and the banner searched
