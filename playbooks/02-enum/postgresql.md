@@ -29,11 +29,16 @@ SELECT * FROM <Table> LIMIT 20;
 SELECT name, setting, source, sourcefile, sourceline FROM pg_settings WHERE name IN ('data_directory', 'config_file', 'hba_file', 'ident_file', 'log_directory', 'log_filename', 'logging_collector');
 - [ ] config_file, hba_file and ident_file can be outside data_directory: use the paths pg_settings gives
 - [ ] pg_hba.conf rules explain which hosts, databases, roles and authentication methods are accepted
-Only with superuser or pg_read_server_files, and the server's OS account able to read the file:
+Superuser, or EXECUTE on pg_read_file and, outside the data and log directories, pg_read_server_files; the server's OS account must be able to read the file:
 SELECT pg_read_file(current_setting('config_file'));
 SELECT pg_read_file(current_setting('hba_file'));
 SELECT pg_read_file('/etc/passwd');
-The log listing needs superuser or pg_monitor; the file read keeps the same prerequisites as above:
+pg_read_server_files alone, with no EXECUTE grant, reads a file through COPY into a table that goes with the session:
+CREATE TEMP TABLE file_out (line text);
+COPY file_out FROM '/etc/passwd';
+SELECT * FROM file_out;
+- [ ] COPY's text format splits on tabs and treats backslashes as escapes: a file with either can fail or come back changed
+The log listing needs superuser or pg_monitor; reading a log needs superuser or EXECUTE on pg_read_file:
 SELECT pg_ls_logdir();
 SELECT pg_read_file(current_setting('log_directory') || '/THE-LOG-FILE');
 - [ ] postgresql.auto.conf and included files read as well as postgresql.conf; sourcefile and sourceline show where a setting came from
