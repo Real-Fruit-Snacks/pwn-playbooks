@@ -54,9 +54,21 @@ requires_tools = ["nmap", "dig", "dnsrecon", "dnsenum", "searchsploit"]
 exam = "reviewed"
 requires_tools = ["nmap", "ftp", "curl", "wget", "netexec", "hydra", "searchsploit"]
 
+[playbooks."02-enum/ike"]
+exam = "reviewed"
+requires_tools = ["nmap", "ike-scan", "hashcat", "ssh"]
+
 [playbooks."02-enum/ldap"]
 exam = "reviewed"
 requires_tools = ["ldapsearch", "netexec", "bloodhound-ce"]
+
+[playbooks."02-enum/mail"]
+exam = "reviewed"
+requires_tools = ["swaks", "curl", "python3"]
+
+[playbooks."02-enum/message-queues"]
+exam = "reviewed"
+requires_tools = ["nmap", "mosquitto_sub", "curl", "searchsploit"]
 
 [playbooks."02-enum/mongodb"]
 exam = "reviewed"
@@ -96,6 +108,10 @@ reason = "The Exam Guide bans mass vulnerability scanners; this routes only the 
 basis = "offsec"
 sources = ["exam-guide"]
 
+[playbooks."02-enum/postgresql"]
+exam = "reviewed"
+requires_tools = ["nmap", "psql", "searchsploit"]
+
 [playbooks."02-enum/redis"]
 exam = "reviewed"
 requires_tools = ["nmap", "redis-cli", "hydra", "curl", "impacket", "hashcat"]
@@ -110,7 +126,7 @@ requires_tools = ["netexec", "smbclient", "smbmap", "rpcclient", "enum4linux-ng"
 
 [playbooks."02-enum/smtp"]
 exam = "reviewed"
-requires_tools = ["nmap", "swaks", "searchsploit", "netcat"]
+requires_tools = ["nmap", "netcat", "smtp-user-enum", "searchsploit"]
 
 [playbooks."02-enum/snmp"]
 exam = "reviewed"
