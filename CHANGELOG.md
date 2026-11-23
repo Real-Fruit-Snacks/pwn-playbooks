@@ -1,5 +1,11 @@
 # Changelog
 
+## v2026.11.22.3
+
+- The README says what Kali needs: `kali-linux-default` and the extra packages some playbooks call, which a minimal Kali lacks. The MongoDB playbook installs mongosh, which Kali does not carry, from its pinned release.
+- plink, PrivescCheck and Invoke-RunasCs now come from pwn-shop with `tool install plink`, `privesccheck` and `runascs`.
+- Each Windows tool that pwn-shop may not redistribute names where to get it: PrintSpoofer, SharpEfsPotato, SweetPotato, SeRestoreAbuse, SeManageVolumeExploit, SharpGPOAbuse, UACME, the PrintNightmare script, mimikatz and the Sysinternals tools. So does the static socat line.
+
 ## v2026.11.22.2
 
 - Every tool in pwn-shop now has a `tool install` line in the playbooks that use it. jwt_tool, Rubeus and PowerView come from pwn-shop rather than a clone or a copy of my own. Impacket, NetExec, bloodyAD, BloodHound CE, AutoRecon, pypykatz and sshuttle are installed before their first use, and a command run with sudo takes its full path.
