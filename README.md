@@ -43,6 +43,7 @@ A tool that neither carries is installed by the playbook that uses it, with `pip
 
 - `:Pb <name>` reads the playbook with that file name into the note, below the cursor. Tab completes the name.
 - `:Pb` on its own lists every playbook, by folder, to pick one by number.
+- At pwn-broker's prompt, from 0.1.9, `playbook list` lists the box's playbooks by folder and title, and words after it narrow the list, such as `playbook list windows`. `playbook show <name>` prints one without its run block, to look over before `:Pb` reads it in.
 - It never lands inside the box header: on the header it reads below it, and on a closed fold below the fold. The playbook arrives as one open fold, with the cursor on its first line to fill in.
 
 ## Filling one in

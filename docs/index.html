@@ -125,6 +125,8 @@ END OF smb PLAYBOOK
                 <p class="why">Reads the playbook with that file name into the note, below the cursor. Tab completes the name from any part of it, so <code>:Pb kerbero</code> finds <code>07-ad/kerberoasting</code>.</p></li>
             <li><span class="ch">From the list</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>:Pb</code></span>
                 <p class="why">On its own, lists every playbook by folder, to pick one by number.</p></li>
+            <li><span class="ch">At the prompt</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>playbook list</code></span>
+                <p class="why">In pwn-broker 0.1.9 or later, lists the box's playbooks by folder and title, and words after it narrow the list. <code>playbook show &lt;name&gt;</code> prints one without its run block, to look over before <code>:Pb</code> reads it in.</p></li>
             <li><span class="ch">Where it lands</span><span class="ld" aria-hidden="true"></span><span class="rs">Below the cursor</span>
                 <p class="why">Never inside the box header: on the header it reads below it, and on a closed fold below the fold. It arrives as one open fold, with the cursor on its first line to fill in. Closed, the fold shows its <code>Playbook:</code> line: the title, the path and the release it came from.</p></li>
             <li><span class="ch">The run block</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>my</code> to <code>'y</code></span>
