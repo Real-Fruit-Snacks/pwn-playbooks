@@ -28,6 +28,17 @@ forest/dc01 > tool install playbooks
 
 pwn-shop packages each release after it is published here, so `tool install playbooks` gets the newest one its index lists, and `finish` takes it off again. Without pwn-broker, unzip the release and read a playbook into any vim with `:r`, such as `:r playbooks/02-enum/smb.md`. Its run block works the same way.
 
+## What Kali needs
+
+The playbooks are written for a full Kali. Tools that pwn-shop packages are installed with `tool install` where a playbook first uses them. The rest come from Kali, so a minimal install, such as Kali's WSL image, needs its default tool set and these extras that some playbooks call:
+
+```sh
+sudo apt install -y kali-linux-default
+sudo apt install -y seclists enum4linux-ng freerdp3-x11 rlwrap ntpsec-ntpdate default-mysql-client mingw-w64 odat rustscan katana dalfox arjun sstimap phpggc joomscan kubernetes-client awscli
+```
+
+A tool that neither carries is installed by the playbook that uses it, with `pipx`, `git clone` or a pinned release, and a Windows tool that pwn-shop may not redistribute names where to get it.
+
 ## Reading one in
 
 - `:Pb <name>` reads the playbook with that file name into the note, below the cursor. Tab completes the name.

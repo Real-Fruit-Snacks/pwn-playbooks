@@ -6,6 +6,11 @@ sudo nmap -sV -p 27017 --script mongodb-info,mongodb-databases <TargetIP>
 - [ ] The version through searchsploit mongodb
 
 ## Connect
+mongosh is not in Kali's repositories. Its release, once, checked against the SHA-256 GitHub lists for it:
+curl -sSLO https://github.com/mongodb-js/mongosh/releases/download/v2.14.3/mongosh-2.14.3-linux-x64.tgz
+echo '2f9082b19c3daa4469865cb2d13ba64eea9f5b447371ecd25f175bb99320d575  mongosh-2.14.3-linux-x64.tgz' | sha256sum -c
+tar -xzf mongosh-2.14.3-linux-x64.tgz
+sudo install mongosh-2.14.3-linux-x64/bin/mongosh /usr/local/bin/
 mongosh mongodb://<TargetIP>:27017
 mongosh --host <TargetIP> -u '<Username>' -p '<Password>' --authenticationDatabase admin
 - [ ] Refused: the account may live in the application's database, --authenticationDatabase <Database>
