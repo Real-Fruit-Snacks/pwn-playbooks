@@ -58,6 +58,7 @@ On the Windows host:
 .\Rubeus.exe ptt /ticket:THE-TICKET.kirbi
 Enter-PSSession -ComputerName <Hostname> -Credential <Domain>\<Username>
 Invoke-Command -ComputerName <Hostname> -ScriptBlock { whoami } -Credential <Domain>\<Username>
+PsExec from Sysinternals, https://learn.microsoft.com/sysinternals/downloads/psexec, in my upload/ folder:
 .\PsExec.exe -accepteula \\<Hostname> -s cmd.exe
 - [ ] With a ticket already in memory, drop -Credential and let Kerberos carry it
 

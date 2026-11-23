@@ -11,7 +11,7 @@ Unquoted paths with a space, outside C:\Windows:
 Get-CimInstance Win32_Service | Where-Object { $_.PathName -notmatch '^"' -and $_.PathName -match ' ' -and $_.PathName -notmatch 'C:\\Windows' } | Select-Object Name, PathName, StartMode
 Every service's program, to check each one's folder with icacls:
 Get-CimInstance Win32_Service | Select-Object Name, StartName, PathName | Format-List
-Services I can reconfigure:
+Services I can reconfigure, with accesschk.exe from Sysinternals, https://learn.microsoft.com/sysinternals/downloads/accesschk, in my upload/ folder:
 accesschk.exe /accepteula -uwcqv "Authenticated Users" *
 accesschk.exe /accepteula -uwcqv '<Username>' *
 - [ ] winPEAS lists all three: peass-ng's winPEASx64.exe, from serve
