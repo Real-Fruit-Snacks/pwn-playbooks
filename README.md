@@ -26,7 +26,7 @@ forest/dc01 > tool install playbooks
   read  :Pb <name>   in the note window
 ```
 
-pwn-shop packages each release after it is published here, so `tool install playbooks` gets the newest one its index lists, and `finish` takes it off again. Without pwn-broker, unzip the release and read a playbook into any vim with `:r`, such as `:r playbooks/02-enum/smb.md`. Its run block works the same way.
+pwn-shop packages each release after it is published here, so `tool install playbooks` gets the newest one its index lists, and `finish` takes it off again. From pwn-broker 0.1.10, the first new box on a machine asks `install playbooks in new boxes? [Y/n]` and keeps the answer, so later boxes get them with no step of their own; `playbooks = true` or `false` in pwn-broker's `config.toml` decides instead. Without pwn-broker, unzip the release and read a playbook into any vim with `:r`, such as `:r playbooks/02-enum/smb.md`. Its run block works the same way.
 
 ## What Kali needs
 
