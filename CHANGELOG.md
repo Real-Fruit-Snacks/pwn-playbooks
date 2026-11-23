@@ -1,5 +1,10 @@
 # Changelog
 
+## v2026.11.23
+
+- The mail playbook lists IMAP messages with `INBOX?ALL`, since a mailbox URL with no query lists its subfolders, and says that fetching a message marks it read. It finds `hMailServer.ini` under `Program Files (x86)` as well as `Program Files`.
+- The PostgreSQL playbook gives `pg_read_file()`'s real prerequisites, superuser or an `EXECUTE` grant, and adds the `COPY ... FROM` route that `pg_read_server_files` allows on its own.
+
 ## v2026.11.22.5
 
 - Four new playbooks: PostgreSQL, mail (SMTP authentication, POP3, IMAP and hMailServer), message queues (MQTT, AMQP, ActiveMQ and RabbitMQ) and IKE. The ports playbook and the standalone checklist point to them, and sending mail moves from the SMTP playbook to the mail one. The web discovery playbook covers Spring Boot Actuator.
