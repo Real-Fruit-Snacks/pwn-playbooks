@@ -13,11 +13,6 @@ title = "OSCP+ Equated Scaled Scoring FAQ"
 url = "https://help.offsec.com/hc/en-us/articles/54589877508884-OSCP-Equated-Scaled-Scoring-FAQ"
 read_on = "2026-11-22"
 
-[sources.pen-200-2023]
-title = "PEN-200 (PWK): Updated for 2023"
-url = "https://www.offsec.com/blog/pen-200-2023/"
-read_on = "2026-11-22"
-
 [playbooks."01-checklists/ad"]
 exam = "mixed"
 requires_tools = ["netexec", "impacket", "kerbrute", "certipy", "hashcat", "snaffler", "peass-ng", "evil-winrm", "responder", "ligolo-ng"]
@@ -547,12 +542,5 @@ exam = "reviewed"
 requires_tools = ["ssh", "sshuttle", "socat", "proxychains", "nmap", "netexec", "curl", "freerdp", "netcat"]
 
 [playbooks."09-bof/bof"]
-exam = "outside-current-exam"
+exam = "reviewed"
 requires_tools = ["immunity-debugger", "mona", "spike", "metasploit-framework", "netcat", "python3"]
-
-[[playbooks."09-bof/bof".restricted]]
-section = "*"
-label = "Not on the OSCP exam: buffer overflows are outside the current exam body of knowledge; keep this playbook for general learning"
-reason = "OffSec's 2023 update says buffer overflows were removed from the exam body of knowledge and are no longer part of the exam."
-basis = "offsec"
-sources = ["pen-200-2023"]
