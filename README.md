@@ -34,7 +34,7 @@ The playbooks are written for a full Kali. Tools that pwn-shop packages are inst
 
 ```sh
 sudo apt install -y kali-linux-default
-sudo apt install -y seclists enum4linux-ng freerdp3-x11 rlwrap ntpsec-ntpdate default-mysql-client mingw-w64 odat rustscan katana dalfox arjun sstimap phpggc joomscan kubernetes-client awscli
+sudo apt install -y seclists enum4linux-ng freerdp3-x11 rlwrap ntpsec-ntpdate default-mysql-client postgresql-client mingw-w64 odat rustscan katana dalfox arjun sstimap phpggc joomscan kubernetes-client awscli mosquitto-clients ike-scan
 ```
 
 A tool that neither carries is installed by the playbook that uses it, with `pipx`, `git clone` or a pinned release, and a Windows tool that pwn-shop may not redistribute names where to get it.
@@ -91,17 +91,21 @@ pwn-broker's `search` skips a playbook's run block, and any line of a playbook t
 | `01-checklists/web` | Web checklist | `<Scheme>` `<WebHost>` `<Domain>` |
 | `02-enum/dns` | DNS enumeration | `<Domain>` `<TargetIP>` |
 | `02-enum/ftp` | FTP enumeration | `<TargetIP>` `<Username>` `<Password>` `<Scheme>` `<WebHost>` |
+| `02-enum/ike` | IKE and IPsec enumeration | `<TargetIP>` `<Username>` |
 | `02-enum/ldap` | LDAP enumeration | `<DCIP>` `<BaseDN>` `<Username>` `<Domain>` `<Password>` |
+| `02-enum/mail` | Mail services | `<TargetIP>` `<Username>` `<Password>` `<TargetUser>` `<Domain>` `<LHOST>` |
+| `02-enum/message-queues` | Message queue enumeration | `<TargetIP>` `<Username>` `<Password>` |
 | `02-enum/mongodb` | MongoDB enumeration | `<TargetIP>` `<Username>` `<Password>` `<Database>` |
 | `02-enum/mssql` | MSSQL enumeration | `<TargetIP>` `<Username>` `<Password>` `<Domain>` `<Hash>` `<Database>` `<Table>` `<TargetUser>` `<LHOST>` |
 | `02-enum/mysql` | MySQL enumeration | `<TargetIP>` `<Username>` `<Password>` `<Port>` `<Database>` `<Table>` `<Scheme>` `<WebHost>` |
 | `02-enum/nfs` | NFS enumeration | `<TargetIP>` `<Username>` |
 | `02-enum/oracle` | Oracle enumeration | `<TargetIP>` `<Database>` `<Username>` `<Password>` `<File>` `<Table>` |
 | `02-enum/ports` | Port scanning | `<TargetIP>` `<Port>` `<Subnet>` `<CIDR>` |
+| `02-enum/postgresql` | PostgreSQL enumeration | `<TargetIP>` `<Username>` `<Database>` `<Table>` |
 | `02-enum/redis` | Redis enumeration | `<TargetIP>` `<Password>` `<Username>` `<Scheme>` `<WebHost>` `<LHOST>` |
 | `02-enum/remote-access` | Remote access: WinRM, RDP and VNC | `<TargetIP>` `<Domain>` `<Username>` `<Password>` `<Hash>` `<File>` `<Port>` |
 | `02-enum/smb` | SMB enumeration | `<TargetIP>` `<Domain>` `<Username>` `<Password>` `<Hash>` `<Share>` |
-| `02-enum/smtp` | SMTP enumeration | `<TargetIP>` `<Domain>` `<TargetUser>` `<LHOST>` `<Username>` `<Password>` |
+| `02-enum/smtp` | SMTP enumeration | `<TargetIP>` `<Domain>` |
 | `02-enum/snmp` | SNMP enumeration | `<TargetIP>` `<Community>` `<LHOST>` `<LPORT>` |
 | `02-enum/ssh` | SSH enumeration | `<TargetIP>` `<Username>` `<LPORT>` `<Port>` |
 | `02-enum/tftp` | TFTP enumeration | `<TargetIP>` |
@@ -109,7 +113,7 @@ pwn-broker's `search` skips a playbook's run block, and any line of a playbook t
 | `03-web/api` | APIs and JWTs | `<Scheme>` `<WebHost>` `<LHOST>` |
 | `03-web/cmdi` | Command injection | `<Scheme>` `<WebHost>` `<Param>` `<LHOST>` `<LPORT>` |
 | `03-web/deserialization` | Deserialization | `<LHOST>` `<LPORT>` |
-| `03-web/discovery` | Web discovery | `<Scheme>` `<WebHost>` `<Domain>` `<Param>` |
+| `03-web/discovery` | Web discovery | `<Scheme>` `<WebHost>` `<TargetUser>` `<Domain>` `<Param>` |
 | `03-web/jenkins` | Jenkins | `<Scheme>` `<WebHost>` `<LPORT>` `<LHOST>` |
 | `03-web/joomla-drupal` | Joomla and Drupal | `<Scheme>` `<WebHost>` `<TargetIP>` `<Port>` `<LHOST>` `<LPORT>` |
 | `03-web/lfi` | File inclusion | `<Scheme>` `<WebHost>` `<Param>` `<Username>` `<File>` `<TargetIP>` `<LHOST>` |

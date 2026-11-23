@@ -33,11 +33,5 @@ smtp-user-enum -M VRFY -U /usr/share/seclists/Usernames/Names/names.txt -t <Targ
 - [ ] A slow server: -w 20, so a timeout is not taken for a miss
 - [ ] Every user found tried with weak passwords on SSH, FTP and the web logins: :Pb ssh
 
-## Mail as a way in
-A link to me, to someone who reads mail on the box:
-swaks --to '<TargetUser>@<Domain>' --from 'it@<Domain>' --server <TargetIP> --header 'Subject: Password reset' --body 'http://<LHOST>/'
-sudo python3 -m http.server 80
-With a login, when the server will not relay without one:
-swaks --to '<TargetUser>@<Domain>' --from '<Username>@<Domain>' --server <TargetIP> --auth-user '<Username>' --auth-password '<Password>' --header 'Subject: Password reset' --body 'http://<LHOST>/'
-- [ ] A hit on my web server: the user clicks links, so a payload behind one may run
-- [ ] With a mail login, POP3 on 110 and IMAP on 143 read for passwords and hints
+## Sending and reading mail
+- [ ] SMTP authentication and swaks sending, POP3 and IMAP reading, and hMailServer artifacts: :Pb mail
