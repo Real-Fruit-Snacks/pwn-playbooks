@@ -80,7 +80,7 @@ The lines from `my` to `'y` are the run block. To fill it in:
 
 The `Fill in:` line is inside that range, so afterwards it shows the values used, and any placeholder still on it is one not yet filled. The same playbook read in twice, for two targets, fills only the copy whose block ran. A placeholder I left out stays as it is in the body, to fill in by hand once I know it.
 
-The run block goes through a register because pasting it from the terminal would only insert it as text. A value is typed into a vim replacement, so a `/`, `&`, `\` or `~` in it needs a backslash in front, `\/` or `\&`. That matters mostly for passwords. A playbook with nothing to fill in has no run block.
+The run block goes through a register because pasting it from the terminal would only insert it as text. A value is typed into a vim replacement, so a `/`, `&`, `\` or `~` in it needs a backslash in front, `\/` or `\&`. That matters mostly for passwords. It matters for safety too: an unescaped `/` ends the replacement, and vim reads what follows as the rest of the command line, so a value such as `x/|!<command>` runs that command when `@q` runs. Read a value before you paste it, above all one taken from a target, and escape every `/` in it. A playbook with nothing to fill in has no run block.
 
 pwn-broker's `search` skips a playbook's run block, and any line of a playbook that still holds a placeholder, so unfilled template text never floods the results. A line I have filled in is searched like any other.
 

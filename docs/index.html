@@ -139,7 +139,7 @@ END OF smb PLAYBOOK
             <li><span class="ch">Two targets</span><span class="ld" aria-hidden="true"></span><span class="rs">Own copy only</span>
                 <p class="why">The same playbook read in twice fills only the copy whose block ran: the search for its end looks only below the block. A copy whose <code>END OF</code> line I deleted changes nothing, unless another copy follows it.</p></li>
             <li><span class="ch">Through a register</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>"q</code></span>
-                <p class="why">Pasting the block from the terminal would only insert it as text. A value is typed into a vim replacement, so a <code>/</code>, <code>&amp;</code>, <code>\</code> or <code>~</code> in it needs a backslash in front, which matters mostly for passwords.</p></li>
+                <p class="why">Pasting the block from the terminal would only insert it as text. A value is typed into a vim replacement, so a <code>/</code>, <code>&amp;</code>, <code>\</code> or <code>~</code> in it needs a backslash in front, which matters mostly for passwords. An unescaped <code>/</code> ends the replacement and vim runs what follows it, <code>|!</code> and a shell command included, so read a value taken from a target before you paste it.</p></li>
             <li><span class="ch">Search stays useful</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>search</code></span>
                 <p class="why">pwn-broker's <code>search</code> skips a playbook's run block, and any line that still holds a placeholder, so unfilled template text never floods the results. A line I have filled in is searched like any other.</p></li>
         </ul>
