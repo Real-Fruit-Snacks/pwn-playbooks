@@ -115,10 +115,10 @@ def typing_end(i):
 
 
 # --- layout ---
-LX, RX, TOP, BOTTOM = 40, 700, 76, 404       # left window from LX, right window from RX to W - 40
-L_SIZE, L_PAD, L_FIRST, L_PITCH = 13.5, 18, 106, 22
-R_SIZE, R_PAD, R_FIRST, R_PITCH, R_INDENT = 11.8, 14, 106, 20, 12
-COLS = 66
+LX, RX, TOP, BOTTOM = 28, 708, 72, 404       # left window from LX, right window from RX to W - 28
+L_SIZE, L_PAD, L_FIRST, L_PITCH = 12.6, 18, 102, 22
+R_SIZE, R_PAD, R_FIRST, R_PITCH, R_INDENT = 11.8, 14, 102, 20, 12
+COLS = 74
 
 # The tree: each folder of playbooks/ with how many playbooks it holds, and in the playbook's own
 # folder the playbook between its neighbours. (depth, name, count, is the playbook read in)
@@ -213,9 +213,12 @@ for i, (name, value) in enumerate(FILL.items()):
     for k in range(len(value) + 1):
         STATES[row].append((T_CA[i] + 0.15 + k * TYPE if k else T_CA[i], pieces(run_line(name, value[:k]))))
 for row, line in enumerate(ROWS):
-    typed = next((run_line(n, FILL[n]) for n, r in RUN_ROWS.items() if r == row), line)
-    final = filled(typed)
-    if final != typed:
+    if row in RUN_ROWS.values():
+        typed = next(run_line(n, FILL[n]) for n, r in RUN_ROWS.items() if r == row)
+        STATES[row].append((T_RUN, pieces(typed, row_face(row), mint=True)))
+        continue
+    final = filled(line)
+    if final != line:
         STATES[row].append((T_RUN, pieces(final, row_face(row), mint=True)))
 
 # the command line: :Pb sm typed, Tab completes it, Enter reads; then vim's mode and messages
@@ -287,7 +290,7 @@ class Anim:
 def check_layout():
     """Stop if a piece leaves its window."""
     cw, rcw = char_w(L_SIZE), char_w(R_SIZE)
-    if LX + L_PAD + COLS * cw > RX - 20 - L_PAD + 0.5:
+    if LX + L_PAD + COLS * cw > RX - 18 - L_PAD + 0.5:
         sys.exit(f"{COLS} columns run past the right edge of the note")
     if L_FIRST + CMD_ROW * L_PITCH + L_SIZE * 0.25 > BOTTOM:
         sys.exit("the note is taller than its window")
@@ -295,7 +298,7 @@ def check_layout():
         width = max(len(name), COUNT_COL if count else 0) + (len(NAME) + 6 if depth == 2 else 0)
         if count and len(name) + len(count) + 1 > COUNT_COL:
             sys.exit(f"{name!r} runs into its count")
-        if RX + R_PAD + depth * R_INDENT + width * rcw > W - 40 - R_PAD:
+        if RX + R_PAD + depth * R_INDENT + width * rcw > W - 28 - R_PAD:
             sys.exit(f"{name!r} runs past the right edge of the tree")
         if R_FIRST + i * R_PITCH + R_SIZE * 0.25 > BOTTOM:
             sys.exit(f"{name!r} is below the tree's window")
@@ -373,13 +376,14 @@ def draw(theme):
 
     o = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img">']
     o.append(a.style())
-    o.append(f'<rect x="0.5" y="0.5" width="{W - 1}" height="{H - 1}" rx="12" fill="{c["plate"]}" stroke="{c["line"]}"/>')
-    o.append(f'<rect x="1" y="1" width="{W - 2}" height="3" rx="1.5" fill="url(#rfs-bar)"/>')
-    o.append(text("notes.md", LX, 52, 15, MONO_B, c["mute"]))
-    o.append(text("pwn-playbooks/", RX, 52, 15, MONO, c["mute"]))
-    o.append(f'<rect x="{LX}" y="{TOP}" width="{RX - 20 - LX}" height="{BOTTOM - TOP}" rx="8" fill="{c["glass"]}" stroke="{c["line"]}"/>')
-    o.append(f'<rect x="{RX}" y="{TOP}" width="{W - 40 - RX}" height="{BOTTOM - TOP}" rx="8" fill="none" stroke="{c["line"]}"/>')
+    o.append(f'<rect x="0.5" y="0.5" width="{W - 1}" height="{H - 1}" rx="10" fill="{c["plate"]}" stroke="{c["line"]}"/>')
+    o.append(f'<rect x="0" y="0" width="{W}" height="3" fill="url(#rfs-bar)" clip-path="url(#card-clip)"/>')
+    o.append(text("notes.md", LX, 50, 14.5, MONO_B, c["mute"]))
+    o.append(text("pwn-playbooks/", RX, 50, 14.5, MONO, c["mute"]))
+    o.append(f'<rect x="{LX}" y="{TOP}" width="{RX - 18 - LX}" height="{BOTTOM - TOP}" rx="8" fill="{c["glass"]}" stroke="{c["line"]}"/>')
+    o.append(f'<rect x="{RX}" y="{TOP}" width="{W - 28 - RX}" height="{BOTTOM - TOP}" rx="8" fill="none" stroke="{c["line"]}"/>')
     o.append(f'<g class="run">{"".join(run)}</g>')
+    card_clip = f'<clipPath id="card-clip"><rect x="0.5" y="0.5" width="{W - 1}" height="{H - 1}" rx="10"/></clipPath>'
     bar_grad = (
         f'<linearGradient id="rfs-bar" x1="0" y1="0" x2="1" y2="0">'
         f'<stop offset="0%" stop-color="{c["steel"]}"/>'
@@ -387,7 +391,7 @@ def draw(theme):
         f'<stop offset="100%" stop-color="{c["beacon"]}"/>'
         f'</linearGradient>'
     )
-    defs = bar_grad + "".join(f'<path id="{gid}" d="{d}"/>' for gid, d in _glyphs.values() if d)
+    defs = card_clip + bar_grad + "".join(f'<path id="{gid}" d="{d}"/>' for gid, d in _glyphs.values() if d)
     o.insert(1, f"<defs>{defs}</defs>")
     o.append("</svg>")
     return "".join(o)
