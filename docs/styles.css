@@ -452,6 +452,7 @@ p { margin: 0 0 1rem; text-wrap: pretty; }
 }
 
 ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+#rfs-toast { position: fixed; inset: auto 1.25rem 1.25rem auto; margin: 0; }
 
 @media print {
     .rfs-shell { height: auto; overflow: visible; }
