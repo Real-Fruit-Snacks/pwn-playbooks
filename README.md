@@ -1,6 +1,6 @@
 # pwn-playbooks
 
-Playbooks for pwn-broker, read into a box's note and filled in
+Playbooks for pwn-broker: read into the note, fill in, run
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/panel-dark.svg">
