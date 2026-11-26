@@ -500,7 +500,7 @@ requires_tools = ["netexec", "impacket", "evil-winrm", "freerdp", "runascs", "ru
 
 [playbooks."07-ad/responder"]
 exam = "mixed"
-requires_tools = ["responder", "netexec", "impacket", "hashcat", "john", "proxychains"]
+requires_tools = ["responder", "netexec", "impacket", "hashcat", "john", "proxychains", "hash-bait"]
 
 [[playbooks."07-ad/responder".restricted]]
 section = "Poison the network"

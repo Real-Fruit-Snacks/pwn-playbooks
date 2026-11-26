@@ -169,7 +169,7 @@ pwn-broker's `search` skips a playbook's run block, and any line of a playbook t
 | `07-ad/gpo-abuse` | GPO abuse | `<DCIP>` `<Domain>` `<Username>` `<Password>` `<Hash>` |
 | `07-ad/kerberoasting` | Kerberoasting | `<DCIP>` `<Domain>` `<Username>` `<Password>` `<Hash>` `<TargetUser>` |
 | `07-ad/lateral-movement` | AD lateral movement | `<DCIP>` `<DCHost>` `<Subnet>` `<CIDR>` `<Username>` `<Password>` `<Hash>` `<TargetIP>` `<Domain>` `<LHOST>` `<LPORT>` `<Hostname>` |
-| `07-ad/responder` | Responder and NTLM relay | `<LHOST>` `<Param>` `<TargetIP>` `<Username>` `<Password>` `<Subnet>` `<CIDR>` `<Domain>` `<TargetUser>` `<DCIP>` |
+| `07-ad/responder` | Responder and NTLM relay | `<LHOST>` `<Param>` `<TargetIP>` `<Username>` `<Password>` `<Share>` `<Subnet>` `<CIDR>` `<Domain>` `<TargetUser>` `<DCIP>` |
 | `08-pivoting/chisel` | Pivoting with chisel | `<LHOST>` `<InternalIP>` `<Subnet>` `<CIDR>` `<Username>` `<Password>` `<LPORT>` `<Port>` `<PivotInternalIP>` |
 | `08-pivoting/ligolo` | Pivoting with ligolo-ng | `<LHOST>` `<Subnet>` `<CIDR>` `<PivotInternalIP>` `<InternalIP>` `<Username>` `<Password>` `<LPORT>` |
 | `08-pivoting/port-forwarding` | Port forwarding on Windows | `<LHOST>` `<LPORT>` `<InternalIP>` `<Port>` `<Username>` `<Password>` `<PivotIP>` `<Subnet>` `<CIDR>` `<PivotInternalIP>` |

