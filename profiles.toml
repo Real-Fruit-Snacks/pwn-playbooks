@@ -438,12 +438,19 @@ sources = ["exam-guide"]
 
 [playbooks."04-foothold/shells"]
 exam = "mixed"
-requires_tools = ["penelope", "netcat", "socat", "evil-winrm"]
+requires_tools = ["penelope", "netcat", "socat", "evil-winrm", "shell-tunnel"]
 
 [[playbooks."04-foothold/shells".restricted]]
 section = "Listener"
 label = "Not on the OSCP exam: Penelope is kept out as a safe reading because this release still opens its local MCP socket with --oscp-safe; use nc, ncat or socat"
 reason = "OffSec does not name Penelope or MCP; the existing caution is retained as a safe reading while this release opens the socket."
+basis = "safe-reading"
+sources = ["exam-guide"]
+
+[[playbooks."04-foothold/shells".restricted]]
+section = "shell-tunnel: PTY, SFTP and all three forwardings in one binary"
+label = "Not on the OSCP exam: a prebuilt SSH payload is kept out as a safe reading; nc, socat and plain ssh cover the exam"
+reason = "OffSec does not name prebuilt SSH payloads; the section is kept out as its own safe reading."
 basis = "safe-reading"
 sources = ["exam-guide"]
 
