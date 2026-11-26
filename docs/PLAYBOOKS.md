@@ -11,7 +11,7 @@ In pwn-broker 0.1.7 or later, they install like any tool, from [pwn-shop](https:
 ```text
 forest/dc01 > tool install playbooks
 
-  ok    playbooks 2026.11.25 installed (132 playbooks)
+  ok    playbooks 2026.11.26 installed (132 playbooks)
   read  :Pb <name>      in the note window
   list  playbook list   at the prompt
 ```
@@ -42,7 +42,7 @@ A playbook in the note, here the SMB one cut short, reads:
 
 ```text
 ##########@@@@@@@@@@
-Playbook: SMB enumeration   02-enum/smb   2026.11.25
+Playbook: SMB enumeration   02-enum/smb   2026.11.26
 my
 /^\%>'yEND OF smb PLAYBOOK$
 mz
@@ -146,7 +146,7 @@ pwn-broker's `search` skips a playbook's run block, and any line of a playbook t
 | `04-foothold/phishing-payloads` | Phishing Payloads | nothing |
 | `04-foothold/public-exploits` | Public exploits | `<TargetIP>` `<EdbID>` `<File>` `<Port>` `<LHOST>` `<LPORT>` |
 | `04-foothold/saltstack` | SaltStack | `<TargetIP>` |
-| `04-foothold/shells` | Reverse shells and upgrades | `<LPORT>` `<LHOST>` |
+| `04-foothold/shells` | Reverse shells and upgrades | `<LPORT>` `<LHOST>` `<TargetIP>` |
 | `04-foothold/zookeeper` | ZooKeeper / Exhibitor | `<TargetIP>` |
 | `05-passwords/brute-force` | Brute force | `<TargetIP>` `<Username>` `<Port>` `<Password>` |
 | `05-passwords/hash-cracking` | Hash cracking | `<File>` |

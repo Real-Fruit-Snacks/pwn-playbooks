@@ -1,5 +1,9 @@
 # Changelog
 
+## v2026.11.26
+
+- The shells playbook gains an shell-tunnel section (`tool install shell-tunnel`): the callback handler on Kali, the dial-home upload, bind mode, and the PTY, SFTP and `-L`/`-R`/`-D` forwards a stock ssh client then gets, kept out of the exam as a safe reading of a prebuilt SSH payload.
+
 ## v2026.11.25
 
 - Forty-four new playbooks. Web: CORS, email injection, Gitea, GitLab, Grafana, GraphQL, IDOR, mass assignment, NoSQL injection, OAuth, osTicket, HTTP request smuggling, Rocket.Chat, Roundcube, SSI/EL injection, WebSocket attacks and Zabbix. Foothold: Docker API, git-clone RCE, Kubernetes, phishing payloads, SaltStack and ZooKeeper/Exhibitor. Privesc: Ansible abuse, backup looting (Veeam), HiveNightmare, KeePass looting, print spooler and remote-manager looting. AD: the recycle bin, an ADCS ESC reference, coercion, DCSync, DPAPI, gMSA, LAPS, machine-account abuse, MSSQL impersonation and links, NTLM relay, SCCM/WSUS, shadow credentials, SID history with AdminSDHolder and timeroasting. Plus CUPS under enumeration.
