@@ -27,7 +27,7 @@ def expected_rows() -> list[str]:
 
 
 def test_readme_lists_every_playbook():
-    text = (REPO / "README.md").read_text(encoding="utf-8")
+    text = (REPO / "docs" / "PLAYBOOKS.md").read_text(encoding="utf-8")
     rows = [line for line in section(text, "What's in it").splitlines() if line.startswith("| `")]
     assert rows == expected_rows()
 

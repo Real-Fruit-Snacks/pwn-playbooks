@@ -27,4 +27,5 @@ python -m pytest -q -W error
 
 - `docs/assets/panel-{dark,light}.svg` must match `docs/art/make-panel.py` byte-for-byte.
 - `docs/index.html` generated blocks (`<!-- gen:playbooks -->`, `<!-- gen:placeholders -->`, `<span data-gen="version|count|folders">`) must stay in sync with `playbooks/`, `placeholders.toml`, and `CHANGELOG.md`.
+- **README & Docs (`BRAND.md` §14):** Keep `README.md` ultra-minimal (40–60 lines, keeping the current changelog release version checked by `tests/test_readme.py`); keep the full playbook catalog (`## What's in it`) and workflow guide in `docs/PLAYBOOKS.md` (never GitHub Wiki).
 - Never mention private repositories or unrelated internal tools in any public file.
