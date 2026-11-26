@@ -73,7 +73,7 @@
 
 <main class="wrap stack">
 <section class="card first" aria-labelledby="top-h">
-    <p class="runhead"><b>pwn-playbooks <span data-gen="version">2026.11.23</span></b><span><span data-gen="count">88</span> playbooks · pwn-broker 0.1.7</span><span>CC BY 4.0</span></p>
+    <p class="runhead"><b>pwn-playbooks <span data-gen="version">2026.11.25</span></b><span><span data-gen="count">132</span> playbooks · pwn-broker 0.1.7</span><span>CC BY 4.0</span></p>
     <div class="hero">
         <div>
             <h1 class="title" id="top-h">pwn-playbooks</h1>
@@ -96,7 +96,7 @@
             <div class="screenbox">
                 <p class="bar" aria-hidden="true"><b>Note window</b><span>vim notes.md</span></p>
 <pre class="vim-buf" id="buf" tabindex="0" aria-labelledby="vim-cap"><code><span class="m">##########@@@@@@@@@@</span>
-Playbook: SMB enumeration   02-enum/smb   <span data-gen="version">2026.11.23</span>
+Playbook: SMB enumeration   02-enum/smb   <span data-gen="version">2026.11.25</span>
 <span class="run">my</span>
 <span class="run">/^\%&gt;'yEND OF smb PLAYBOOK$</span>
 <span class="run">mz</span>
@@ -175,7 +175,7 @@ END OF smb PLAYBOOK
 
 <section class="card ref" id="playbooks" aria-labelledby="playbooks-h">
     <h2 id="playbooks-h">The playbooks</h2>
-    <p class="intro"><span data-gen="count">88</span> playbooks in <span data-gen="folders">10</span> folders, release <span data-gen="version">2026.11.23</span>. The folders go by phase, with OS folders where they help. <code>:Pb</code> finds a playbook by its file name wherever it sits, so each name is used once in the whole tree.</p>
+    <p class="intro"><span data-gen="count">132</span> playbooks in <span data-gen="folders">10</span> folders, release <span data-gen="version">2026.11.25</span>. The folders go by phase, with OS folders where they help. <code>:Pb</code> finds a playbook by its file name wherever it sits, so each name is used once in the whole tree.</p>
     <div class="find" hidden>
         <label for="find">Find a playbook</label>
         <input id="find" type="search" autocomplete="off" spellcheck="false" placeholder="kerberoast, smb, potato…">
@@ -192,8 +192,9 @@ END OF smb PLAYBOOK
                 </ul>
             </div>
             <div class="folder" data-folder="02-enum">
-                <h3>Enumeration <span class="path">02-enum/</span> <span class="n">21</span></h3>
+                <h3>Enumeration <span class="path">02-enum/</span> <span class="n">22</span></h3>
                 <ul>
+                    <li><code>cups</code> <span>CUPS / IPP</span></li>
                     <li><code>dns</code> <span>DNS enumeration</span></li>
                     <li><code>ftp</code> <span>FTP enumeration</span></li>
                     <li><code>ike</code> <span>IKE and IPsec enumeration</span></li>
@@ -218,36 +219,59 @@ END OF smb PLAYBOOK
                 </ul>
             </div>
             <div class="folder" data-folder="03-web">
-                <h3>Web <span class="path">03-web/</span> <span class="n">18</span></h3>
+                <h3>Web <span class="path">03-web/</span> <span class="n">35</span></h3>
                 <ul>
                     <li><code>api</code> <span>APIs and JWTs</span></li>
                     <li><code>cmdi</code> <span>Command injection</span></li>
+                    <li><code>cors</code> <span>CORS Misconfiguration</span></li>
                     <li><code>deserialization</code> <span>Deserialization</span></li>
                     <li><code>discovery</code> <span>Web discovery</span></li>
+                    <li><code>email-injection</code> <span>Email Injection</span></li>
+                    <li><code>gitea</code> <span>Gitea</span></li>
+                    <li><code>gitlab</code> <span>GitLab</span></li>
+                    <li><code>grafana</code> <span>Grafana</span></li>
+                    <li><code>graphql</code> <span>GraphQL</span></li>
+                    <li><code>idor</code> <span>IDOR</span></li>
                     <li><code>jenkins</code> <span>Jenkins</span></li>
                     <li><code>joomla-drupal</code> <span>Joomla and Drupal</span></li>
                     <li><code>lfi</code> <span>File inclusion</span></li>
                     <li><code>login-forms</code> <span>Login forms</span></li>
+                    <li><code>mass-assignment</code> <span>Mass Assignment</span></li>
+                    <li><code>nosqli</code> <span>NoSQL Injection</span></li>
+                    <li><code>oauth</code> <span>OAuth</span></li>
+                    <li><code>osticket</code> <span>osTicket</span></li>
+                    <li><code>request-smuggling</code> <span>HTTP Request Smuggling</span></li>
+                    <li><code>rocketchat</code> <span>Rocket.Chat</span></li>
+                    <li><code>roundcube</code> <span>Roundcube</span></li>
                     <li><code>sqli</code> <span>SQL injection</span></li>
                     <li><code>sqlmap</code> <span>sqlmap</span></li>
+                    <li><code>ssi-el</code> <span>SSI / EL Injection</span></li>
                     <li><code>ssrf</code> <span>SSRF</span></li>
                     <li><code>ssti</code> <span>SSTI</span></li>
                     <li><code>tomcat</code> <span>Tomcat</span></li>
                     <li><code>upload</code> <span>File upload</span></li>
                     <li><code>web-cves</code> <span>Web CVEs: Log4Shell, Shellshock and others</span></li>
+                    <li><code>websocket</code> <span>WebSocket Attacks</span></li>
                     <li><code>wordpress</code> <span>WordPress</span></li>
                     <li><code>xss</code> <span>XSS</span></li>
                     <li><code>xxe</code> <span>XXE</span></li>
+                    <li><code>zabbix</code> <span>Zabbix</span></li>
                 </ul>
             </div>
             <div class="folder" data-folder="04-foothold">
-                <h3>Foothold <span class="path">04-foothold/</span> <span class="n">5</span></h3>
+                <h3>Foothold <span class="path">04-foothold/</span> <span class="n">11</span></h3>
                 <ul>
+                    <li><code>docker-api</code> <span>Docker API</span></li>
                     <li><code>file-transfer</code> <span>File transfer</span></li>
+                    <li><code>git-clone-rce</code> <span>Git Clone RCE</span></li>
+                    <li><code>kubernetes</code> <span>Kubernetes</span></li>
                     <li><code>metasploit</code> <span>Metasploit</span></li>
                     <li><code>msfvenom</code> <span>msfvenom payloads</span></li>
+                    <li><code>phishing-payloads</code> <span>Phishing Payloads</span></li>
                     <li><code>public-exploits</code> <span>Public exploits</span></li>
+                    <li><code>saltstack</code> <span>SaltStack</span></li>
                     <li><code>shells</code> <span>Reverse shells and upgrades</span></li>
+                    <li><code>zookeeper</code> <span>ZooKeeper / Exhibitor</span></li>
                 </ul>
             </div>
             <div class="folder" data-folder="05-passwords">
@@ -260,8 +284,9 @@ END OF smb PLAYBOOK
                 </ul>
             </div>
             <div class="folder" data-folder="06-privesc/linux">
-                <h3>Linux privesc <span class="path">06-privesc/linux/</span> <span class="n">11</span></h3>
+                <h3>Linux privesc <span class="path">06-privesc/linux/</span> <span class="n">12</span></h3>
                 <ul>
+                    <li><code>ansible</code> <span>Ansible Abuse</span></li>
                     <li><code>cron</code> <span>Cron and timers</span></li>
                     <li><code>docker-lxd</code> <span>Docker and lxd</span></li>
                     <li><code>linux-creds</code> <span>Credential hunting</span></li>
@@ -276,11 +301,16 @@ END OF smb PLAYBOOK
                 </ul>
             </div>
             <div class="folder" data-folder="06-privesc/windows">
-                <h3>Windows privesc <span class="path">06-privesc/windows/</span> <span class="n">10</span></h3>
+                <h3>Windows privesc <span class="path">06-privesc/windows/</span> <span class="n">15</span></h3>
                 <ul>
                     <li><code>always-install-elevated</code> <span>AlwaysInstallElevated</span></li>
+                    <li><code>backup-looting</code> <span>Backup Software Looting (Veeam)</span></li>
+                    <li><code>hivenightmare</code> <span>HiveNightmare (SeriousSAM)</span></li>
+                    <li><code>keepass</code> <span>KeePass Looting</span></li>
                     <li><code>potatoes</code> <span>SeImpersonate and potatoes</span></li>
+                    <li><code>print-spooler</code> <span>Print Spooler</span></li>
                     <li><code>privileged-groups</code> <span>Privileged groups and rights</span></li>
+                    <li><code>remote-manager-loot</code> <span>Remote Manager Looting</span></li>
                     <li><code>runas</code> <span>Running as another user</span></li>
                     <li><code>scheduled-tasks</code> <span>Scheduled tasks and autoruns</span></li>
                     <li><code>services</code> <span>Services</span></li>
@@ -291,18 +321,32 @@ END OF smb PLAYBOOK
                 </ul>
             </div>
             <div class="folder" data-folder="07-ad">
-                <h3>Active Directory <span class="path">07-ad/</span> <span class="n">10</span></h3>
+                <h3>Active Directory <span class="path">07-ad/</span> <span class="n">24</span></h3>
                 <ul>
                     <li><code>acl-abuse</code> <span>AD ACL abuse</span></li>
+                    <li><code>ad-recycle-bin</code> <span>AD Recycle Bin</span></li>
+                    <li><code>adcs-esc</code> <span>ADCS ESC reference</span></li>
                     <li><code>adcs</code> <span>ADCS</span></li>
                     <li><code>asrep</code> <span>AS-REP roasting</span></li>
+                    <li><code>coercion</code> <span>Coercion</span></li>
+                    <li><code>dcsync</code> <span>DCSync</span></li>
                     <li><code>delegation</code> <span>AD delegation</span></li>
                     <li><code>domain-enum</code> <span>AD enumeration</span></li>
+                    <li><code>dpapi</code> <span>DPAPI</span></li>
+                    <li><code>gmsa</code> <span>gMSA Abuse</span></li>
                     <li><code>golden-silver</code> <span>Forging Kerberos tickets</span></li>
                     <li><code>gpo-abuse</code> <span>GPO abuse</span></li>
                     <li><code>kerberoasting</code> <span>Kerberoasting</span></li>
+                    <li><code>laps</code> <span>LAPS Abuse</span></li>
                     <li><code>lateral-movement</code> <span>AD lateral movement</span></li>
+                    <li><code>machine-account-abuse</code> <span>Machine Account Abuse</span></li>
+                    <li><code>mssql-impersonation</code> <span>MSSQL impersonation &amp; links</span></li>
+                    <li><code>ntlm-relay</code> <span>NTLM relay</span></li>
                     <li><code>responder</code> <span>Responder and NTLM relay</span></li>
+                    <li><code>sccm-wsus</code> <span>SCCM / WSUS</span></li>
+                    <li><code>shadow-credentials</code> <span>Shadow Credentials</span></li>
+                    <li><code>sidhistory-adminsdholder</code> <span>SID History + AdminSDHolder</span></li>
+                    <li><code>timeroasting</code> <span>Timeroasting</span></li>
                 </ul>
             </div>
             <div class="folder" data-folder="08-pivoting">

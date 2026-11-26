@@ -22,7 +22,7 @@ In pwn-broker 0.1.7 or later, they install like any tool, from [pwn-shop](https:
 ```text
 forest/dc01 > tool install playbooks
 
-  ok    playbooks 2026.11.23 installed (88 playbooks)
+  ok    playbooks 2026.11.25 installed (132 playbooks)
   read  :Pb <name>      in the note window
   list  playbook list   at the prompt
 ```
@@ -53,7 +53,7 @@ A playbook in the note, here the SMB one cut short, reads:
 
 ```text
 ##########@@@@@@@@@@
-Playbook: SMB enumeration   02-enum/smb   2026.11.23
+Playbook: SMB enumeration   02-enum/smb   2026.11.25
 my
 /^\%>'yEND OF smb PLAYBOOK$
 mz
@@ -91,6 +91,7 @@ pwn-broker's `search` skips a playbook's run block, and any line of a playbook t
 | `01-checklists/ad` | AD checklist | `<DCIP>` `<Domain>` `<Username>` `<Password>` `<TargetIP>` |
 | `01-checklists/standalone` | Standalone checklist | nothing |
 | `01-checklists/web` | Web checklist | `<Scheme>` `<WebHost>` `<Domain>` |
+| `02-enum/cups` | CUPS / IPP | `<TargetIP>` |
 | `02-enum/dns` | DNS enumeration | `<Domain>` `<TargetIP>` |
 | `02-enum/ftp` | FTP enumeration | `<TargetIP>` `<Username>` `<Password>` `<Scheme>` `<WebHost>` |
 | `02-enum/ike` | IKE and IPsec enumeration | `<TargetIP>` `<Username>` |
@@ -114,31 +115,55 @@ pwn-broker's `search` skips a playbook's run block, and any line of a playbook t
 | `02-enum/vuln-scan` | Vulnerability scanning | `<TargetIP>` `<Port>` `<Scheme>` `<WebHost>` `<EdbID>` |
 | `03-web/api` | APIs and JWTs | `<Scheme>` `<WebHost>` `<LHOST>` |
 | `03-web/cmdi` | Command injection | `<Scheme>` `<WebHost>` `<Param>` `<LHOST>` `<LPORT>` |
+| `03-web/cors` | CORS Misconfiguration | nothing |
 | `03-web/deserialization` | Deserialization | `<LHOST>` `<LPORT>` |
 | `03-web/discovery` | Web discovery | `<Scheme>` `<WebHost>` `<TargetUser>` `<Domain>` `<Param>` |
+| `03-web/email-injection` | Email Injection | nothing |
+| `03-web/gitea` | Gitea | nothing |
+| `03-web/gitlab` | GitLab | nothing |
+| `03-web/grafana` | Grafana | nothing |
+| `03-web/graphql` | GraphQL | nothing |
+| `03-web/idor` | IDOR | nothing |
 | `03-web/jenkins` | Jenkins | `<Scheme>` `<WebHost>` `<LPORT>` `<LHOST>` |
 | `03-web/joomla-drupal` | Joomla and Drupal | `<Scheme>` `<WebHost>` `<TargetIP>` `<Port>` `<LHOST>` `<LPORT>` |
 | `03-web/lfi` | File inclusion | `<Scheme>` `<WebHost>` `<Param>` `<Username>` `<File>` `<TargetIP>` `<LHOST>` |
 | `03-web/login-forms` | Login forms | `<UserField>` `<PassField>` `<Scheme>` `<WebHost>` `<TargetUser>` `<Port>` `<TargetIP>` `<Username>` `<Password>` |
+| `03-web/mass-assignment` | Mass Assignment | nothing |
+| `03-web/nosqli` | NoSQL Injection | nothing |
+| `03-web/oauth` | OAuth | nothing |
+| `03-web/osticket` | osTicket | nothing |
+| `03-web/request-smuggling` | HTTP Request Smuggling | nothing |
+| `03-web/rocketchat` | Rocket.Chat | nothing |
+| `03-web/roundcube` | Roundcube | nothing |
 | `03-web/sqli` | SQL injection | `<Scheme>` `<WebHost>` `<Param>` `<Database>` `<Table>` `<LHOST>` |
 | `03-web/sqlmap` | sqlmap | `<Scheme>` `<WebHost>` `<Param>` `<Database>` `<Table>` |
+| `03-web/ssi-el` | SSI / EL Injection | nothing |
 | `03-web/ssrf` | SSRF | `<Scheme>` `<WebHost>` `<Param>` `<LHOST>` `<Port>` `<InternalIP>` |
 | `03-web/ssti` | SSTI | `<Scheme>` `<WebHost>` `<Param>` `<LHOST>` `<LPORT>` |
 | `03-web/tomcat` | Tomcat | `<Scheme>` `<WebHost>` `<TargetIP>` `<Port>` `<LHOST>` `<LPORT>` `<Username>` `<Password>` |
 | `03-web/upload` | File upload | `<Scheme>` `<File>` `<WebHost>` `<LPORT>` `<LHOST>` |
 | `03-web/web-cves` | Web CVEs: Log4Shell, Shellshock and others | `<EdbID>` `<Scheme>` `<WebHost>` `<LHOST>` `<Param>` `<LPORT>` `<Port>` `<TargetIP>` |
+| `03-web/websocket` | WebSocket Attacks | nothing |
 | `03-web/wordpress` | WordPress | `<Scheme>` `<WebHost>` `<LPORT>` `<LHOST>` `<Username>` `<Password>` `<Database>` |
 | `03-web/xss` | XSS | `<Scheme>` `<WebHost>` `<LPORT>` `<LHOST>` `<Param>` |
 | `03-web/xxe` | XXE | `<Scheme>` `<WebHost>` `<Port>` `<LHOST>` `<Param>` |
+| `03-web/zabbix` | Zabbix | nothing |
+| `04-foothold/docker-api` | Docker API | `<TargetIP>` |
 | `04-foothold/file-transfer` | File transfer | `<LHOST>` `<File>` `<Username>` `<TargetIP>` `<LPORT>` |
+| `04-foothold/git-clone-rce` | Git Clone RCE | nothing |
+| `04-foothold/kubernetes` | Kubernetes | `<TargetIP>` |
 | `04-foothold/metasploit` | Metasploit | `<Hostname>` `<TargetIP>` `<Port>` `<LPORT>` `<File>` `<Subnet>` `<CIDR>` `<InternalIP>` |
 | `04-foothold/msfvenom` | msfvenom payloads | `<LHOST>` `<LPORT>` `<Scheme>` `<WebHost>` |
+| `04-foothold/phishing-payloads` | Phishing Payloads | nothing |
 | `04-foothold/public-exploits` | Public exploits | `<TargetIP>` `<EdbID>` `<File>` `<Port>` `<LHOST>` `<LPORT>` |
+| `04-foothold/saltstack` | SaltStack | `<TargetIP>` |
 | `04-foothold/shells` | Reverse shells and upgrades | `<LPORT>` `<LHOST>` |
+| `04-foothold/zookeeper` | ZooKeeper / Exhibitor | `<TargetIP>` |
 | `05-passwords/brute-force` | Brute force | `<TargetIP>` `<Username>` `<Port>` `<Password>` |
 | `05-passwords/hash-cracking` | Hash cracking | `<File>` |
 | `05-passwords/spraying` | Password spraying | `<DCIP>` `<Domain>` `<Username>` `<Password>` `<Hash>` |
 | `05-passwords/wordlists` | Wordlists | `<Scheme>` `<WebHost>` `<Domain>` `<DCIP>` |
+| `06-privesc/linux/ansible` | Ansible Abuse | nothing |
 | `06-privesc/linux/cron` | Linux privesc: cron and timers | `<LPORT>` `<LHOST>` |
 | `06-privesc/linux/docker-lxd` | Linux privesc: docker and lxd | `<TargetIP>` |
 | `06-privesc/linux/linux-creds` | Linux privesc: credential hunting | `<TargetIP>` `<TargetUser>` `<Password>` |
@@ -151,8 +176,13 @@ pwn-broker's `search` skips a playbook's run block, and any line of a playbook t
 | `06-privesc/linux/suid` | Linux privesc: SUID and capabilities | `<LHOST>` `<LPORT>` |
 | `06-privesc/linux/writable-files` | Linux privesc: writable system files | `<Username>` |
 | `06-privesc/windows/always-install-elevated` | Windows privesc: AlwaysInstallElevated | `<LHOST>` `<LPORT>` `<Username>` |
+| `06-privesc/windows/backup-looting` | Backup Software Looting (Veeam) | `<Password>` |
+| `06-privesc/windows/hivenightmare` | HiveNightmare (SeriousSAM) | nothing |
+| `06-privesc/windows/keepass` | KeePass Looting | nothing |
 | `06-privesc/windows/potatoes` | Windows privesc: SeImpersonate and potatoes | `<LHOST>` `<LPORT>` `<Username>` `<TargetIP>` |
+| `06-privesc/windows/print-spooler` | Print Spooler | `<TargetIP>` `<Domain>` `<Password>` |
 | `06-privesc/windows/privileged-groups` | Windows privesc: privileged groups and rights | `<TargetIP>` `<Hash>` `<DCIP>` `<Username>` `<LHOST>` `<LPORT>` `<Hostname>` `<Domain>` `<Password>` |
+| `06-privesc/windows/remote-manager-loot` | Remote Manager Looting | nothing |
 | `06-privesc/windows/runas` | Windows privesc: running as another user | `<Username>` `<TargetIP>` `<Password>` `<Domain>` `<LPORT>` `<LHOST>` `<TargetUser>` |
 | `06-privesc/windows/scheduled-tasks` | Windows privesc: scheduled tasks and autoruns | `<LHOST>` `<LPORT>` |
 | `06-privesc/windows/services` | Windows privesc: services | `<LHOST>` `<LPORT>` `<Username>` `<Service>` `<File>` |
@@ -161,15 +191,29 @@ pwn-broker's `search` skips a playbook's run block, and any line of a playbook t
 | `06-privesc/windows/windows-enum` | Windows privesc: enumeration | nothing |
 | `06-privesc/windows/windows-kernel` | Windows privesc: kernel exploits | `<TargetIP>` `<Hash>` |
 | `07-ad/acl-abuse` | AD ACL abuse | `<TargetUser>` `<Group>` `<Computer>` `<Hash>` `<DCIP>` `<Domain>` `<Username>` `<Password>` `<TargetIP>` |
+| `07-ad/ad-recycle-bin` | AD Recycle Bin | `<DCIP>` `<Username>` `<Domain>` `<Password>` |
+| `07-ad/adcs-esc` | ADCS ESC reference | `<Domain>` `<Password>` `<DCIP>` `<DomainSID>` `<CA>` |
 | `07-ad/adcs` | ADCS | `<DCIP>` `<Hash>` `<Username>` `<Domain>` `<Password>` `<CA>` `<Template>` `<DomainSID>` `<TargetUser>` |
 | `07-ad/asrep` | AS-REP roasting | `<DCIP>` `<Domain>` `<TargetUser>` `<Username>` `<Password>` `<Hash>` |
+| `07-ad/coercion` | Coercion | `<Password>` `<Domain>` |
+| `07-ad/dcsync` | DCSync | `<DCIP>` `<Domain>` `<Username>` `<Password>` `<Hash>` `<TargetUser>` |
 | `07-ad/delegation` | AD delegation | `<DCIP>` `<DCHost>` `<Domain>` `<Username>` `<Password>` `<Hash>` `<Computer>` `<Hostname>` |
 | `07-ad/domain-enum` | AD enumeration | `<DCIP>` `<DCHost>` `<Domain>` `<Username>` `<Password>` `<Hash>` |
+| `07-ad/dpapi` | DPAPI | `<Password>` `<Domain>` |
+| `07-ad/gmsa` | gMSA Abuse | `<DCIP>` `<Password>` `<Domain>` |
 | `07-ad/golden-silver` | Forging Kerberos tickets | `<DCIP>` `<Domain>` `<Username>` `<Password>` `<DomainSID>` `<Hostname>` `<DCHost>` |
 | `07-ad/gpo-abuse` | GPO abuse | `<DCIP>` `<Domain>` `<Username>` `<Password>` `<Hash>` |
 | `07-ad/kerberoasting` | Kerberoasting | `<DCIP>` `<Domain>` `<Username>` `<Password>` `<Hash>` `<TargetUser>` |
+| `07-ad/laps` | LAPS Abuse | `<DCIP>` `<Username>` `<Password>` `<TargetIP>` |
 | `07-ad/lateral-movement` | AD lateral movement | `<DCIP>` `<DCHost>` `<Subnet>` `<CIDR>` `<Username>` `<Password>` `<Hash>` `<TargetIP>` `<Domain>` `<LHOST>` `<LPORT>` `<Hostname>` |
+| `07-ad/machine-account-abuse` | Machine Account Abuse | `<DCIP>` `<Password>` `<Domain>` |
+| `07-ad/mssql-impersonation` | MSSQL impersonation & links | `<Domain>` `<Password>` |
+| `07-ad/ntlm-relay` | NTLM relay | `<Subnet>` `<DCIP>` `<Domain>` `<Password>` `<File>` |
 | `07-ad/responder` | Responder and NTLM relay | `<LHOST>` `<Param>` `<TargetIP>` `<Username>` `<Password>` `<Share>` `<Subnet>` `<CIDR>` `<Domain>` `<TargetUser>` `<DCIP>` |
+| `07-ad/sccm-wsus` | SCCM / WSUS | `<DCIP>` `<Password>` `<Domain>` |
+| `07-ad/shadow-credentials` | Shadow Credentials | `<Domain>` `<Password>` `<DCIP>` |
+| `07-ad/sidhistory-adminsdholder` | SID History + AdminSDHolder | `<Domain>` `<DomainSID>` |
+| `07-ad/timeroasting` | Timeroasting | `<DCIP>` `<Domain>` |
 | `08-pivoting/chisel` | Pivoting with chisel | `<LHOST>` `<InternalIP>` `<Subnet>` `<CIDR>` `<Username>` `<Password>` `<LPORT>` `<Port>` `<PivotInternalIP>` |
 | `08-pivoting/ligolo` | Pivoting with ligolo-ng | `<LHOST>` `<Subnet>` `<CIDR>` `<PivotInternalIP>` `<InternalIP>` `<Username>` `<Password>` `<LPORT>` |
 | `08-pivoting/port-forwarding` | Port forwarding on Windows | `<LHOST>` `<LPORT>` `<InternalIP>` `<Port>` `<Username>` `<Password>` `<PivotIP>` `<Subnet>` `<CIDR>` `<PivotInternalIP>` |

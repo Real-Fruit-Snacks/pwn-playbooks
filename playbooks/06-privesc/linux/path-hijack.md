@@ -46,6 +46,7 @@ strace THE-PROGRAM 2>&1 | grep -iE 'open.*\.so.*(no such|ENOENT)'
 readelf -d THE-PROGRAM | grep -iE 'rpath|runpath'
 - [ ] A library not found, in a folder I can write: THE-FOLDER, and THE-LIBRARY is its name without .so
 - [ ] An RPATH or RUNPATH that names a folder I can write: the same
+```
 cat > /tmp/lib.c <<'EOF'
 #include <stdlib.h>
 #include <unistd.h>
@@ -57,6 +58,7 @@ __attribute__((constructor)) static void pe(void) {
 EOF
 gcc -shared -fPIC -o THE-FOLDER/THE-LIBRARY.so /tmp/lib.c
 THE-PROGRAM
+```
 - [ ] LD_LIBRARY_PATH and LD_PRELOAD are ignored for a SUID program; through sudo with env_keep: :Pb sudo
 
 ## Afterwards
