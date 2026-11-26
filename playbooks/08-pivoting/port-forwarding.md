@@ -62,3 +62,20 @@ netsh advfirewall firewall delete rule name="pf-<LPORT>"
 On Kali:
 sudo systemctl stop ssh
 sudo userdel -r tunnel
+
+## Egress testing
+
+Before exfil or a reverse shell, learn what the target can reach outbound.
+
+- [ ] Stand up listeners on Kali on likely-open ports: nc -lvnp 443, plus 53, 80, 8080 in parallel
+- [ ] From the target, curl http://<KaliIP>:443 and try each port; note which connect
+- [ ] Check for proxy-only egress: env | grep -i proxy, WPAD/PAC files, netstat for a corporate proxy
+- [ ] If only DNS leaves the network, tunnel with iodine or dnscat2 as a last resort — it is slow
+
+## Through an open proxy (Squid)
+
+An open Squid on 3128 is a free ride to the internal network.
+
+- [ ] Point proxychains at it: http <SquidIP> 3128
+- [ ] Internal-only tools and ports are now reachable through the proxy
+- [ ] Read the config for a network map: squid -k parse or squid.conf leaks ACLs and internal ranges

@@ -46,6 +46,10 @@ reason = "The Exam Guide bans mass vulnerability scanners and tools with similar
 basis = "offsec"
 sources = ["exam-guide"]
 
+[playbooks."02-enum/cups"]
+exam = "reviewed"
+requires_tools = ["curl", "python3"]
+
 [playbooks."02-enum/dns"]
 exam = "reviewed"
 requires_tools = ["nmap", "dig", "dnsrecon", "dnsenum", "searchsploit"]
@@ -159,6 +163,10 @@ requires_tools = ["curl", "ffuf", "jwt-tool", "hashcat"]
 exam = "reviewed"
 requires_tools = ["curl", "ffuf", "netcat", "tcpdump"]
 
+[playbooks."03-web/cors"]
+exam = "reviewed"
+requires_tools = ["curl"]
+
 [playbooks."03-web/deserialization"]
 exam = "reviewed"
 requires_tools = ["phpggc", "ysoserial", "netcat", "tcpdump", "python3"]
@@ -166,6 +174,30 @@ requires_tools = ["phpggc", "ysoserial", "netcat", "tcpdump", "python3"]
 [playbooks."03-web/discovery"]
 exam = "reviewed"
 requires_tools = ["curl", "whatweb", "feroxbuster", "ffuf", "gobuster", "katana", "arjun", "git-dumper", "davtest", "cadaver", "searchsploit"]
+
+[playbooks."03-web/email-injection"]
+exam = "reviewed"
+requires_tools = []
+
+[playbooks."03-web/gitea"]
+exam = "reviewed"
+requires_tools = ["curl", "git"]
+
+[playbooks."03-web/gitlab"]
+exam = "reviewed"
+requires_tools = ["git", "searchsploit", "python3"]
+
+[playbooks."03-web/grafana"]
+exam = "reviewed"
+requires_tools = ["curl", "python3"]
+
+[playbooks."03-web/graphql"]
+exam = "reviewed"
+requires_tools = ["curl", "python3"]
+
+[playbooks."03-web/idor"]
+exam = "reviewed"
+requires_tools = ["burp-suite"]
 
 [playbooks."03-web/jenkins"]
 exam = "mixed"
@@ -204,6 +236,34 @@ requires_tools = ["curl", "ffuf", "wget", "python3", "paramiko", "impacket", "ha
 exam = "reviewed"
 requires_tools = ["hydra", "ffuf", "proxychains"]
 
+[playbooks."03-web/mass-assignment"]
+exam = "reviewed"
+requires_tools = []
+
+[playbooks."03-web/nosqli"]
+exam = "reviewed"
+requires_tools = []
+
+[playbooks."03-web/oauth"]
+exam = "reviewed"
+requires_tools = ["burp-suite"]
+
+[playbooks."03-web/osticket"]
+exam = "reviewed"
+requires_tools = ["searchsploit"]
+
+[playbooks."03-web/request-smuggling"]
+exam = "reviewed"
+requires_tools = ["burp-suite", "python3"]
+
+[playbooks."03-web/rocketchat"]
+exam = "reviewed"
+requires_tools = ["curl"]
+
+[playbooks."03-web/roundcube"]
+exam = "reviewed"
+requires_tools = ["searchsploit"]
+
 [playbooks."03-web/sqli"]
 exam = "mixed"
 requires_tools = ["curl", "tcpdump", "impacket", "hashcat", "sqlmap"]
@@ -225,6 +285,10 @@ label = "Not on the OSCP exam: OffSec bans SQLmap as an automatic exploitation t
 reason = "The Exam Guide explicitly names SQLmap as a prohibited automatic exploitation tool."
 basis = "offsec"
 sources = ["exam-guide"]
+
+[playbooks."03-web/ssi-el"]
+exam = "reviewed"
+requires_tools = []
 
 [playbooks."03-web/ssrf"]
 exam = "reviewed"
@@ -274,6 +338,10 @@ reason = "Metasploit modules are limited to one target, and a failed attempt doe
 basis = "offsec"
 sources = ["exam-guide"]
 
+[playbooks."03-web/websocket"]
+exam = "reviewed"
+requires_tools = ["burp-suite"]
+
 [playbooks."03-web/wordpress"]
 exam = "reviewed"
 requires_tools = ["curl", "wpscan", "hashcat", "mysql", "netcat", "searchsploit"]
@@ -286,9 +354,25 @@ requires_tools = ["curl", "katana", "dalfox", "netcat"]
 exam = "reviewed"
 requires_tools = ["curl", "python3", "pipx"]
 
+[playbooks."03-web/zabbix"]
+exam = "reviewed"
+requires_tools = ["curl"]
+
+[playbooks."04-foothold/docker-api"]
+exam = "reviewed"
+requires_tools = ["curl", "docker"]
+
 [playbooks."04-foothold/file-transfer"]
 exam = "reviewed"
 requires_tools = ["curl", "wget", "python3", "impacket", "netcat", "ssh"]
+
+[playbooks."04-foothold/git-clone-rce"]
+exam = "reviewed"
+requires_tools = ["git"]
+
+[playbooks."04-foothold/kubernetes"]
+exam = "reviewed"
+requires_tools = ["curl", "etcdctl", "kubectl"]
 
 [playbooks."04-foothold/metasploit"]
 exam = "mixed"
@@ -333,9 +417,24 @@ reason = "The Exam Guide allows msfvenom and multi handler on all targets but li
 basis = "offsec"
 sources = ["exam-guide"]
 
+[playbooks."04-foothold/phishing-payloads"]
+exam = "reviewed"
+requires_tools = []
+
 [playbooks."04-foothold/public-exploits"]
 exam = "reviewed"
 requires_tools = ["searchsploit", "nmap", "curl", "wget", "metasploit-framework", "gcc", "mingw-w64", "docker", "netcat"]
+
+[playbooks."04-foothold/saltstack"]
+exam = "mixed"
+requires_tools = ["metasploit-framework", "nmap", "python3", "searchsploit"]
+
+[[playbooks."04-foothold/saltstack".restricted]]
+section = "CVE-2020-11651/11652 (< 3000.2 / 2019.2.4)"
+label = "OSCP one-target limit: this Metasploit exploit spends my one target, even if it fails"
+reason = "The Exam Guide limits Metasploit modules to one target and locks in the choice even after failure."
+basis = "offsec"
+sources = ["exam-guide"]
 
 [playbooks."04-foothold/shells"]
 exam = "mixed"
@@ -347,6 +446,10 @@ label = "Not on the OSCP exam: Penelope is kept out as a safe reading because th
 reason = "OffSec does not name Penelope or MCP; the existing caution is retained as a safe reading while this release opens the socket."
 basis = "safe-reading"
 sources = ["exam-guide"]
+
+[playbooks."04-foothold/zookeeper"]
+exam = "reviewed"
+requires_tools = ["curl"]
 
 [playbooks."05-passwords/brute-force"]
 exam = "reviewed"
@@ -363,6 +466,10 @@ requires_tools = ["netexec", "impacket", "kerbrute", "evil-winrm"]
 [playbooks."05-passwords/wordlists"]
 exam = "reviewed"
 requires_tools = ["hashcat", "john", "netexec", "kerbrute", "git"]
+
+[playbooks."06-privesc/linux/ansible"]
+exam = "reviewed"
+requires_tools = ["ansible", "ansible-vault", "hashcat"]
 
 [playbooks."06-privesc/linux/cron"]
 exam = "reviewed"
@@ -412,13 +519,40 @@ requires_tools = ["openssl", "ssh"]
 exam = "reviewed"
 requires_tools = ["metasploit-framework", "peass-ng", "runascs", "netcat", "evil-winrm"]
 
+[playbooks."06-privesc/windows/backup-looting"]
+exam = "reviewed"
+requires_tools = ["impacket", "netexec", "smbclient"]
+
+[playbooks."06-privesc/windows/hivenightmare"]
+exam = "reviewed"
+requires_tools = ["impacket"]
+
+[playbooks."06-privesc/windows/keepass"]
+exam = "reviewed"
+requires_tools = ["hashcat", "keepass2john"]
+
 [playbooks."06-privesc/windows/potatoes"]
 exam = "reviewed"
 requires_tools = ["metasploit-framework", "godpotato", "juicypotato", "roguepotato", "localpotato", "coercedpotato", "printspoofer", "sharpefspotato", "sweetpotato", "netcat", "socat"]
 
+[playbooks."06-privesc/windows/print-spooler"]
+exam = "mixed"
+requires_tools = ["coercer", "impacket", "metasploit-framework", "python3"]
+
+[[playbooks."06-privesc/windows/print-spooler".restricted]]
+section = "Spooler coercion (works patched)"
+label = "Not on the OSCP exam: coercion is kept out as a safe reading; OffSec's pages do not name it"
+reason = "The official pages do not name coercion; this section is kept off the exam as a safe reading."
+basis = "safe-reading"
+sources = ["exam-guide", "exam-faq"]
+
 [playbooks."06-privesc/windows/privileged-groups"]
 exam = "reviewed"
 requires_tools = ["metasploit-framework", "netexec", "impacket", "evil-winrm", "pypykatz", "procdump", "accesschk"]
+
+[playbooks."06-privesc/windows/remote-manager-loot"]
+exam = "reviewed"
+requires_tools = ["hashcat", "python3"]
 
 [playbooks."06-privesc/windows/runas"]
 exam = "reviewed"
@@ -452,6 +586,10 @@ requires_tools = ["searchsploit", "netexec", "impacket", "evil-winrm"]
 exam = "reviewed"
 requires_tools = ["netexec", "impacket", "bloodyad", "certipy", "powerview"]
 
+[playbooks."07-ad/ad-recycle-bin"]
+exam = "reviewed"
+requires_tools = ["ldapsearch"]
+
 [playbooks."07-ad/adcs"]
 exam = "mixed"
 requires_tools = ["certipy", "ntpdate"]
@@ -463,9 +601,35 @@ reason = "The official pages do not name relay or coercion; this section is kept
 basis = "safe-reading"
 sources = ["exam-guide", "exam-faq"]
 
+[playbooks."07-ad/adcs-esc"]
+exam = "mixed"
+requires_tools = ["certipy"]
+
+[[playbooks."07-ad/adcs-esc".restricted]]
+section = "Relay-side"
+label = "Not on the OSCP exam: relay and coercion are kept out as a safe reading; OffSec's pages do not name them"
+reason = "The official pages do not name relay or coercion; this section is kept off the exam as a safe reading."
+basis = "safe-reading"
+sources = ["exam-guide", "exam-faq"]
+
 [playbooks."07-ad/asrep"]
 exam = "reviewed"
 requires_tools = ["netexec", "impacket", "kerbrute", "bloodyad", "rubeus", "hashcat", "john"]
+
+[playbooks."07-ad/coercion"]
+exam = "outside-current-exam"
+requires_tools = ["coercer", "netexec", "petitpotam"]
+
+[[playbooks."07-ad/coercion".restricted]]
+section = "*"
+label = "Not on the OSCP exam: coercion is kept out as a safe reading; OffSec's pages do not name it"
+reason = "The official pages do not name coercion; this playbook is kept off the exam as a safe reading."
+basis = "safe-reading"
+sources = ["exam-guide", "exam-faq"]
+
+[playbooks."07-ad/dcsync"]
+exam = "reviewed"
+requires_tools = ["impacket", "netexec"]
 
 [playbooks."07-ad/delegation"]
 exam = "mixed"
@@ -482,6 +646,14 @@ sources = ["exam-guide", "exam-faq"]
 exam = "reviewed"
 requires_tools = ["netexec", "impacket", "kerbrute", "certipy", "ldapdomaindump", "bloodhound-ce", "rusthound-ce", "sharphound", "snaffler"]
 
+[playbooks."07-ad/dpapi"]
+exam = "reviewed"
+requires_tools = ["donpapi", "hashcat", "mimikatz", "python3"]
+
+[playbooks."07-ad/gmsa"]
+exam = "reviewed"
+requires_tools = ["gmsadumper", "netexec", "python3"]
+
 [playbooks."07-ad/golden-silver"]
 exam = "reviewed"
 requires_tools = ["impacket", "mimikatz", "rubeus"]
@@ -494,9 +666,39 @@ requires_tools = ["bloodyad", "powerview"]
 exam = "reviewed"
 requires_tools = ["netexec", "impacket", "rubeus", "hashcat", "john"]
 
+[playbooks."07-ad/laps"]
+exam = "reviewed"
+requires_tools = ["evil-winrm", "netexec"]
+
 [playbooks."07-ad/lateral-movement"]
 exam = "reviewed"
 requires_tools = ["netexec", "impacket", "evil-winrm", "freerdp", "runascs", "rubeus", "ligolo-ng"]
+
+[playbooks."07-ad/machine-account-abuse"]
+exam = "reviewed"
+requires_tools = ["impacket", "netexec"]
+
+[playbooks."07-ad/mssql-impersonation"]
+exam = "reviewed"
+requires_tools = ["impacket", "mssqlpwner"]
+
+[playbooks."07-ad/ntlm-relay"]
+exam = "outside-current-exam"
+requires_tools = ["coercer", "impacket", "netexec", "petitpotam", "responder"]
+
+[[playbooks."07-ad/ntlm-relay".restricted]]
+section = "*"
+label = "Not on the OSCP exam: relay and coercion are kept out as a safe reading; OffSec's pages do not name them"
+reason = "The official pages do not name relay or coercion; this playbook is kept off the exam as a safe reading."
+basis = "safe-reading"
+sources = ["exam-guide", "exam-faq"]
+
+[[playbooks."07-ad/ntlm-relay".restricted]]
+section = "*"
+label = "Not on the OSCP exam: OffSec bans spoofing, including NBNS, and Responder poisoning"
+reason = "The Exam Guide bans spoofing including NBNS, and the Exam FAQ bars Responder poisoning and spoofing."
+basis = "offsec"
+sources = ["exam-guide", "exam-faq"]
 
 [playbooks."07-ad/responder"]
 exam = "mixed"
@@ -536,6 +738,22 @@ label = "Not on the OSCP exam: coercion is kept out as a safe reading; OffSec's 
 reason = "The official pages do not name coercion; this playbook keeps it off the exam as its own safe reading."
 basis = "safe-reading"
 sources = ["exam-guide", "exam-faq"]
+
+[playbooks."07-ad/sccm-wsus"]
+exam = "reviewed"
+requires_tools = ["python3", "pywsus", "sccmhunter"]
+
+[playbooks."07-ad/shadow-credentials"]
+exam = "reviewed"
+requires_tools = ["certipy", "python3", "pywhisker"]
+
+[playbooks."07-ad/sidhistory-adminsdholder"]
+exam = "reviewed"
+requires_tools = ["mimikatz"]
+
+[playbooks."07-ad/timeroasting"]
+exam = "reviewed"
+requires_tools = ["hashcat", "netexec", "python3"]
 
 [playbooks."08-pivoting/chisel"]
 exam = "reviewed"

