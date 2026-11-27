@@ -23,7 +23,7 @@ forest/dc01 > tool install playbooks
 
 - [Project Page (pwn handbook)](https://real-fruit-snacks.github.io/pwn-playbooks/)
 - [Usage, Kali Dependencies, Vim Run Block & All 132 Playbooks](docs/PLAYBOOKS.md)
-- [Placeholder Reference](placeholders.toml) · [Changelog](CHANGELOG.md) · [Contributing](CONTRIBUTING.md)
+- [Placeholder Reference](placeholders.toml) · [Changelog](CHANGELOG.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
 
 ## Licence
 
