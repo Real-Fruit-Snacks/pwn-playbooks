@@ -9,7 +9,7 @@ Playbooks for pwn-broker: read into the note, fill in, run
 
 ```text
 forest/dc01 > tool install playbooks
-  ok    playbooks 2026.11.26 installed (132 playbooks)
+  ok    playbooks 2026.11.27 installed (132 playbooks)
   read  :Pb <name>      in the note window
   list  playbook list   at the prompt
 ```
@@ -27,4 +27,4 @@ forest/dc01 > tool install playbooks
 
 ## Licence
 
-Playbooks and docs are [CC BY 4.0](LICENSE). `build.py`, tests, `docs/art/`, and page scripts/styles are [MIT](LICENSE-CODE).
+Playbooks and docs are [CC BY 4.0](LICENSE). `build.py`, tests, `docs/art/`, and page scripts/styles are [MIT](LICENSE-CODE). The PowerShell one-liner in the shells playbook is [Nishang](https://github.com/samratashok/nishang)'s, under GPL-3.0.

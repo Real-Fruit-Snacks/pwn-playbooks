@@ -63,19 +63,19 @@ On Kali:
 sudo systemctl stop ssh
 sudo userdel -r tunnel
 
-## Egress testing
+## What the target can reach
+Before a reverse shell or sending anything out, the ports that leave the target's network.
+On Kali, one listener for each likely port, 443, 53, 80 and 8080, with <LPORT> each in turn:
+nc -lvnp <LPORT>
+From the target:
+curl http://<LHOST>:<LPORT>
+- [ ] The ports that connect noted, for every later listener
+- [ ] Only a proxy leaves: env | grep -i proxy, a WPAD or PAC file, and netstat for the proxy's address
+- [ ] Only DNS leaves: a tunnel with iodine or dnscat2, slow, as a last resort
 
-Before exfil or a reverse shell, learn what the target can reach outbound.
-
-- [ ] Stand up listeners on Kali on likely-open ports: nc -lvnp 443, plus 53, 80, 8080 in parallel
-- [ ] From the target, curl http://<KaliIP>:443 and try each port; note which connect
-- [ ] Check for proxy-only egress: env | grep -i proxy, WPAD/PAC files, netstat for a corporate proxy
-- [ ] If only DNS leaves the network, tunnel with iodine or dnscat2 as a last resort — it is slow
-
-## Through an open proxy (Squid)
-
-An open Squid on 3128 is a free ride to the internal network.
-
-- [ ] Point proxychains at it: http <SquidIP> 3128
-- [ ] Internal-only tools and ports are now reachable through the proxy
-- [ ] Read the config for a network map: squid -k parse or squid.conf leaks ACLs and internal ranges
+## Through an open Squid proxy
+An open Squid on 3128 reaches the network behind it. With <TargetIP> the proxy:
+- [ ] The last line of /etc/proxychains4.conf set to http <TargetIP> 3128
+proxychains -q nmap -sT -Pn -p 22,80,445 <InternalIP>
+- [ ] Hosts and ports that only the inside reaches now answer through the proxy
+- [ ] squid.conf, where I can read it, lists the ACLs and the internal ranges

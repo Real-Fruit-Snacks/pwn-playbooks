@@ -13,7 +13,7 @@
 <meta property="og:image" content="https://real-fruit-snacks.github.io/pwn-playbooks/assets/cover-dark.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="560">
-<meta property="og:image:alt" content="pwn-playbooks: the SMB playbook in a vim note, filled in with a target's IP and domain.">
+<meta property="og:image:alt" content="pwn-playbooks: Playbooks for pwn-broker: read into the note, fill in, run — flow diagram showing :Pb smb in the pwn-broker note window loading the SMB enumeration playbook.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -24,11 +24,15 @@
 <link rel="preload" href="fonts/big-shoulders-stencil-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/azeret-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script>
-    // Dark (LX 263) default; opt-in light (LX 512) synced via rfs-theme across RFS pages.
+    // Dark (LX 263) default; opt-in light (LX 512) synced via rfs-theme and color-scheme across RFS pages.
     (function (d) {
         try {
-            var t = localStorage.getItem('rfs-theme');
-            if (t === 'light' || t === 'dayshift') d.dataset.theme = 'light';
+            var t = localStorage.getItem('rfs-theme') || localStorage.getItem('color-scheme');
+            if (t === 'light' || t === 'dayshift') {
+                d.dataset.theme = 'light';
+                var cs = document.querySelector('meta[name="color-scheme"]');
+                if (cs) cs.content = 'light';
+            }
         } catch (e) {}
         if (window.matchMedia && matchMedia('(prefers-reduced-motion: no-preference)').matches) d.classList.add('js-run');
     })(document.documentElement);
@@ -73,7 +77,7 @@
 
 <main class="wrap stack">
 <section class="card first" aria-labelledby="top-h">
-    <p class="runhead"><b>pwn-playbooks <span data-gen="version">2026.11.26</span></b><span><span data-gen="count">132</span> playbooks · pwn-broker 0.1.7</span><span>CC BY 4.0</span></p>
+    <p class="runhead"><b>pwn-playbooks <span data-gen="version">2026.11.27</span></b><span><span data-gen="count">132</span> playbooks · pwn-broker 0.1.14+</span><span>CC BY 4.0</span></p>
     <div class="hero">
         <div>
             <h1 class="title" id="top-h">pwn-playbooks</h1>
@@ -96,7 +100,7 @@
             <div class="screenbox">
                 <p class="bar" aria-hidden="true"><b>Note window</b><span>vim notes.md</span></p>
 <pre class="vim-buf" id="buf" tabindex="0" aria-labelledby="vim-cap"><code><span class="m">##########@@@@@@@@@@</span>
-Playbook: SMB enumeration   02-enum/smb   <span data-gen="version">2026.11.26</span>
+Playbook: SMB enumeration   02-enum/smb   <span data-gen="version">2026.11.27</span>
 <span class="run">my</span>
 <span class="run">/^\%&gt;'yEND OF smb PLAYBOOK$</span>
 <span class="run">mz</span>
@@ -175,7 +179,7 @@ END OF smb PLAYBOOK
 
 <section class="card ref" id="playbooks" aria-labelledby="playbooks-h">
     <h2 id="playbooks-h">The playbooks</h2>
-    <p class="intro"><span data-gen="count">132</span> playbooks in <span data-gen="folders">10</span> folders, release <span data-gen="version">2026.11.26</span>. The folders go by phase, with OS folders where they help. <code>:Pb</code> finds a playbook by its file name wherever it sits, so each name is used once in the whole tree.</p>
+    <p class="intro"><span data-gen="count">132</span> playbooks in <span data-gen="folders">10</span> folders, release <span data-gen="version">2026.11.27</span>. The folders go by phase, with OS folders where they help. <code>:Pb</code> finds a playbook by its file name wherever it sits, so each name is used once in the whole tree.</p>
     <div class="find" hidden>
         <label for="find">Find a playbook</label>
         <input id="find" type="search" autocomplete="off" spellcheck="false" placeholder="kerberoast, smb, potato…">
@@ -194,7 +198,7 @@ END OF smb PLAYBOOK
             <div class="folder" data-folder="02-enum">
                 <h3>Enumeration <span class="path">02-enum/</span> <span class="n">22</span></h3>
                 <ul>
-                    <li><code>cups</code> <span>CUPS / IPP</span></li>
+                    <li><code>cups</code> <span>CUPS and IPP enumeration</span></li>
                     <li><code>dns</code> <span>DNS enumeration</span></li>
                     <li><code>ftp</code> <span>FTP enumeration</span></li>
                     <li><code>ike</code> <span>IKE and IPsec enumeration</span></li>
@@ -223,10 +227,10 @@ END OF smb PLAYBOOK
                 <ul>
                     <li><code>api</code> <span>APIs and JWTs</span></li>
                     <li><code>cmdi</code> <span>Command injection</span></li>
-                    <li><code>cors</code> <span>CORS Misconfiguration</span></li>
+                    <li><code>cors</code> <span>CORS misconfiguration</span></li>
                     <li><code>deserialization</code> <span>Deserialization</span></li>
                     <li><code>discovery</code> <span>Web discovery</span></li>
-                    <li><code>email-injection</code> <span>Email Injection</span></li>
+                    <li><code>email-injection</code> <span>Email injection</span></li>
                     <li><code>gitea</code> <span>Gitea</span></li>
                     <li><code>gitlab</code> <span>GitLab</span></li>
                     <li><code>grafana</code> <span>Grafana</span></li>
@@ -236,22 +240,22 @@ END OF smb PLAYBOOK
                     <li><code>joomla-drupal</code> <span>Joomla and Drupal</span></li>
                     <li><code>lfi</code> <span>File inclusion</span></li>
                     <li><code>login-forms</code> <span>Login forms</span></li>
-                    <li><code>mass-assignment</code> <span>Mass Assignment</span></li>
-                    <li><code>nosqli</code> <span>NoSQL Injection</span></li>
+                    <li><code>mass-assignment</code> <span>Mass assignment</span></li>
+                    <li><code>nosqli</code> <span>NoSQL injection</span></li>
                     <li><code>oauth</code> <span>OAuth</span></li>
                     <li><code>osticket</code> <span>osTicket</span></li>
-                    <li><code>request-smuggling</code> <span>HTTP Request Smuggling</span></li>
+                    <li><code>request-smuggling</code> <span>HTTP request smuggling</span></li>
                     <li><code>rocketchat</code> <span>Rocket.Chat</span></li>
                     <li><code>roundcube</code> <span>Roundcube</span></li>
                     <li><code>sqli</code> <span>SQL injection</span></li>
                     <li><code>sqlmap</code> <span>sqlmap</span></li>
-                    <li><code>ssi-el</code> <span>SSI / EL Injection</span></li>
+                    <li><code>ssi-el</code> <span>SSI and EL injection</span></li>
                     <li><code>ssrf</code> <span>SSRF</span></li>
                     <li><code>ssti</code> <span>SSTI</span></li>
                     <li><code>tomcat</code> <span>Tomcat</span></li>
                     <li><code>upload</code> <span>File upload</span></li>
                     <li><code>web-cves</code> <span>Web CVEs: Log4Shell, Shellshock and others</span></li>
-                    <li><code>websocket</code> <span>WebSocket Attacks</span></li>
+                    <li><code>websocket</code> <span>WebSocket attacks</span></li>
                     <li><code>wordpress</code> <span>WordPress</span></li>
                     <li><code>xss</code> <span>XSS</span></li>
                     <li><code>xxe</code> <span>XXE</span></li>
@@ -263,15 +267,15 @@ END OF smb PLAYBOOK
                 <ul>
                     <li><code>docker-api</code> <span>Docker API</span></li>
                     <li><code>file-transfer</code> <span>File transfer</span></li>
-                    <li><code>git-clone-rce</code> <span>Git Clone RCE</span></li>
+                    <li><code>git-clone-rce</code> <span>Git clone RCE</span></li>
                     <li><code>kubernetes</code> <span>Kubernetes</span></li>
                     <li><code>metasploit</code> <span>Metasploit</span></li>
                     <li><code>msfvenom</code> <span>msfvenom payloads</span></li>
-                    <li><code>phishing-payloads</code> <span>Phishing Payloads</span></li>
+                    <li><code>phishing-payloads</code> <span>Phishing payloads</span></li>
                     <li><code>public-exploits</code> <span>Public exploits</span></li>
                     <li><code>saltstack</code> <span>SaltStack</span></li>
                     <li><code>shells</code> <span>Reverse shells and upgrades</span></li>
-                    <li><code>zookeeper</code> <span>ZooKeeper / Exhibitor</span></li>
+                    <li><code>zookeeper</code> <span>ZooKeeper and Exhibitor</span></li>
                 </ul>
             </div>
             <div class="folder" data-folder="05-passwords">
@@ -286,7 +290,7 @@ END OF smb PLAYBOOK
             <div class="folder" data-folder="06-privesc/linux">
                 <h3>Linux privesc <span class="path">06-privesc/linux/</span> <span class="n">12</span></h3>
                 <ul>
-                    <li><code>ansible</code> <span>Ansible Abuse</span></li>
+                    <li><code>ansible</code> <span>Ansible</span></li>
                     <li><code>cron</code> <span>Cron and timers</span></li>
                     <li><code>docker-lxd</code> <span>Docker and lxd</span></li>
                     <li><code>linux-creds</code> <span>Credential hunting</span></li>
@@ -304,13 +308,13 @@ END OF smb PLAYBOOK
                 <h3>Windows privesc <span class="path">06-privesc/windows/</span> <span class="n">15</span></h3>
                 <ul>
                     <li><code>always-install-elevated</code> <span>AlwaysInstallElevated</span></li>
-                    <li><code>backup-looting</code> <span>Backup Software Looting (Veeam)</span></li>
-                    <li><code>hivenightmare</code> <span>HiveNightmare (SeriousSAM)</span></li>
-                    <li><code>keepass</code> <span>KeePass Looting</span></li>
+                    <li><code>backup-looting</code> <span>Backup software (Veeam)</span></li>
+                    <li><code>hivenightmare</code> <span>HiveNightmare</span></li>
+                    <li><code>keepass</code> <span>KeePass</span></li>
                     <li><code>potatoes</code> <span>SeImpersonate and potatoes</span></li>
-                    <li><code>print-spooler</code> <span>Print Spooler</span></li>
+                    <li><code>print-spooler</code> <span>Print spooler</span></li>
                     <li><code>privileged-groups</code> <span>Privileged groups and rights</span></li>
-                    <li><code>remote-manager-loot</code> <span>Remote Manager Looting</span></li>
+                    <li><code>remote-manager-loot</code> <span>Remote manager credentials</span></li>
                     <li><code>runas</code> <span>Running as another user</span></li>
                     <li><code>scheduled-tasks</code> <span>Scheduled tasks and autoruns</span></li>
                     <li><code>services</code> <span>Services</span></li>
@@ -324,7 +328,7 @@ END OF smb PLAYBOOK
                 <h3>Active Directory <span class="path">07-ad/</span> <span class="n">24</span></h3>
                 <ul>
                     <li><code>acl-abuse</code> <span>AD ACL abuse</span></li>
-                    <li><code>ad-recycle-bin</code> <span>AD Recycle Bin</span></li>
+                    <li><code>ad-recycle-bin</code> <span>AD recycle bin</span></li>
                     <li><code>adcs-esc</code> <span>ADCS ESC reference</span></li>
                     <li><code>adcs</code> <span>ADCS</span></li>
                     <li><code>asrep</code> <span>AS-REP roasting</span></li>
@@ -333,19 +337,19 @@ END OF smb PLAYBOOK
                     <li><code>delegation</code> <span>AD delegation</span></li>
                     <li><code>domain-enum</code> <span>AD enumeration</span></li>
                     <li><code>dpapi</code> <span>DPAPI</span></li>
-                    <li><code>gmsa</code> <span>gMSA Abuse</span></li>
+                    <li><code>gmsa</code> <span>gMSA abuse</span></li>
                     <li><code>golden-silver</code> <span>Forging Kerberos tickets</span></li>
                     <li><code>gpo-abuse</code> <span>GPO abuse</span></li>
                     <li><code>kerberoasting</code> <span>Kerberoasting</span></li>
-                    <li><code>laps</code> <span>LAPS Abuse</span></li>
+                    <li><code>laps</code> <span>LAPS abuse</span></li>
                     <li><code>lateral-movement</code> <span>AD lateral movement</span></li>
-                    <li><code>machine-account-abuse</code> <span>Machine Account Abuse</span></li>
-                    <li><code>mssql-impersonation</code> <span>MSSQL impersonation &amp; links</span></li>
+                    <li><code>machine-account-abuse</code> <span>Machine account abuse</span></li>
+                    <li><code>mssql-impersonation</code> <span>MSSQL impersonation and links</span></li>
                     <li><code>ntlm-relay</code> <span>NTLM relay</span></li>
                     <li><code>responder</code> <span>Responder and NTLM relay</span></li>
-                    <li><code>sccm-wsus</code> <span>SCCM / WSUS</span></li>
-                    <li><code>shadow-credentials</code> <span>Shadow Credentials</span></li>
-                    <li><code>sidhistory-adminsdholder</code> <span>SID History + AdminSDHolder</span></li>
+                    <li><code>sccm-wsus</code> <span>SCCM and WSUS</span></li>
+                    <li><code>shadow-credentials</code> <span>Shadow credentials</span></li>
+                    <li><code>sidhistory-adminsdholder</code> <span>SID history and AdminSDHolder</span></li>
                     <li><code>timeroasting</code> <span>Timeroasting</span></li>
                 </ul>
             </div>
@@ -419,7 +423,7 @@ END OF smb PLAYBOOK
     <h2 id="releases-h">How a release is made</h2>
     <ul class="plain">
         <li>Each playbook is a markdown file in <code>playbooks/</code>: a <code># title</code> line, then the body, with every value as a placeholder from the list.</li>
-        <li><code>python build.py check</code> refuses anything that would break the note: a file name used twice, a name that is not lowercase letters, digits and hyphens, a fold marker, a line the run block would stop at, a placeholder whose case is wrong, the reserved word <code>&lt;Replace&gt;</code>, and Obsidian's callouts, links and front matter. It names the file and line.</li>
+        <li><code>python build.py check</code> refuses anything that would break the note: a file name used twice, a name that is not lowercase letters, digits and hyphens, a fold marker, a line the run block would stop at, a placeholder that is not on the list or whose case is wrong, the reserved word <code>&lt;Replace&gt;</code>, a code fence, and Obsidian's callouts, links and front matter. It names the file and line.</li>
         <li><code>python build.py build --version &lt;version&gt;</code> wraps each playbook in its fold and run block and zips the tree. The same tree always gives the same bytes.</li>
         <li>CI runs the check and the tests on every change. They include a real vim filling in every playbook, with a realistic value for every placeholder.</li>
         <li>A tag <code>v&lt;YYYY.MM.DD&gt;</code> publishes the release, with <code>.1</code>, <code>.2</code> for a second one on the same day. pwn-shop then packages it, and installs it in the official Kali image with the network off before publishing it.</li>

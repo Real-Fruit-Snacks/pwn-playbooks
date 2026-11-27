@@ -7,7 +7,7 @@ sudo ntpdate <DCIP>
 - [ ] Each needs the domain SID: :Pb domain-enum, or the line below
 At the pwn-broker prompt: tool install impacket.
 impacket-lookupsid '<Domain>/<Username>:<Password>@<DCIP>'
-- [ ] Domain SID is S-1-5-21-...: that is <DomainSID>, without a trailing -<RID>
+- [ ] Domain SID is S-1-5-21-...: that is <DomainSID>, without the RID that ends each account's SID
 
 ## The service account's NT hash, for a silver ticket
 Cracking a service account with :Pb kerberoasting gives the plaintext, not the hash. Silver wants the NT hash:

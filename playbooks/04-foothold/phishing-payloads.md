@@ -1,36 +1,34 @@
-# Phishing Payloads
+# Phishing payloads
 
 ## Pick the carrier
-- [ ] Office macro document: the classic, still works wherever macros are allowed
-- [ ] XLL (Excel add-in): no macro banner, just an add-in prompt — slips past VBA-blocking policies
-- [ ] ODT with embedded macro: weaker warning dialog than a .doc
-- [ ] Follina-style remote template: macro-free, but patched estate kills it
+- [ ] An Office document with a macro: the classic, and it still works wherever macros are allowed
+- [ ] An XLL, an Excel add-in: no macro banner, only an add-in prompt, so it passes a policy that blocks VBA
+- [ ] An ODT with a macro: a weaker warning than a .doc gets
+- [ ] A Follina-style remote template: no macro at all, but a patched estate stops it
 
 ## VBA AutoOpen
-Alt+F11, ThisDocument:
-```vba
+Alt+F11, then in ThisDocument, with THE-BASE64 the encoded command from :Pb shells:
 Sub AutoOpen()
-    Shell "powershell -e <Base64Payload>"
+    Shell "powershell -e THE-BASE64"
 End Sub
-```
-- [ ] AutoOpen fires on open; Document_Open is the Word-native variant
-- [ ] Static AV keys on the obvious strings: split and concat 'powershell', never leave a payload readable
-- [ ] Test the detonation chain locally first: a macro that errors burns the one shot
+- [ ] AutoOpen runs when the document opens; Document_Open is Word's own name for the same
+- [ ] Antivirus matches the obvious strings: powershell split and joined again, and no payload left readable
+- [ ] The whole chain tried on a machine of my own first: a macro that errors wastes the one chance
 
 ## XLL
-- [ ] Any DLL exporting xlAutoOpen, renamed .xll: double-click loads it into Excel
-- [ ] The user sees an add-in prompt, not a macro warning — one click either way
-- [ ] Payload lives in xlAutoOpen; keep DllMain quiet
+- [ ] Any DLL that exports xlAutoOpen, renamed to .xll: a double click loads it into Excel
+- [ ] The user sees an add-in prompt, not a macro warning, and it is one click either way
+- [ ] The payload goes in xlAutoOpen, with DllMain left quiet
 
-## Follina (msdt, CVE-2022-30190)
-- [ ] A .docx whose document.xml.rels pulls a remote template containing an ms-msdt: URI handler → code execution with NO macro at all
-- [ ] Only viable on Office builds before the May 2022 mitigation: check the estate before counting on it
+## Follina, CVE-2022-30190
+- [ ] A .docx whose document.xml.rels pulls a remote template that holds an ms-msdt: URI: code runs with no macro at all
+- [ ] Only on Office from before the fix of June 2022: the estate checked before I count on it
 
-## Make it pay twice
-- [ ] The lure document can phone home over SMB: the payload fires AND the hash comes to you — same trick as :Pb responder captures
-- [ ] Sandbox checks before the real stage: domain-joined? mouse moving? sleep past the detonation timer
-- [ ] Payload of choice: staged PowerShell to a listener — staged payload delivery pairs with :Pb metasploit when available
+## Two results from one document
+- [ ] The document can also call home over SMB: the payload runs, and the user's NetNTLMv2 response reaches my listener, as in :Pb responder
+- [ ] Sandbox checks before the real stage: is the host domain-joined, does the mouse move, and a sleep longer than a sandbox waits
+- [ ] The payload: staged PowerShell to a listener, or :Pb metasploit where I may use it
 
-## On the boxes that teach it
-- [ ] Axlle: XLL delivery to a mail client user
-- [ ] Job / Job2: VBA AutoOpen via LibreOffice documents
+## Boxes that teach it
+- [ ] Axlle: an XLL sent to someone who reads mail
+- [ ] Job and Job2: VBA AutoOpen in LibreOffice documents

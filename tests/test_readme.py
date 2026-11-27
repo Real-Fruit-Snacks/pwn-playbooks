@@ -2,6 +2,8 @@
 
 import re
 
+import pytest
+
 from conftest import REPO
 
 import build
@@ -61,4 +63,48 @@ def test_a_readme_left_on_the_old_release_is_caught():
     readme = "playbooks 2026.11.20 installed, from v2026.11.20"
     assert release_problems(readme, changelog) == [
         "the README names 2026.11.20, the changelog's newest release is 2026.12.01"
+    ]
+
+
+# the two pages that state the release and how many playbooks it holds, outside the generated page
+PAGES = ["README.md", "docs/PLAYBOOKS.md"]
+# "132 playbooks", "132 focused Kali/HTB playbooks", "All 132 Playbooks"
+_COUNT = re.compile(r"\b(\d+) (?:focused Kali/HTB )?playbooks\b", re.I)
+
+
+def page_problems(name: str, text: str, release: str, count: int) -> list[str]:
+    """Every release a page names must be the newest one, and every number of playbooks it
+    states must be the tree's. A page that states neither has lost a line this test reads."""
+    found = []
+    releases = set(re.findall(r"\bv?" + _RELEASE + r"\b", text))
+    counts = {int(n) for n in _COUNT.findall(text)}
+    if not releases:
+        found.append(f"{name} names no release")
+    if not counts:
+        found.append(f"{name} states no number of playbooks")
+    for other in sorted(releases - {release}):
+        found.append(f"{name} names {other}, the newest release is {release}")
+    for other in sorted(counts - {count}):
+        found.append(f"{name} says {other} playbooks, the tree has {count}")
+    return found
+
+
+@pytest.mark.parametrize("name", PAGES)
+def test_the_pages_state_the_newest_release_and_the_number_of_playbooks(name):
+    changelog = (REPO / "CHANGELOG.md").read_text(encoding="utf-8")
+    release = _newest(re.findall(r"^## v" + _RELEASE + r"$", changelog, re.M))
+    files, _ = build.playbook_files(REPO)
+    text = (REPO / name).read_text(encoding="utf-8")
+    assert page_problems(name, text, release, len(files)) == []
+
+
+def test_a_page_left_on_an_old_count_or_release_is_caught():
+    text = "playbooks 2026.11.20 installed (131 playbooks)\nAll 132 Playbooks, 132 focused Kali/HTB playbooks\n"
+    assert page_problems("README.md", text, "2026.12.01", 132) == [
+        "README.md names 2026.11.20, the newest release is 2026.12.01",
+        "README.md says 131 playbooks, the tree has 132",
+    ]
+    assert page_problems("README.md", "nothing here\n", "2026.12.01", 132) == [
+        "README.md names no release",
+        "README.md states no number of playbooks",
     ]

