@@ -57,11 +57,9 @@ curl -sk -G "<Scheme>://<WebHost>/THE-PAGE" --data-urlencode "<Param>=127.0.0.1;
 commix -u '<Scheme>://<WebHost>/THE-PAGE?<Param>=127.0.0.1' --batch
 commix -r request.txt -p <Param> --batch
 
-## After RCE: disable_functions bypass
-
-Command injection into PHP often lands in a function on the disable list.
-
-- [ ] Read the disable_functions list from phpinfo or php -i
-- [ ] Try the commonly missed ones: popen, proc_open, pcntl_exec, mail, mb_send_mail, error_log
-- [ ] LD_PRELOAD trick: drop a malicious shared object, then call mail() or error_log so the spawned sendmail loads it
-- [ ] On PHP 7.4+, FFI::cdef calls system() directly when FFI is enabled
+## PHP with disable_functions
+Code that runs in PHP often finds the usual functions on the disabled list.
+- [ ] The disable_functions list, from phpinfo() or php -i
+- [ ] The ones a list often misses: popen, proc_open, pcntl_exec, mail, mb_send_mail, error_log
+- [ ] LD_PRELOAD: a shared object of mine uploaded, then mail() or error_log() called, so that the sendmail it starts loads it
+- [ ] PHP 7.4 or later with FFI on: FFI::cdef calls system() directly

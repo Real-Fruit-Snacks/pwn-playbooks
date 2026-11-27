@@ -86,6 +86,7 @@ On a domain-joined host, as a domain user, with Snaffler.exe fetched to C:\Users
 - [ ] Black and Red findings first, then Yellow
 
 ## winPEAS
+peass-ng's winPEASx64.exe, from tool install peass-ng and serve, as in :Pb windows-enum:
 .\winPEASx64.exe quiet windowscreds filesinfo
 
 ## Use what I find

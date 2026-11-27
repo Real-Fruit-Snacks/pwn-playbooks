@@ -1,29 +1,35 @@
 # GraphQL
 
 ## Before I start
-- [ ] Endpoints: /graphql /graphiql /v1/graphql /playground
-python3 graphw00f.py -t http://target/graphql -f
+- [ ] The endpoint: /graphql, /graphiql, /v1/graphql or /playground
+graphw00f, from https://github.com/dolevf/graphw00f, names the engine behind it:
+git clone https://github.com/dolevf/graphw00f
+python3 graphw00f/main.py -f -t <Scheme>://<WebHost>/graphql
 
 ## Schema
-curl -s http://target/graphql -H 'Content-Type: application/json' -d '{"query":"{__schema{types{name fields{name}}}}"}' | jq
-- [ ] Introspection off → field suggestions ({usr} -> "did you mean user") + clairvoyance
-- [ ] GraphiQL/Playground IDE up in prod = free schema browser
+curl -sk <Scheme>://<WebHost>/graphql -H 'Content-Type: application/json' -d '{"query":"{__schema{types{name fields{name}}}}"}' | jq
+- [ ] GraphiQL or Playground left on in production: the schema, in a browser
+- [ ] Introspection off: the suggestions in its errors, such as did you mean user for usr, give the names away
+clairvoyance, from https://github.com/nikitastupin/clairvoyance, rebuilds the schema from those suggestions:
+pipx install clairvoyance
+clairvoyance <Scheme>://<WebHost>/graphql -o schema.json
 
 ## Abuse
-- [ ] Node queries user(id:2) with no object authz = BOLA: :Pb idor
-- [ ] Mutations: updateUser/resetPassword/createAdmin reachable as low-priv
-- [ ] Sensitive fields: password, token, resetToken, ssn on queryable types
-- [ ] String args → SQLi/LDAPi/CMDi probes in resolver inputs: :Pb sqli
+- [ ] A query by ID, such as user(id:2), with no check on whose object it is: :Pb idor
+- [ ] Mutations a low-privileged user can reach: updateUser, resetPassword, createAdmin
+- [ ] Sensitive fields on types I can query: password, token, resetToken
+- [ ] String arguments go to resolvers: SQL, LDAP and command injection tried in each, :Pb sqli, :Pb cmdi
 
-## Batching = no rate limit
-[{"query":"mutation{login(user:\"admin\",pass:\"pw1\"){token}}"},{"query":"mutation{login(user:\"admin\",pass:\"pw2\"){token}}"}]
-- [ ] Or aliases: a:login(...) b:login(...) — one HTTP request, N attempts
-- [ ] Deep circular nesting = DoS check (single test only)
+## Batching, past a rate limit
+Many attempts in one request, as an array:
+[{"query":"mutation{login(user:\"<Username>\",pass:\"THE-FIRST-GUESS\"){token}}"},{"query":"mutation{login(user:\"<Username>\",pass:\"THE-SECOND-GUESS\"){token}}"}]
+- [ ] Or as aliases in one query: a:login(...) b:login(...)
+- [ ] Deeply nested circular queries are a denial of service: tried once, if at all
 
 ## If it fails
-- [ ] Persisted queries only → dig the query map out of the JS bundles
-- [ ] Auth on every field → get any account, replay the same queries authed
+- [ ] Persisted queries only: the query map is in the JavaScript bundles
+- [ ] A login needed for every field: any account, then the same queries again
 
 ## Next
-- [ ] Tokens from mutations are usually JWTs — check alg=none / weak secrets
-- [ ] Full API methodology: :Pb api
+- [ ] Tokens from mutations are usually JWTs: alg none and weak secrets, :Pb api
+- [ ] The rest of the API: :Pb api

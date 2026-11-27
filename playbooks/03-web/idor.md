@@ -1,33 +1,34 @@
 # IDOR
 
 ## Before I start
-- [ ] TWO accounts (A and B) — reference A's objects from B's session
-- [ ] Burp ext: Autorize — replays everything as low-priv, flags diffs
+- [ ] Two accounts, A and B: A's objects asked for from B's session
+- [ ] Burp's Autorize extension, from the BApp Store, replays every request as the low-privileged user and marks the ones that still work
 
-## Where references hide
+## Where the references are
+The shapes to look for:
 GET /api/users/1337
 GET /download?file=report_582.pdf
 {"order_id": 9402}
 PUT /profile/7
-- [ ] Increment/decrement numerics; pad (0001); negative; huge
-- [ ] Method swap: GET blocked → POST/PUT/PATCH/DELETE same object
-- [ ] Encoded: base64 the id, double URL-encode, wrap in JSON
-- [ ] Pollution: ?id=mine&id=victim
+- [ ] Numbers up and down, zero-padded, negative and very large
+- [ ] GET refused: POST, PUT, PATCH and DELETE on the same object
+- [ ] The ID base64-encoded, URL-encoded twice, or wrapped in JSON
+- [ ] The parameter sent twice, with my ID and then the other user's: ?id=1&id=2
 
-## GUIDs aren't a defense
-- [ ] Hunt leaks: other API responses, JS bundles, wayback, comments/shares endpoints
-- [ ] v1 GUIDs are timestamp-sequential = predictable
+## GUIDs are not a defence
+- [ ] They leak: other API responses, JavaScript bundles, the Wayback Machine, and the comment and share endpoints
+- [ ] Version 1 GUIDs are built from a timestamp, so the next ones can be worked out
 
 ## Escalate
-- [ ] Read objects → loop the range, harvest PII
-- [ ] password/token fields on objects → takeover
-- [ ] PUT/PATCH email change → reset → takeover
-- [ ] role/group field writable → admin: :Pb mass-assignment
+- [ ] Objects I can read: the whole range looped over
+- [ ] A password or token field on an object: the account
+- [ ] The email changed with PUT or PATCH, then a password reset: the account
+- [ ] A role or group field I can write: administrator, :Pb mass-assignment
 
 ## If it fails
-- [ ] 403 on /orders/2 → try /orders/2/items, ?expand=owner — children and expanders forget authz
-- [ ] Everything checks ownership → IDOR clean; test the update path for mass assignment instead
+- [ ] 403 on /orders/2: /orders/2/items and ?expand=owner, since child objects and expansions often skip the check
+- [ ] Ownership checked everywhere: the update path tried for mass assignment instead, :Pb mass-assignment
 
 ## Next
-- [ ] Mass PII → report-grade impact
-- [ ] Takeover → keep mapping the app as the victim: :Pb api
+- [ ] Other users' data in bulk: what it exposes, written up
+- [ ] An account taken over: the application mapped again as that user, :Pb api

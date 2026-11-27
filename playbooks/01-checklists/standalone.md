@@ -19,12 +19,18 @@
 - [ ] Databases, default and found credentials: :Pb mysql, :Pb mssql, :Pb postgresql, :Pb redis, :Pb mongodb, :Pb oracle
 - [ ] MQTT, AMQP, ActiveMQ and RabbitMQ management: :Pb message-queues
 - [ ] IKE on UDP 500 or 4500: main and aggressive mode, PSK capture and reuse: :Pb ike
+- [ ] CUPS on 631: printers, jobs and cups-browsed: :Pb cups
+- [ ] The Docker API on 2375, and a Kubernetes API server, kubelet or etcd: :Pb docker-api, :Pb kubernetes
+- [ ] A Salt master on 4505 and 4506, ZooKeeper on 2181 or Exhibitor on 8080: :Pb saltstack, :Pb zookeeper
 - [ ] RDP, WinRM and VNC, with every credential I find: :Pb remote-access
 - [ ] Logins worth guessing, with a reason to: :Pb brute-force
 - [ ] Anything unknown: a banner grab in :Pb ports, then the port and the banner searched
 
 ## Foothold
 - [ ] A public exploit, read first, then adapted to this target: :Pb public-exploits
+- [ ] A service of its own that crashes on long input, with its program to hand: :Pb bof
+- [ ] A repository that the target clones or pulls: :Pb git-clone-rce
+- [ ] Someone who opens what I send: :Pb phishing-payloads
 - [ ] A reverse shell, upgraded to a full terminal: :Pb shells
 - [ ] My tools on the target: :Pb file-transfer, or serve at the pwn-broker prompt
 - [ ] The user proof from an interactive shell, with the IP in the same screenshot
@@ -44,6 +50,7 @@ id; sudo -l
 - [ ] Credentials in configs, history, web roots and databases, tried on root and every user: :Pb linux-creds
 - [ ] Files run by root that I can write: :Pb writable-files
 - [ ] MySQL running as root, with a login: :Pb mysql-udf
+- [ ] Ansible on the host, as a control node or a managed one: :Pb ansible
 - [ ] Programs called by bare name, and libraries: :Pb path-hijack
 - [ ] Ports listening on localhost only, forwarded to Kali and enumerated: :Pb ssh-tunnels or :Pb chisel
 ss -tulpn
@@ -58,6 +65,10 @@ whoami /all
 - [ ] Credentials: PowerShell history, unattend files, AutoLogon, saved credentials: :Pb windows-creds, and :Pb runas for a saved one
 type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
 cmdkey /list
+- [ ] KeePass databases, and sessions saved in mRemoteNG, WinSCP, PuTTY or VNC: :Pb keepass, :Pb remote-manager-loot
+- [ ] Backup software such as Veeam, on this host or one I can reach: :Pb backup-looting
+- [ ] The print spooler running: :Pb print-spooler
+- [ ] SAM readable by BUILTIN\Users on Windows 10: :Pb hivenightmare
 - [ ] Services: writable programs, unquoted paths, weak permissions: :Pb services
 - [ ] Scheduled tasks and autoruns that run as someone else, with programs I can write: :Pb scheduled-tasks
 - [ ] AlwaysInstallElevated set to 1 in both: :Pb always-install-elevated

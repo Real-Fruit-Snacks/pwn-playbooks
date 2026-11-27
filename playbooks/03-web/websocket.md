@@ -1,29 +1,31 @@
-# WebSocket Attacks
+# WebSocket attacks
 
 ## Before I start
-- [ ] WS endpoints in Burp: Proxy > WebSockets history
-- [ ] CLI fallback: websocat 'wss://target/socket'
+- [ ] The endpoints, in Burp: Proxy, WebSockets history
+websocat for the command line, from https://github.com/vi/websocat/releases, with THE-PATH the socket's path:
+websocat 'wss://<WebHost>/THE-PATH'
+- [ ] ws:// in place of wss:// where the site is plain HTTP
 
-## CSWSH (origin not validated)
-- [ ] Replay the handshake in Burp with Origin: https://evil.com → 101 + normal behavior = hijackable
-- [ ] PoC page: new WebSocket('wss://target/chat') with cookies → exfil onmessage
-- [ ] Token-in-URL instead of cookies = classic CSWSH dead, but token leaks via Referer
+## Cross-site WebSocket hijacking
+- [ ] The handshake replayed in Burp with Origin set to a site of mine: 101 and normal behaviour means the origin is not checked
+- [ ] A page of mine opens new WebSocket('wss://<WebHost>/THE-PATH'), the browser sends the user's cookies with it, and onmessage sends me what comes back
+- [ ] A token in the URL in place of cookies: no hijack this way, but the token leaks through the Referer header
 
-## Message injection
-- [ ] XSS: <img src=x onerror=alert(1)> in chat/dashboard fields: :Pb xss
-- [ ] SQLi: ' OR 1=1-- in query fields: :Pb sqli
-- [ ] NoSQLi: {"$ne":null} values: :Pb nosqli
-- [ ] CMDi: ; id / $(id)
+## Injection in messages
+- [ ] XSS, <img src=x onerror=alert(1)> in chat and dashboard fields: :Pb xss
+- [ ] SQL injection, ' OR 1=1-- in query fields: :Pb sqli
+- [ ] NoSQL injection, {"$ne":null} as a value: :Pb nosqli
+- [ ] Command injection, ; id and $(id): :Pb cmdi
 
-## Per-message authz
-- [ ] Tamper userId/roomId — handshake auth is not message auth
-- [ ] Replay captured admin messages
-- [ ] Send actions the UI hides: {"action":"dump"}
+## Authorisation per message
+- [ ] userId and roomId changed: a checked handshake does not mean each message is checked
+- [ ] An administrator's messages, captured and sent again
+- [ ] Actions the page never offers, such as {"action":"dump"}
 
 ## If it fails
-- [ ] Origin validated against allowlist → try subdomain of allowed origin, null origin
-- [ ] Per-message auth enforced → hunt the one handler that forgets (export/admin/debug)
+- [ ] The origin checked against a list: a subdomain of an allowed origin, and Origin: null
+- [ ] Every message checked: the one handler that is not, among export, admin and debug
 
 ## Next
-- [ ] Stolen session/tokens → :Pb api
-- [ ] Command execution → :Pb shells
+- [ ] A stolen session or token: :Pb api
+- [ ] Commands: :Pb shells

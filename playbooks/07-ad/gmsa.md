@@ -1,27 +1,31 @@
-# gMSA Abuse
+# gMSA abuse
 
 ## Before I start
-- [ ] BloodHound edge ReadGMSAPassword on a gMSA, or I hold an account in the gMSA's PrincipalsAllowedToRetrieveManagedPassword
-- [ ] Find the gMSAs: nxc ldap <DCIP> -u '<User>' -p '<Password>' --gmsa (or PowerView Get-DomainObject -LDAPFilter '(objectClass=msDS-GroupManagedServiceAccount)')
+- [ ] BloodHound's ReadGMSAPassword edge on a gMSA, or an account of mine in its PrincipalsAllowedToRetrieveManagedPassword
+At the pwn-broker prompt: tool install netexec.
 
-## Read the password blob
-nxc ldap <DCIP> -u '<User>' -p '<Password>' -M gmsa
-python3 gMSADumper.py -u '<User>' -p '<Password>' -d '<Domain>' -l <DCIP>
-- [ ] Windows: Get-ADServiceAccount -Identity <gMSA> -Properties msDS-ManagedPassword then DSInternals ConvertFrom-ADManagedPasswordBlob
-- [ ] Output is the NT hash of a long random password — use it as-is, cracking is pointless
+## Read the password
+nxc ldap <DCIP> -u '<Username>' -p '<Password>' --gmsa
+- [ ] It lists every gMSA, and prints the NT hash of each one I may read
+gMSADumper, from https://github.com/micahvandeusen/gMSADumper, does the same:
+git clone https://github.com/micahvandeusen/gMSADumper
+python3 gMSADumper/gMSADumper.py -u '<Username>' -p '<Password>' -d '<Domain>' -l <DCIP>
+- [ ] From Windows, with <TargetUser> the gMSA: Get-ADServiceAccount -Identity '<TargetUser>' -Properties msDS-ManagedPassword, then ConvertFrom-ADManagedPasswordBlob from DSInternals, https://github.com/MichaelGrafnetter/DSInternals
+- [ ] The NT hash of a long random password: used as it is, since cracking it is pointless
 
-## Golden gMSA (post-DA)
-- [ ] Hold the KDS root key (DC compromise) → compute ANY gMSA's hash offline, forever, no LDAP query: GoldenGMSA.exe kdsinfo / gmsa compute
-- [ ] Persistence angle: no replication traffic, nothing to see in DC logs
+## Golden gMSA, after domain administrator
+- [ ] With the KDS root key, from a compromised DC, any gMSA's password is computed offline, for good, with no LDAP query: GoldenGMSA.exe, built from https://github.com/Semperis/GoldenGMSA, with kdsinfo, gmsainfo and compute
+- [ ] For persistence: no replication traffic, and nothing in the DC's logs
 
-## BadSuccessor (dMSA, pre-Aug-2025 patches)
-- [ ] Server 2025 DC + write on an OU → create dMSA with msDS-ManagedAccountPrecededByLink pointing at a privileged account → migrate → inherit its privileges (CVE-2025-53779)
-- [ ] tooling: SharpSuccessor / NetExec badsuccessor module to check and abuse
+## BadSuccessor, on Server 2025
+- [ ] A Server 2025 DC unpatched since August 2025, and write on an OU: a dMSA created with msDS-ManagedAccountPrecededByLink set to a privileged account inherits that account's rights, CVE-2025-53779
+nxc ldap <DCIP> -u '<Username>' -p '<Password>' -M badsuccessor
+- [ ] The module only checks; SharpSuccessor, built from https://github.com/logangoins/SharpSuccessor, does the abuse
 
 ## If it fails
-- [ ] Access denied reading the blob → I'm not in the allowed principals; BloodHound path to one of them instead
-- [ ] Windows LAPS-style encrypted blob on 2025 (dMSA) → need the decryption group
+- [ ] Access denied on the password: my account is not among the allowed principals, so a BloodHound path to one that is
+- [ ] A dMSA on Server 2025 with an encrypted password: the group that may decrypt it is needed
 
 ## Next
-- [ ] gMSA hashes usually belong to service accounts with real reach: :Pb lateral-movement
-- [ ] Service account with SPN + delegation configured: :Pb delegation
+- [ ] A gMSA usually runs a service with real reach: :Pb lateral-movement
+- [ ] One with an SPN and delegation set: :Pb delegation
