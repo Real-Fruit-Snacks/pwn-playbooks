@@ -1,34 +1,42 @@
-name: Bug report
-description: Report a reproducible defect or platform issue
-labels: ["bug"]
+name: Bug
+description: A playbook's command is wrong, or a playbook does not read in or fill in as the docs say
+labels: [bug]
 body:
-  - type: textarea
-    id: summary
+  - type: input
+    id: versions
     attributes:
-      label: What happened
-      description: Plain description of the input, command or action, and actual output.
+      label: Versions
+      description: Kali, pwn-broker (`pwn-broker --version`) and the playbooks release, which ends the Playbook line at the top of each playbook in the note
+      placeholder: Kali 2026.3, pwn-broker 0.1.14, playbooks 2026.11.26
+    validations:
+      required: true
+  - type: input
+    id: playbook
+    attributes:
+      label: Playbook and line
+      description: The playbook's path, as its Playbook line shows it, and the line that is wrong, as the playbook has it
+      placeholder: "02-enum/smb: nxc smb <TargetIP> -u '' -p '' --shares"
+    validations:
+      required: true
+  - type: textarea
+    id: typed
+    attributes:
+      label: What I ran
+      description: The line as filled in, or the keys typed for a run block that went wrong. Remove real credentials, flags and addresses first. Placeholders are fine.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: printed
+    attributes:
+      label: What it printed
+      description: The tool's own output or error, and its version if the line is a tool's
+      render: text
     validations:
       required: true
   - type: textarea
     id: expected
     attributes:
-      label: Expected behavior
-      description: What you expected to happen instead.
-    validations:
-      required: true
-  - type: textarea
-    id: repro
-    attributes:
-      label: Reproduction steps
-      placeholder: |
-        1. Run `tool --version`
-        2. Run `tool ...`
-    validations:
-      required: true
-  - type: input
-    id: env
-    attributes:
-      label: OS and version
-      placeholder: "Windows 11 24H2 / Rust 1.84 / tool v1.0.0"
+      label: What you expected
     validations:
       required: true

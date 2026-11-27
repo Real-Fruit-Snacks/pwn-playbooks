@@ -6,7 +6,7 @@ Complete workflow, Kali dependencies, vim run-block guide, full catalog of all 1
 
 Each release is one zip, `playbooks-<version>.zip`, with a `SHA256SUMS.txt` beside it, on the [releases page](https://github.com/Real-Fruit-Snacks/pwn-playbooks/releases). The zip holds `LICENSE` and `playbooks/`, the playbooks built in the folders listed below.
 
-In pwn-broker 0.1.7 or later, they install like any tool, from [pwn-shop](https://github.com/Real-Fruit-Snacks/pwn-shop)'s package `playbooks`:
+In pwn-broker 0.1.14 or later, they install like any tool, from [pwn-shop](https://github.com/Real-Fruit-Snacks/pwn-shop)'s package `playbooks`:
 
 ```text
 forest/dc01 > tool install playbooks
@@ -69,7 +69,7 @@ The lines from `my` to `'y` are the run block. To fill it in:
 
 The `Fill in:` line is inside that range, so afterwards it shows the values used, and any placeholder still on it is one not yet filled. The same playbook read in twice, for two targets, fills only the copy whose block ran. A placeholder I left out stays as it is in the body, to fill in by hand once I know it.
 
-The run block goes through a register because pasting it from the terminal would only insert it as text. A value is typed into a vim replacement, so a `/`, `&`, `\` or `~` in it needs a backslash in front, `\/` or `\&`. That matters mostly for passwords. It matters for safety too: an unescaped `/` ends the replacement, and vim reads what follows as the rest of the command line, so a value such as `x/|!<command>` runs that command when `@q` runs. A line break in a value does the same: what follows it is the next line of the run block, run as a command. Read a value before you paste it, above all one taken from a target, escape every `/` in it, and never paste one that spans lines. A playbook with nothing to fill in has no run block.
+The run block goes through a register because pasting it from the terminal would only insert it as text. A value is typed into a vim replacement, so a `/`, `&`, `\` or `~` in it needs a backslash in front, `\/` or `\&`. That matters mostly for passwords. It matters for safety too: an unescaped `/` ends the replacement, and vim reads what follows as the rest of the command line, so a value such as `x/|!<command>` runs that command when `@q` runs. A line break in a value does the same: what follows it is the next line of the run block, run as a command. Read a value before you paste it, above all one taken from a target, escape every `/` in it, and never paste one that spans lines. A `'` in a value is a trap of its own, since the playbooks put values in single quotes, as in `-p '<Password>'`, and a quote in the value ends them: requote that line by hand before running it, with the value in double quotes or each `'` written as `'\''`. A playbook with nothing to fill in has no run block.
 
 pwn-broker's `search` skips a playbook's run block, and any line of a playbook that still holds a placeholder, so unfilled template text never floods the results. A line I have filled in is searched like any other.
 

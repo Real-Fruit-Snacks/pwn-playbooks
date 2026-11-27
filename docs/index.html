@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>pwn-playbooks: playbooks for pwn-broker, read into a box's note and filled in</title>
-<meta name="description" content="Playbooks for pwn-broker, read into a box's note and filled in">
+<meta name="description" content="Playbooks for pwn-broker: read into the note, fill in, run">
 <link rel="canonical" href="https://real-fruit-snacks.github.io/pwn-playbooks/">
 <meta property="og:title" content="pwn-playbooks">
-<meta property="og:description" content="Playbooks for pwn-broker, read into a box's note and filled in">
+<meta property="og:description" content="Playbooks for pwn-broker: read into the note, fill in, run">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://real-fruit-snacks.github.io/pwn-playbooks/">
 <meta property="og:image" content="https://real-fruit-snacks.github.io/pwn-playbooks/assets/cover-dark.png">
@@ -86,7 +86,7 @@
             <ol class="ck steps" id="fill-ck" aria-label="Reading one in and filling it in">
                 <li id="get" data-state="todo"><span class="box" aria-hidden="true"></span><span class="ch">Get them</span><span class="ld" aria-hidden="true"></span><span class="rs">At the prompt</span>
                     <div class="act"><div class="cmd"><code>tool install playbooks</code><button class="copy" type="button" data-copy="tool install playbooks">Copy</button></div></div>
-                    <p class="why">In pwn-broker 0.1.7 or later, from <a href="https://real-fruit-snacks.github.io/pwn-shop/">pwn-shop</a>'s package, checked and pinned like any tool. <code>finish</code> takes them off again, and a box reopened later gets the release it was worked with. From 0.1.10, the first new box on a machine asks whether new boxes should get them, and keeps the answer.</p></li>
+                    <p class="why">In pwn-broker 0.1.14 or later, from <a href="https://real-fruit-snacks.github.io/pwn-shop/">pwn-shop</a>'s package, checked and pinned like any tool. <code>finish</code> takes them off again, and a box reopened later gets the release it was worked with. From 0.1.10, the first new box on a machine asks whether new boxes should get them, and keeps the answer.</p></li>
                 <li data-step="2" data-state="done"><span class="box" aria-hidden="true"></span><span class="ch">Read one in</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>:Pb smb</code></span></li>
                 <li data-step="3" data-state="done"><span class="box" aria-hidden="true"></span><span class="ch">Type the values</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>ca&gt;</code></span></li>
                 <li data-step="4" data-state="done"><span class="box" aria-hidden="true"></span><span class="ch">Delete the rest</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>dd</code></span></li>
@@ -170,7 +170,7 @@ END OF smb PLAYBOOK
             <li><span class="ch">Two targets</span><span class="ld" aria-hidden="true"></span><span class="rs">Own copy only</span>
                 <p class="why">The same playbook read in twice fills only the copy whose block ran: the search for its end looks only below the block. A copy whose <code>END OF</code> line I deleted changes nothing, unless another copy follows it.</p></li>
             <li><span class="ch">Through a register</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>"q</code></span>
-                <p class="why">Pasting the block from the terminal would only insert it as text. A value is typed into a vim replacement, so a <code>/</code>, <code>&amp;</code>, <code>\</code> or <code>~</code> in it needs a backslash in front, which matters mostly for passwords. An unescaped <code>/</code> ends the replacement and vim runs what follows it, <code>|!</code> and a shell command included, and a line break in a value does the same, so read a value taken from a target before you paste it.</p></li>
+                <p class="why">Pasting the block from the terminal would only insert it as text. A value is typed into a vim replacement, so a <code>/</code>, <code>&amp;</code>, <code>\</code> or <code>~</code> in it needs a backslash in front, which matters mostly for passwords. An unescaped <code>/</code> ends the replacement and vim runs what follows it, <code>|!</code> and a shell command included, and a line break in a value does the same, so read a value taken from a target before you paste it. A <code>'</code> in a value ends the single quotes a playbook puts it in, so requote that line by hand before running it.</p></li>
             <li><span class="ch">Search stays useful</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>search</code></span>
                 <p class="why">pwn-broker's <code>search</code> skips a playbook's run block, and any line that still holds a placeholder, so unfilled template text never floods the results. A line I have filled in is searched like any other.</p></li>
         </ul>
@@ -434,7 +434,7 @@ END OF smb PLAYBOOK
 
 <footer class="wrap foot">
     <p>Playbooks and documentation CC BY 4.0; code MIT. Not affiliated with Hack The Box.</p>
-    <p><a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks">Source</a> · <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/releases">Releases</a> · <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/blob/main/CHANGELOG.md">Changelog</a> · <a href="https://real-fruit-snacks.github.io/">RFS</a></p>
+    <p><a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks">Source</a> · <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/releases">Releases</a> · <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/blob/main/CHANGELOG.md">Changelog</a> · <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/blob/main/SECURITY.md">Security</a> · <a href="https://real-fruit-snacks.github.io/">RFS</a></p>
 </footer>
 </div>
 
