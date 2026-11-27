@@ -9,7 +9,7 @@ Playbooks for pwn-broker: read into the note, fill in, run
 
 ```text
 forest/dc01 > tool install playbooks
-  ok    playbooks 2026.11.26 installed (132 playbooks)
+  ok    playbooks 2026.11.27 installed (132 playbooks)
   read  :Pb <name>      in the note window
   list  playbook list   at the prompt
 ```
