@@ -2,6 +2,7 @@
 
 ## v2026.11.27
 
+- The shells playbook starts the shell-tunnel listener on Kali with `-N`. The listener is an SSH server on every interface that takes the packaged password, so without `-N` anyone who could reach the port got a shell and SFTP on Kali. With it the listener refuses shells, SFTP and local forwards and carries only the target's callback.
 - The forty-four playbooks of v2026.11.25 are rewritten in the form the rest use: placeholders from `placeholders.toml` in place of `<User>`, `<AttackerIP>` and literal `http://target` addresses, first person, no arrows and no code fences, a source for every outside tool and a `tool install` line for every pwn-shop one. Their titles follow the others, so the privilege escalation ones start `Windows privesc:` or `Linux privesc:`. The sections that release added to older playbooks get the same treatment.
 - Commands in them that did not run are corrected against each tool's own source: NetExec's `--gmsa`, `-M laps` and its smb-only `add-computer`; PXEThief's modes, which run on Windows; pywsus's `-H` and `-e`; SharpWSUS's `create` and `approve`; SharpSCCM's `local secrets -m wmi`; `certipy shadow remove -device-id`; `impacket-dpapi`, with hashcat 15900 and 15910 for a master key; mimikatz's `sid::patch` and `sid::add`; hashcat 34300 for a KDBX 4 database; `impacket-ntlmrelayx` by its full path under sudo; the kubelet's `/run` endpoint; and the PrintNightmare share, which is now created and served with sudo. `--username` goes on the hashcat lines that read `*2john` or timeroast output.
 - Exam labels: the WSUS man in the middle in the SCCM and WSUS playbook is labelled as spoofing, the relay steps in the machine account and MSSQL impersonation playbooks carry the relay label, and the Metasploit module in the MSSQL one the one-target label.
@@ -11,7 +12,6 @@
 - `build.py check` now refuses a `<Name>` that starts with a capital letter and is not in `placeholders.toml`, a code fence, and a fold marker in a title. Literal text of that shape is named for its playbook in a new `[unlisted]` table of `placeholders.toml`.
 - The tests hold the release name and the number of playbooks in the README and docs/PLAYBOOKS.md against the tree, every `tool install` against the playbook's `requires_tools`, and an exam label over a restricted tool, a Metasploit module or a pointer to an off-exam playbook wherever a line names one. Eight playbooks gain the pwn-shop tools their `requires_tools` lacked.
 - The release workflow refuses a tag that is not on main, and every action in the workflows is pinned to a commit.
-- The shells playbook starts the shell-tunnel listener on Kali with `-N`. The listener is an SSH server on every interface that takes the packaged password, so without `-N` anyone who could reach the port got a shell and SFTP on Kali. With it the listener refuses shells, SFTP and local forwards and carries only the target's callback.
 
 ## v2026.11.26
 
