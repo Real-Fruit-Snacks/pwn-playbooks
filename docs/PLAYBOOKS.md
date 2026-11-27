@@ -215,7 +215,7 @@ The folders go by phase, with OS folders where they help. `:Pb` finds a playbook
 ## How a release is made
 
 - Each playbook is a markdown file in `playbooks/`: a `# title` line, then the body, with every value as a placeholder from the list.
-- `python build.py check` refuses anything that would break the note: a file name used twice, a name that is not lowercase letters, digits and hyphens, a fold marker, a line the run block would stop at, a placeholder whose case is wrong, the reserved word `<Replace>`, and Obsidian's callouts, links and front matter. It names the file and line.
+- `python build.py check` refuses anything that would break the note: a file name used twice, a name that is not lowercase letters, digits and hyphens, a fold marker, a line the run block would stop at, a placeholder that is not on the list or whose case is wrong, the reserved word `<Replace>`, a code fence, and Obsidian's callouts, links and front matter. It names the file and line.
 - `python build.py build --version <version>` wraps each playbook in its fold and run block and zips the tree. The same tree always gives the same bytes.
 - CI runs the check and the tests on every change. They include a real vim filling in every playbook, with a realistic value for every placeholder.
 - A tag `v<YYYY.MM.DD>` publishes the release, with `.1`, `.2` for a second one on the same day. A published release is never changed: a fix is a new release.

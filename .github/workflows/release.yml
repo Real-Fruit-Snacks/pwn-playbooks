@@ -10,7 +10,8 @@ name: release
 # its SHA-256 recorded, as a job output, before anything unpinned is installed (vim, pytest); the
 # notes are set aside with it, with their SHA-256 recorded too. The publish job has write access,
 # runs none of the repository's code, and refuses any file that does not have its recorded
-# SHA-256. A tag that already has a release fails: a published release is never changed.
+# SHA-256. A tag that already has a release fails: a published release is never changed. A tag
+# on a commit that is not on main fails before anything is built: a release is cut from main.
 #
 # Run by hand (workflow_dispatch) with a version, from any ref, it is a dry run: both jobs run
 # every step, and only the step that publishes is skipped. The same tree builds the same bytes, so
@@ -37,10 +38,20 @@ jobs:
       sha256: ${{ steps.sha256.outputs.sha256 }}
       notes_sha256: ${{ steps.notes.outputs.sha256 }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
+          # every branch's history, so that the tag can be held against main below
+          fetch-depth: 0
+      - name: The tag is on main
+        if: github.event_name == 'push' && github.ref_type == 'tag'
+        run: |
+          if ! git merge-base --is-ancestor HEAD origin/main; then
+            echo "::error::$GITHUB_REF_NAME is at $(git rev-parse HEAD), which is not on main"
+            exit 1
+          fi
+          echo "ok    $GITHUB_REF_NAME is on main"
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: '3.13'
       - name: Version
@@ -119,7 +130,7 @@ jobs:
           python -m pip install pytest
           python -m pytest -q -W error
       - name: Release files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: release-files
           path: ${{ runner.temp }}/release-upload/
@@ -130,7 +141,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: release-files
           path: ${{ runner.temp }}/release-files
