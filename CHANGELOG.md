@@ -8,6 +8,7 @@
 - The checklists point to every playbook: the AD checklist to DCSync, LAPS, gMSA, timeroasting and the rest, the standalone checklist to the new service and privilege escalation playbooks, and the web checklist to each web playbook. The AD checklist turns NTP back on when the box is done.
 - Fetches are pinned: ysoserial to v0.0.6, and the PHP filter chain generator, PwnKit and Dirty COW sources to a commit.
 - The PowerShell one-liner in the shells playbook is credited to Nishang, with its licence.
+- The shells playbook starts the shell-tunnel listener on Kali with `-N`. The listener is an SSH server on every interface that takes the packaged password, so without `-N` anyone who could reach the port got a shell and SFTP on Kali. With it the listener refuses shells, SFTP and local forwards and carries only the target's callback.
 
 ## v2026.11.26
 
