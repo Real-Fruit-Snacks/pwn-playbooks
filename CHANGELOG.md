@@ -11,6 +11,7 @@
 - `build.py check` now refuses a `<Name>` that starts with a capital letter and is not in `placeholders.toml`, a code fence, and a fold marker in a title. Literal text of that shape is named for its playbook in a new `[unlisted]` table of `placeholders.toml`.
 - The tests hold the release name and the number of playbooks in the README and docs/PLAYBOOKS.md against the tree, every `tool install` against the playbook's `requires_tools`, and an exam label over a restricted tool, a Metasploit module or a pointer to an off-exam playbook wherever a line names one. Eight playbooks gain the pwn-shop tools their `requires_tools` lacked.
 - The release workflow refuses a tag that is not on main, and every action in the workflows is pinned to a commit.
+- The shells playbook starts the shell-tunnel listener on Kali with `-N`. The listener is an SSH server on every interface that takes the packaged password, so without `-N` anyone who could reach the port got a shell and SFTP on Kali. With it the listener refuses shells, SFTP and local forwards and carries only the target's callback.
 
 ## v2026.11.26
 
