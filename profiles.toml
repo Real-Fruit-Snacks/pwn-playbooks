@@ -122,7 +122,7 @@ requires_tools = ["nmap", "redis-cli", "hydra", "curl", "impacket", "hashcat"]
 
 [playbooks."02-enum/remote-access"]
 exam = "reviewed"
-requires_tools = ["nmap", "netexec", "evil-winrm", "freerdp", "vncviewer", "hydra", "searchsploit"]
+requires_tools = ["nmap", "netexec", "evil-winrm", "freerdp", "vncviewer", "hydra", "searchsploit", "evil-winrm-py"]
 
 [playbooks."02-enum/smb"]
 exam = "reviewed"
@@ -484,7 +484,7 @@ requires_tools = ["pspy", "netcat", "searchsploit"]
 
 [playbooks."06-privesc/linux/docker-lxd"]
 exam = "reviewed"
-requires_tools = ["docker", "lxd", "kubectl", "git", "curl"]
+requires_tools = ["docker", "lxd", "kubectl", "git", "curl", "cdk"]
 
 [playbooks."06-privesc/linux/linux-creds"]
 exam = "reviewed"
@@ -579,11 +579,11 @@ requires_tools = ["metasploit-framework", "runascs", "evil-winrm", "netcat"]
 
 [playbooks."06-privesc/windows/windows-creds"]
 exam = "reviewed"
-requires_tools = ["peass-ng", "snaffler", "netexec", "impacket", "evil-winrm", "runascs", "john"]
+requires_tools = ["peass-ng", "snaffler", "netexec", "impacket", "evil-winrm", "runascs", "john", "lazagne"]
 
 [playbooks."06-privesc/windows/windows-enum"]
 exam = "reviewed"
-requires_tools = ["peass-ng", "searchsploit", "chisel"]
+requires_tools = ["peass-ng", "searchsploit", "chisel", "privesccheck"]
 
 [playbooks."06-privesc/windows/windows-kernel"]
 exam = "reviewed"
@@ -591,7 +591,7 @@ requires_tools = ["searchsploit", "netexec", "impacket", "evil-winrm"]
 
 [playbooks."07-ad/acl-abuse"]
 exam = "reviewed"
-requires_tools = ["netexec", "impacket", "bloodyad", "certipy", "powerview"]
+requires_tools = ["netexec", "impacket", "bloodyad", "certipy", "powerview", "targetedkerberoast"]
 
 [playbooks."07-ad/ad-recycle-bin"]
 exam = "reviewed"
@@ -651,7 +651,7 @@ sources = ["exam-guide", "exam-faq"]
 
 [playbooks."07-ad/domain-enum"]
 exam = "reviewed"
-requires_tools = ["netexec", "impacket", "kerbrute", "certipy", "ldapdomaindump", "bloodhound-ce", "rusthound-ce", "sharphound", "snaffler"]
+requires_tools = ["netexec", "impacket", "kerbrute", "certipy", "ldapdomaindump", "bloodhound-ce", "rusthound-ce", "sharphound", "snaffler", "powerview"]
 
 [playbooks."07-ad/dpapi"]
 exam = "reviewed"
@@ -671,7 +671,7 @@ requires_tools = ["bloodyad", "powerview"]
 
 [playbooks."07-ad/kerberoasting"]
 exam = "reviewed"
-requires_tools = ["netexec", "impacket", "rubeus", "hashcat", "john"]
+requires_tools = ["netexec", "impacket", "rubeus", "hashcat", "john", "targetedkerberoast"]
 
 [playbooks."07-ad/laps"]
 exam = "reviewed"
@@ -800,7 +800,7 @@ requires_tools = ["ligolo-ng", "proxychains", "nmap", "netexec", "evil-winrm", "
 
 [playbooks."08-pivoting/port-forwarding"]
 exam = "reviewed"
-requires_tools = ["ssh", "chisel", "ligolo-ng", "proxychains", "freerdp", "netcat"]
+requires_tools = ["ssh", "chisel", "ligolo-ng", "proxychains", "freerdp", "netcat", "plink"]
 
 [playbooks."08-pivoting/socat"]
 exam = "reviewed"

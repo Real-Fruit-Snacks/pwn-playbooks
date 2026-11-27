@@ -32,5 +32,5 @@ impacket-addcomputer '<Domain>/<Username>:<Password>' -computer-name 'ATTACK$' -
 - [ ] Deleting takes more rights than creating: an account I cannot delete noted for the report
 
 ## Next
-- [ ] With a machine account: the delegation and relay chains, :Pb delegation, :Pb ntlm-relay
+- [ ] With a machine account: delegation from it, :Pb delegation
 - [ ] The domain enumerated again as the new account: :Pb domain-enum
