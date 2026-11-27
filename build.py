@@ -63,19 +63,28 @@ class Source:
     body: list[str]
 
 
+def _load_tables(path: Path) -> tuple[dict | None, list[Problem]]:
+    """placeholders.toml as tomllib reads it, or None and why it has no [placeholders] table."""
+    label = path.name
+    if not path.is_file():
+        return None, [Problem(label, 0, "missing")]
+    try:
+        data = tomllib.loads(path.read_text(encoding="utf-8"))
+    except (tomllib.TOMLDecodeError, UnicodeDecodeError):
+        return None, [Problem(label, 0, "not valid TOML")]
+    if not isinstance(data.get("placeholders"), dict):
+        return None, [Problem(label, 0, "needs a [placeholders] table")]
+    return data, []
+
+
 def load_placeholders(path: Path) -> tuple[dict[str, str], list[Problem]]:
     """The placeholder names placeholders.toml lists, with what each means, and what is wrong
     with it. A name with a problem is left out."""
     label = path.name
-    if not path.is_file():
-        return {}, [Problem(label, 0, "missing")]
-    try:
-        data = tomllib.loads(path.read_text(encoding="utf-8"))
-    except (tomllib.TOMLDecodeError, UnicodeDecodeError):
-        return {}, [Problem(label, 0, "not valid TOML")]
-    table = data.get("placeholders")
-    if not isinstance(table, dict):
-        return {}, [Problem(label, 0, "needs a [placeholders] table")]
+    data, found = _load_tables(path)
+    if data is None:
+        return {}, found
+    table = data["placeholders"]
     names: dict[str, str] = {}
     lowered: dict[str, str] = {}
     found = []
@@ -95,6 +104,39 @@ def load_placeholders(path: Path) -> tuple[dict[str, str], list[Problem]]:
             names[name] = meaning
             lowered[name.lower()] = name
     return names, found
+
+
+def load_unlisted(path: Path) -> tuple[dict[str, set[str]], list[Problem]]:
+    """The [unlisted] table of placeholders.toml: for a playbook's file name, the names in angle
+    brackets that check lets through there although they are not placeholders. The table may be
+    left out. An entry with a problem is left out."""
+    label = path.name
+    data, _ = _load_tables(path)
+    if data is None or "unlisted" not in data:
+        return {}, []
+    table = data["unlisted"]
+    if not isinstance(table, dict):
+        return {}, [Problem(label, 0, "unlisted: needs a table of playbook = [names]")]
+    listed = data["placeholders"]
+    allowed: dict[str, set[str]] = {}
+    found = []
+    for playbook, value in table.items():
+        where = f"unlisted: {playbook}"
+        if not _NAME.fullmatch(playbook):
+            found.append(Problem(label, 0, f"{where}: not a playbook's file name"))
+        elif not isinstance(value, list) or not value:
+            found.append(Problem(label, 0, f"{where}: needs a list of names"))
+        elif not all(isinstance(v, str) and _PLACEHOLDER_NAME.fullmatch(v) for v in value):
+            rule = "a name is a capital letter, then letters and digits"
+            found.append(Problem(label, 0, f"{where}: {rule}"))
+        elif RESERVED in value:
+            found.append(Problem(label, 0, f"{where}: {RESERVED} is reserved for the run block"))
+        elif any(v in listed for v in value):
+            both = next(v for v in value if v in listed)
+            found.append(Problem(label, 0, f"{where}: {both} is a placeholder"))
+        else:
+            allowed[playbook] = set(value)
+    return allowed, found
 
 
 def parse_source(text: str, path: str) -> tuple[Source | None, list[Problem]]:
@@ -133,15 +175,24 @@ def placeholders_used(body: list[str], names: Iterable[str]) -> list[str]:
     return used
 
 
-def _check_lines(lines: list[str], path: str, names: dict[str, str]) -> list[Problem]:
+def _check_lines(
+    lines: list[str], path: str, names: dict[str, str], unlisted: set[str] | None = None
+) -> list[Problem]:
+    """What is wrong with a playbook's lines. unlisted is the names [unlisted] lets through in this
+    playbook, or None when placeholders.toml gave no list to hold a name against."""
     lowered = {name.lower(): name for name in names}
     found = []
+    # the title line is checked by parse_source, but a fold marker in it breaks the note as well
+    if FOLD_START in lines[0] or FOLD_END in lines[0]:
+        found.append(Problem(path, 1, "a fold marker"))
     for number, line in enumerate(lines[1:], start=2):
         stripped = line.strip()
         if FOLD_START in line or FOLD_END in line:
             found.append(Problem(path, number, "a fold marker"))
         elif len(stripped) >= 20 and set(stripped) == {"#"}:
             found.append(Problem(path, number, "a line of 20 or more #"))
+        elif stripped.startswith("```"):
+            found.append(Problem(path, number, "a code fence"))
         elif stripped.startswith("> [!"):
             found.append(Problem(path, number, "an Obsidian callout"))
         elif _LINK.search(line):
@@ -151,9 +202,15 @@ def _check_lines(lines: list[str], path: str, names: dict[str, str]) -> list[Pro
         for name in _ANGLE.findall(line):
             if name == RESERVED:
                 found.append(Problem(path, number, "<Replace> is reserved for the run block"))
-            elif name not in names and name.lower() in lowered:
+            elif name in names:
+                continue
+            elif name.lower() in lowered:
                 other = lowered[name.lower()]
                 found.append(Problem(path, number, f"<{name}> differs only in case from <{other}>"))
+            elif unlisted is None or name in unlisted:
+                continue
+            elif _PLACEHOLDER_NAME.fullmatch(name):
+                found.append(Problem(path, number, f"<{name}> is not in placeholders.toml"))
     return found
 
 
@@ -194,8 +251,15 @@ def playbook_files(repo: Path) -> tuple[list[Path], list[Problem]]:
 
 def check_tree(repo: Path) -> list[Problem]:
     names, found = load_placeholders(repo / "placeholders.toml")
+    # with no list at all, every name would be reported as missing from it
+    have_list = _load_tables(repo / "placeholders.toml")[0] is not None
+    unlisted, problems = load_unlisted(repo / "placeholders.toml")
+    found += problems
     files, problems = playbook_files(repo)
     found += problems
+    for playbook in sorted(set(unlisted) - {file.stem for file in files}):
+        message = f"unlisted: {playbook}: no playbook has that name"
+        found.append(Problem("placeholders.toml", 0, message))
     seen: dict[str, str] = {}
     for file in files:
         path = file.relative_to(repo).as_posix()
@@ -210,7 +274,8 @@ def check_tree(repo: Path) -> list[Problem]:
             continue
         _, problems = parse_source(text, path)
         found += problems
-        found += _check_lines(text.split("\n"), path, names)
+        allowed = unlisted.get(file.stem, set()) if have_list else None
+        found += _check_lines(text.split("\n"), path, names, allowed)
     return sorted(found)
 
 

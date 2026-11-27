@@ -1,6 +1,7 @@
 # Every placeholder a playbook may use, each with one line on what it means. Only a name listed
-# here is a placeholder: anything else in angle brackets, such as <Directory> or List<String>,
-# is literal text. One name per meaning, so <Username>, never <User>.
+# here is a placeholder, and check refuses any other <Name> that starts with a capital letter, so
+# a misspelt or invented one cannot slip in. Other text in angle brackets, such as <script> or
+# <!-- -->, is literal. One name per meaning, so <Username>, never <User>.
 #
 # A value is typed into a vim :s replacement, where / ends it and \ starts a special
 # character, so no placeholder may stand for a URL or a path: split it, as <Scheme>://<WebHost>,
@@ -44,3 +45,10 @@ Table = "a database table's name"
 UserField = "the name of a login form's username field"
 PassField = "the name of a login form's password field"
 EdbID = "an Exploit-DB exploit's number"
+
+# Names that check lets through in one playbook although they are not placeholders, keyed by the
+# playbook's file name. This is for literal text that has a placeholder's shape, such as an
+# Apache <Directory> block or a Java List<String>. lateral-movement is here only until its
+# <User> and <Host> become <Username> and <Hostname>.
+[unlisted]
+lateral-movement = ["User", "Host"]
