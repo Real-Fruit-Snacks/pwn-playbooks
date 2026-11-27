@@ -75,7 +75,7 @@ The tests need Python 3.11 or later and pytest. The vim tests run when `vim` is 
 
 ## Cutting a release
 
-1. Add the release's section to `CHANGELOG.md`, `## v<YYYY.MM.DD>`, and update the README's table and release name. Then run `python docs/art/make-page.py`, which rewrites the project page's list of playbooks, its placeholders and its release name. The tests check all three.
+1. Add the release's section to `CHANGELOG.md`, `## v<YYYY.MM.DD>`, and update the release name in the README and in `docs/PLAYBOOKS.md`, and the table in `docs/PLAYBOOKS.md`. Then run `python docs/art/make-page.py`, which rewrites the project page's list of playbooks, its placeholders and its release name. The tests check all three.
 2. Run the release workflow by hand on `main` as a dry run, with that version, and note the zip's SHA-256.
 3. Tag `main` with `v<YYYY.MM.DD>` and push the tag. CI checks, builds and publishes `playbooks-<version>.zip` and `SHA256SUMS.txt`. The SHA-256 matches the dry run's, since the same tree builds the same bytes.
 4. A second release on the same day is `v<YYYY.MM.DD>.1`, then `.2`.
