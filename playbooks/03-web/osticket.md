@@ -1,31 +1,32 @@
 # osTicket
 
 ## Before I start
-- [ ] /support /helpdesk /tickets; staff panel at /scp/login.php
-- [ ] Version: footer, /scp/login.php source, WHATSNEW/UPGRADING if readable
+- [ ] /support, /helpdesk or /tickets, with the staff panel at /scp/login.php
+- [ ] The version: the footer, the source of /scp/login.php, and WHATSNEW or UPGRADING where readable
 
-## Free wins
-- [ ] /setup/ still present → install details leak, old builds directly exploitable
-- [ ] Open a ticket unauth → auto-responder leaks email formats, agent names, SLAs
-- [ ] Default/weak staff creds on /scp/: :Pb login-forms
+## Quick checks
+- [ ] /setup/ still there: it leaks how it was installed, and old builds are exploitable through it
+- [ ] A ticket opened with no login: the automatic reply shows the email format, agent names and response times
+- [ ] Default and weak staff logins at /scp/: :Pb login-forms
 
-## searchsploit by version
+## Known exploits, by version
 searchsploit osticket
-- [ ] 1.1x builds: auth bypass, SQLi, XSS options depending on version: :Pb web-cves
+- [ ] 1.x builds: a login bypass, SQL injection or XSS, depending on the version: :Pb web-cves
 
-## Stored XSS in tickets
-- [ ] Payload in ticket subject/body → fires when an agent reads it → staff session: :Pb xss
-- [ ] Staff MUST read tickets — near-guaranteed delivery
+## Stored XSS in a ticket
+- [ ] A payload in the subject or body runs when an agent reads it, and sends me the staff session: :Pb xss
+- [ ] Agents have to read tickets, so it is very likely to be opened
 
-## Attachments + loot
-- [ ] Tickets carry .kdbx :Pb keepass, VPN profiles, configs, screenshots
+## Attachments and configuration
+- [ ] Tickets carry KeePass databases, VPN profiles, configs and screenshots: :Pb keepass
+After a shell:
 cat /var/www/html/osticket/include/ost-config.php
-- [ ] DBUSER/DBPASS → full ticket DB: :Pb mysql
-- [ ] ost_staff bcrypt hashes → :Pb hash-cracking
+- [ ] DBUSER and DBPASS open the whole ticket database: :Pb mysql
+- [ ] bcrypt hashes in ost_staff: :Pb hash-cracking
 
 ## If it fails
-- [ ] Patched, no creds, no setup dir → helpdesk is intel-only; harvest the email formats for spraying
+- [ ] Patched, no login and no /setup/: information only, so the email format kept for :Pb spraying
 
 ## Next
-- [ ] Staff creds → reuse against SSH/AD: :Pb spraying
-- [ ] Ticket intel → map internal services: :Pb discovery
+- [ ] Staff credentials tried on SSH and the domain: :Pb spraying
+- [ ] What the tickets say about internal services: :Pb discovery

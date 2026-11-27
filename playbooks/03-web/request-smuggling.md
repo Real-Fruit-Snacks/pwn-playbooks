@@ -1,28 +1,30 @@
-# HTTP Request Smuggling
+# HTTP request smuggling
 
 ## Before I start
-- [ ] Proxy/CDN in front of the app (anything else = no desync to find)
-- [ ] Burp Repeater: "Update Content-Length" OFF
+- [ ] A proxy or CDN in front of the application: with nothing in front there is no desync to find
+- [ ] In Burp Repeater, Update Content-Length turned off
 
 ## Detect
-python3 smuggler.py -u https://target.thm
-- [ ] Burp ext: HTTP Request Smuggler → Smuggle probe
-- [ ] Manual CL.TE probe: CL: 6 + chunked body "0\r\n\r\nG" → response "Unrecognized method G..."
-- [ ] Manual TE.CL probe: chunked body with 5c + GPOST prefix → timeout = desync
+smuggler, from https://github.com/defparam/smuggler:
+git clone https://github.com/defparam/smuggler
+python3 smuggler/smuggler.py -u <Scheme>://<WebHost>/
+- [ ] Burp's HTTP Request Smuggler extension, from the BApp Store: Smuggle probe
+- [ ] CL.TE by hand: Content-Length: 6 over a chunked body of 0, a blank line and G, and the next response says Unrecognized method G...
+- [ ] TE.CL by hand: a chunked body of size 5c that starts GPOST, and a timeout means a desync
 
 ## Variants
-- [ ] TE.TE: obfuscate one TE header (xchunked, space-before-colon, tab)
-- [ ] H2.CL / H2.TE: HTTP/2 front, downgraded back — test with Burp's h2 support
+- [ ] TE.TE: one Transfer-Encoding header hidden from one side, as xchunked, with a space before the colon, or with a tab
+- [ ] H2.CL and H2.TE: HTTP/2 at the front, downgraded behind it, tested with Burp's HTTP/2 support
 
-## Weaponize
-- [ ] Smuggle to internal-only path: GET /admin past the proxy ACL
-- [ ] Smuggle a prefix that stores the next victim's request (comment field) → session theft
-- [ ] Desync + cacheable response = poison the cache for everyone (note: Cache Poisoning Testing page)
+## Use it
+- [ ] A request smuggled to a path only the inside may reach, such as GET /admin past the proxy's rule
+- [ ] A prefix that stores the next user's request, in a comment field for one: their session
+- [ ] A desync with a response the cache keeps: the cache poisoned for everyone
 
 ## If it fails
-- [ ] Front-end normalizes everything (modern CDNs) → try H2 downgrade only
-- [ ] Connection kept-alive issues → use HTTP/1.1, Connection: keep-alive, exact lengths
+- [ ] The front end normalises everything, as modern CDNs do: only the HTTP/2 downgrade is left
+- [ ] Trouble with kept-alive connections: HTTP/1.1, Connection: keep-alive and exact lengths
 
 ## Next
-- [ ] Internal paths reached → attack them as unauth surface: :Pb discovery
-- [ ] Stolen sessions → account access → :Pb api
+- [ ] Internal paths reached: treated as new pages with no login, :Pb discovery
+- [ ] Stolen sessions: the accounts, :Pb api

