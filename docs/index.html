@@ -13,7 +13,7 @@
 <meta property="og:image" content="https://real-fruit-snacks.github.io/pwn-playbooks/assets/cover-dark.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="560">
-<meta property="og:image:alt" content="pwn-playbooks: the SMB playbook in a vim note, filled in with a target's IP and domain.">
+<meta property="og:image:alt" content="pwn-playbooks: Playbooks for pwn-broker: read into the note, fill in, run — flow diagram showing :Pb smb in the pwn-broker note window loading the SMB enumeration playbook.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -24,11 +24,15 @@
 <link rel="preload" href="fonts/big-shoulders-stencil-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/azeret-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script>
-    // Dark (LX 263) default; opt-in light (LX 512) synced via rfs-theme across RFS pages.
+    // Dark (LX 263) default; opt-in light (LX 512) synced via rfs-theme and color-scheme across RFS pages.
     (function (d) {
         try {
-            var t = localStorage.getItem('rfs-theme');
-            if (t === 'light' || t === 'dayshift') d.dataset.theme = 'light';
+            var t = localStorage.getItem('rfs-theme') || localStorage.getItem('color-scheme');
+            if (t === 'light' || t === 'dayshift') {
+                d.dataset.theme = 'light';
+                var cs = document.querySelector('meta[name="color-scheme"]');
+                if (cs) cs.content = 'light';
+            }
         } catch (e) {}
         if (window.matchMedia && matchMedia('(prefers-reduced-motion: no-preference)').matches) d.classList.add('js-run');
     })(document.documentElement);
@@ -73,7 +77,7 @@
 
 <main class="wrap stack">
 <section class="card first" aria-labelledby="top-h">
-    <p class="runhead"><b>pwn-playbooks <span data-gen="version">2026.11.26</span></b><span><span data-gen="count">132</span> playbooks · pwn-broker 0.1.7</span><span>CC BY 4.0</span></p>
+    <p class="runhead"><b>pwn-playbooks <span data-gen="version">2026.11.26</span></b><span><span data-gen="count">132</span> playbooks · pwn-broker 0.1.7+</span><span>CC BY 4.0</span></p>
     <div class="hero">
         <div>
             <h1 class="title" id="top-h">pwn-playbooks</h1>
