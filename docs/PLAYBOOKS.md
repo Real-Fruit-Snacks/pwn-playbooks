@@ -182,11 +182,11 @@ pwn-broker's `search` skips a playbook's run block, and any line of a playbook t
 | `07-ad/acl-abuse` | AD ACL abuse | `<TargetUser>` `<Group>` `<Computer>` `<Hash>` `<DCIP>` `<Domain>` `<Username>` `<Password>` `<TargetIP>` |
 | `07-ad/ad-recycle-bin` | AD recycle bin | `<DCIP>` `<Username>` `<Domain>` `<Password>` `<BaseDN>` `<TargetUser>` |
 | `07-ad/adcs-esc` | ADCS ESC reference | `<Username>` `<Domain>` `<Password>` `<DCIP>` `<DomainSID>` `<TargetIP>` `<CA>` |
-| `07-ad/adcs` | ADCS | `<DCIP>` `<Hash>` `<Username>` `<Domain>` `<Password>` `<CA>` `<Template>` `<DomainSID>` `<TargetUser>` |
+| `07-ad/adcs` | ADCS | `<DCIP>` `<Hash>` `<Username>` `<Domain>` `<Password>` `<CA>` `<Template>` `<DomainSID>` `<TargetIP>` `<TargetUser>` |
 | `07-ad/asrep` | AS-REP roasting | `<DCIP>` `<Domain>` `<TargetUser>` `<Username>` `<Password>` `<Hash>` |
 | `07-ad/coercion` | Coercion | `<TargetIP>` `<Username>` `<Password>` `<Domain>` `<LHOST>` |
 | `07-ad/dcsync` | DCSync | `<DCIP>` `<BaseDN>` `<Domain>` `<Username>` `<Password>` `<Hash>` `<TargetUser>` |
-| `07-ad/delegation` | AD delegation | `<DCIP>` `<DCHost>` `<Domain>` `<Username>` `<Password>` `<Hash>` `<Computer>` `<Hostname>` |
+| `07-ad/delegation` | AD delegation | `<DCIP>` `<DCHost>` `<Domain>` `<Username>` `<Password>` `<Hostname>` `<Hash>` `<Computer>` |
 | `07-ad/domain-enum` | AD enumeration | `<DCIP>` `<DCHost>` `<Domain>` `<Username>` `<Password>` `<Hash>` |
 | `07-ad/dpapi` | DPAPI | `<TargetUser>` `<Password>` `<Hash>` `<Username>` `<DCHost>` `<Hostname>` `<Domain>` `<TargetIP>` |
 | `07-ad/gmsa` | gMSA abuse | `<DCIP>` `<Username>` `<Password>` `<Domain>` `<TargetUser>` |
