@@ -24,7 +24,7 @@ sc.exe qc <Service>
 
 A placeholder is `<Name>`, with the name a capital letter followed by letters and digits, and only names listed in `placeholders.toml` count. Each name has one line on what it stands for, and there is one name per meaning: `<Username>`, never `<User>` as well.
 
-A value is typed into a vim `:s` replacement, where `/` ends it and `\` starts a special character. So no placeholder may stand for something that is usually a URL or a path: split it, as `<Scheme>://<WebHost>`, or leave the path as text to edit. Adding a placeholder means adding a realistic value for it to `REAL` in `tests/test_vim.py`, which fills in every playbook with them.
+From pwn-broker 0.1.16 the note puts a value in as typed, with nothing to escape. An earlier pwn-broker, or a plain vim, still types it into a vim `:s` replacement, where `/` ends it and `\` starts a special character. So still no placeholder may stand for something that is usually a URL or a path: split it, as `<Scheme>://<WebHost>`, or leave the path as text to edit. Adding a placeholder means adding a realistic value for it to `REAL` in `tests/test_vim.py`, which fills in every playbook with them.
 
 Literal text that has a placeholder's shape, such as an Apache `<Directory>` block or a Java `List<String>`, is named for its playbook in the `[unlisted]` table of `placeholders.toml`, as `apache = ["Directory"]` with the playbook's file name as the key. `check` lets those names through in that playbook only, and nothing fills them in.
 
@@ -66,6 +66,10 @@ Use those two prefixes rather than inventing a new warning style. Keep allowed a
 - a `<Name>` that differs only in case from a listed placeholder, such as `<TargetIp>`;
 - a `<Name>` that starts with a capital letter and is not a listed placeholder, such as `<User>`, unless `[unlisted]` names it for that playbook;
 - a file that is not UTF-8, or has a CR in it: save with LF line endings.
+
+## The run block
+
+`build.py` writes the run block, and pwn-broker reads it: from 0.1.16 the note's vim does not run the block but matches each of its lines by its exact form. The forms are `my`, then `/^\%>'yEND OF <name> PLAYBOOK$`, then `mz`, then one `:'y,'zs/<Name>/<Replace>/ge` for each placeholder, then `'y`. `tests/test_run_block.py` holds every playbook's block to them, so none of them may change without a matching change in pwn-broker.
 
 ## Testing
 

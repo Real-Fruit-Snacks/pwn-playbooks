@@ -3,9 +3,10 @@
 # a misspelt or invented one cannot slip in. Other text in angle brackets, such as <script> or
 # <!-- -->, is literal. One name per meaning, so <Username>, never <User>.
 #
-# A value is typed into a vim :s replacement, where / ends it and \ starts a special
-# character, so no placeholder may stand for a URL or a path: split it, as <Scheme>://<WebHost>,
-# or leave the path as text to edit, as THE-PROGRAM.
+# pwn-broker 0.1.16 and later puts a value in as typed. An earlier one, or a plain vim, types it
+# into a vim :s replacement, where / ends it and \ starts a special character, so still no
+# placeholder may stand for a URL or a path: split it, as <Scheme>://<WebHost>, or leave the path
+# as text to edit, as THE-PROGRAM.
 
 [placeholders]
 TargetIP = "the target's IP address"

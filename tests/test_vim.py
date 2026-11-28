@@ -1,5 +1,6 @@
 """Every built playbook filled in by a real vim, headless, with no vimrc: the run block's text
-replaced, copied into register q and run, as a person does it in the note."""
+replaced, copied into register q and run, as a person does it in a plain vim or in the note of a
+pwn-broker before 0.1.16. From 0.1.16 the note reads the block instead: test_run_block.py."""
 
 import shutil
 import subprocess
