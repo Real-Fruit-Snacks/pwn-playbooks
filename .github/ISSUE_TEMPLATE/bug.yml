@@ -7,7 +7,7 @@ body:
     attributes:
       label: Versions
       description: Kali, pwn-broker (`pwn-broker --version`) and the playbooks release, which ends the Playbook line at the top of each playbook in the note
-      placeholder: Kali 2026.3, pwn-broker 0.1.14, playbooks 2026.11.26
+      placeholder: Kali 2026.3, pwn-broker 0.1.15, playbooks 2026.11.27.1
     validations:
       required: true
   - type: input

@@ -1,5 +1,14 @@
 # Changelog
 
+## v2026.11.27.1
+
+- The lateral movement playbook's Kerberos-only WinRM section uses `<Username>` and the target's full name, and connects with `evil-winrm -i <Hostname>.<Domain> -r <Domain> -S`: `-k` was evil-winrm's private-key option, and 5986 needs `-S`. Credentials from a new host point to the Windows credentials and DPAPI playbooks.
+- The ADCS playbook's ESC3 is two requests, the enrolment-agent certificate first and then the request on behalf of another user, which takes the domain's NetBIOS short name. ESC7 gains the denied request, `-issue-request` and `-retrieve`. The ESC8 and ESC11 relays name the CA server as their target, not the domain controller.
+- The delegation playbook says which listener the coercion takes for unconstrained delegation, the host that holds the delegation and not Kali, and its Rubeus `s4u` line asks for the same host as the lines from Kali.
+- The GPO abuse playbook names pyGPOAbuse's source, says that `-gpo-id` takes the GUID without braces and that the default task adds a local admin named `john` with a published password, and cleans up with `--cleanup`.
+- DCSync pointers in the ADCS and delegation playbooks go to the DCSync playbook.
+- `placeholders.toml` no longer excuses `<User>` and `<Host>` in the lateral movement playbook.
+
 ## v2026.11.27
 
 - The shells playbook starts the shell-tunnel listener on Kali with `-N`. The listener is an SSH server on every interface that takes the packaged password, so without `-N` anyone who could reach the port got a shell and SFTP on Kali. With it the listener refuses shells, SFTP and local forwards and carries only the target's callback.
