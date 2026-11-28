@@ -186,7 +186,7 @@ pwn-broker's `search` skips a playbook's run block, and any line of a playbook t
 | `07-ad/asrep` | AS-REP roasting | `<DCIP>` `<Domain>` `<TargetUser>` `<Username>` `<Password>` `<Hash>` |
 | `07-ad/coercion` | Coercion | `<TargetIP>` `<Username>` `<Password>` `<Domain>` `<LHOST>` |
 | `07-ad/dcsync` | DCSync | `<DCIP>` `<BaseDN>` `<Domain>` `<Username>` `<Password>` `<Hash>` `<TargetUser>` |
-| `07-ad/delegation` | AD delegation | `<DCIP>` `<DCHost>` `<Domain>` `<Username>` `<Password>` `<Hostname>` `<LHOST>` `<Hash>` `<Computer>` |
+| `07-ad/delegation` | AD delegation | `<DCIP>` `<DCHost>` `<Domain>` `<Username>` `<Password>` `<Hostname>` `<Hash>` `<Computer>` |
 | `07-ad/domain-enum` | AD enumeration | `<DCIP>` `<DCHost>` `<Domain>` `<Username>` `<Password>` `<Hash>` |
 | `07-ad/dpapi` | DPAPI | `<TargetUser>` `<Password>` `<Hash>` `<Username>` `<DCHost>` `<Hostname>` `<Domain>` `<TargetIP>` |
 | `07-ad/gmsa` | gMSA abuse | `<DCIP>` `<Username>` `<Password>` `<Domain>` `<TargetUser>` |

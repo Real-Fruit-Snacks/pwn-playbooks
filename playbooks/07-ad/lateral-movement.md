@@ -73,6 +73,6 @@ NTLM refused means password and hash logins fail; go through Kerberos.
 
 - [ ] Get a TGT: impacket-getTGT '<Domain>/<Username>:<Password>'
 - [ ] Point at it: export KRB5CCNAME=<Username>.ccache
-- [ ] Connect by name, not IP: evil-winrm -i <Hostname>.<Domain> -u '<Username>' -r <Domain> -S
+- [ ] Connect by name, not IP: evil-winrm -i <Hostname>.<Domain> -r <Domain> -S
 - [ ] Hashes work for the TGT too: impacket-getTGT -hashes ':<Hash>' '<Domain>/<Username>'
 - [ ] If Kerberos tools cannot find the KDC, add <Domain> in capitals to /etc/krb5.conf as the realm, mapped to the DC IP

