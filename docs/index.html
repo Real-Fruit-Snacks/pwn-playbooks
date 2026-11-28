@@ -139,7 +139,7 @@ END OF smb PLAYBOOK
 
 <section class="card ref" id="without" aria-labelledby="without-h">
     <h2 id="without-h">Without pwn-broker</h2>
-    <p class="intro">Download <code>playbooks-&lt;version&gt;.zip</code> from the <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/releases/latest">latest release</a>, check it against <code>SHA256SUMS.txt</code>, unzip it, and read a playbook into any vim. Its run block works the same way.</p>
+    <p class="intro">Download <code>playbooks-&lt;version&gt;.zip</code> from the <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/releases/latest">latest release</a>, check it against <code>SHA256SUMS.txt</code>, unzip it, and read a playbook into any vim. Its run block fills it in there too, run as vim commands, so a value has to be escaped there, as <a href="#fill">filling it in</a> says for a plain vim.</p>
     <div class="rfs-code-card">
         <div class="rfs-code-head">
             <span class="rfs-badge b-steel"><span class="k">[vim]</span> ex command</span>
@@ -170,7 +170,13 @@ END OF smb PLAYBOOK
             <li><span class="ch">Two targets</span><span class="ld" aria-hidden="true"></span><span class="rs">Own copy only</span>
                 <p class="why">The same playbook read in twice fills only the copy whose block ran: the search for its end looks only below the block. A copy whose <code>END OF</code> line I deleted changes nothing, unless another copy follows it.</p></li>
             <li><span class="ch">Through a register</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>"q</code></span>
-                <p class="why">Pasting the block from the terminal would only insert it as text. A value is typed into a vim replacement, so a <code>/</code>, <code>&amp;</code>, <code>\</code> or <code>~</code> in it needs a backslash in front, which matters mostly for passwords. An unescaped <code>/</code> ends the replacement and vim runs what follows it, <code>|!</code> and a shell command included, and a line break in a value does the same, so read a value taken from a target before you paste it. A <code>'</code> in a value ends the single quotes a playbook puts it in, so requote that line by hand before running it.</p></li>
+                <p class="why">Pasting the block from the terminal would only insert it as text, so it is copied into a register and <code>@q</code> takes it from there.</p></li>
+            <li><span class="ch">A value</span><span class="ld" aria-hidden="true"></span><span class="rs">As typed</span>
+                <p class="why">In pwn-broker 0.1.16 or later, the note's vim reads the block's lines instead of running them, and puts each value in as the text it is. A value needs no escaping, a <code>/</code>, <code>&amp;</code>, <code>\</code> or <code>~</code> included, a typed <code>\/</code> stays <code>\/</code>, and nothing in it is run. It has to be on one line: a block with a line that is not its own is refused, and nothing is filled in.</p></li>
+            <li><span class="ch">Earlier, or plain vim</span><span class="ld" aria-hidden="true"></span><span class="rs">Escape it</span>
+                <p class="why">With an earlier pwn-broker, or a vim without pwn-broker's vimrc, <code>@q</code> runs the block as vim commands and the old rule holds: a <code>/</code>, <code>&amp;</code>, <code>\</code> or <code>~</code> in a value needs a backslash in front, which matters mostly for passwords. There an unescaped <code>/</code> ends the replacement and vim runs what follows it, <code>|!</code> and a shell command included, and a line break in a value does the same, so read a value taken from a target before you paste it.</p></li>
+            <li><span class="ch">A quote in a value</span><span class="ld" aria-hidden="true"></span><span class="rs">Requote</span>
+                <p class="why">A <code>'</code> in a value ends the single quotes a playbook puts it in. The shell reads that quote, not vim, so it holds whichever way the playbook was filled in: requote that line by hand before running it.</p></li>
             <li><span class="ch">Search stays useful</span><span class="ld" aria-hidden="true"></span><span class="rs"><code>search</code></span>
                 <p class="why">pwn-broker's <code>search</code> skips a playbook's run block, and any line that still holds a placeholder, so unfilled template text never floods the results. A line I have filled in is searched like any other.</p></li>
         </ul>
@@ -375,7 +381,7 @@ END OF smb PLAYBOOK
 
 <section class="card ref" id="placeholders" aria-labelledby="placeholders-h">
     <h2 id="placeholders-h">Placeholders</h2>
-    <p class="intro">Every value a playbook asks for is one of these, written <code>&lt;Name&gt;</code>, one name per meaning. A value is typed into a vim replacement, so none stands for a URL or a path: a URL is split, as <code>&lt;Scheme&gt;://&lt;WebHost&gt;</code>, and a value to edit by hand is written in capitals, such as <code>THE-PAGE</code>. The list is <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/blob/main/placeholders.toml">placeholders.toml</a>.</p>
+    <p class="intro">Every value a playbook asks for is one of these, written <code>&lt;Name&gt;</code>, one name per meaning. In a plain vim, or a pwn-broker before 0.1.16, a value is typed into a vim replacement, where a <code>/</code> ends it, so none stands for a URL or a path: a URL is split, as <code>&lt;Scheme&gt;://&lt;WebHost&gt;</code>, and a value to edit by hand is written in capitals, such as <code>THE-PAGE</code>. The list is <a href="https://github.com/Real-Fruit-Snacks/pwn-playbooks/blob/main/placeholders.toml">placeholders.toml</a>.</p>
     <dl class="ph-list">
 <!-- gen:placeholders -->
                 <div><dt><code>&lt;TargetIP&gt;</code></dt><dd>the target&#x27;s IP address</dd></div>

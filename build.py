@@ -295,6 +295,8 @@ def render(name: str, rel: str, title: str, version: str, used: list[str], body:
     so it has no run block and no Fill in line."""
     lines = [FOLD_START, f"Playbook: {title}   {rel}   {version}"]
     if used:
+        # pwn-broker 0.1.16 and later reads these lines by their exact forms and never runs them,
+        # so they change only with its vimrc; tests/test_run_block.py holds them to the forms
         lines += [
             "my",
             # \%>'y: only below the y mark, so a search that wraps never finds an earlier copy's end
